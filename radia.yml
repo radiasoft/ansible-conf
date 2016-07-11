@@ -1,0 +1,8 @@
+---
+- hosts: all
+  roles:
+    - bootstrap
+  gather_facts: false    
+- hosts: all
+  roles: 
+  - utilities
