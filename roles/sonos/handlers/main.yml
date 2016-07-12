@@ -1,0 +1,4 @@
+---
+- name: reload firewall
+  shell: systemctl reload firewalld && firewall-cmd --zone=public --add-service=sonos --permanent && systemctl restart firewalld
+  become: yes
