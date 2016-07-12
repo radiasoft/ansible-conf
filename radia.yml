@@ -3,6 +3,7 @@
   roles:
     - bootstrap
   gather_facts: false    
-- hosts: all
+- hosts: robhome 
   roles: 
   - utilities
+  - sonos   

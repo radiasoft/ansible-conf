@@ -19,7 +19,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # http://docs.ansible.com/ansible/guide_vagrant.html
     config.vm.provision "ansible" do |ansible|
         ansible.limit = "all"
-        ansible.inventory_path = "./vagrant_hosts"
+        ansible.inventory_path = "hosts"
         ansible.verbose = "v"
         ansible.playbook = "../radia.yml"
     end
