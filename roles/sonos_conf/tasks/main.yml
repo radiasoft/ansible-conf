@@ -4,20 +4,21 @@
   dnf: name={{ item }} state=present
   with_items:
     - firewalld
+- name: firewall running
+  become: yes
+  systemd: name=firewalld state=started enabled=yes daemon_reload=yes
 - name: host conf.d
   file: state=directory path={{ sonos.host_conf_d }} owner=root group=root mode=0644
   become: yes
 - name: settings
-  template: src=settings.j2 dest={{ sonos.host_conf_d }}/settings.json owner=root group=root mode=0640
+  template: src=settings.j2 dest={{ sonos.host_settings_json }} owner=root group=root mode=0640
   become: yes
 - name: presets
-  copy: src=presets.json dest={{ sonos.host_conf_d }}/presets.json owner=root group=root mode=0644
+  copy: src=presets.json dest={{ sonos.host_presets_json }} owner=root group=root mode=0644
   become: yes
 - name: firewall settings
   template: src=firewall.j2 dest=/etc/firewalld/services/sonos.xml owner=root group=root mode=0644
   become: yes
   notify:
     - reload firewall
-- name: firewall running
-  become: yes
-  service: name=firewalld state=started
+    - restart firewall  

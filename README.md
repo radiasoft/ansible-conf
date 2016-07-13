@@ -2,6 +2,10 @@
 
 This is a work in progress
 
+This repository has git submodules associated, when cloning, don't forget to get the related submodules:
+
+    > git submodule update --init
+
 #### Vagrant deployment
 
 Ansible needs to be installed on the host machine and accessible via the `PATH` enviroment variable. For reproducibility

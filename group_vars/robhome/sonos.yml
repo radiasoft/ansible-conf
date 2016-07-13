@@ -1,6 +1,0 @@
----
-sonos:
-  port: 5005
-  callback_port: 3500
-  guest_conf_d: /srv/node-sonos-http-api
-  host_conf_d: /srv/node-sonos-http-api
