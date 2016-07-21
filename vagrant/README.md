@@ -12,7 +12,8 @@ The dev enviroment requieres the following packages to be already available on t
 The development enviroment requires additional packages and enviroment variables injected in your work enviroment. The file `vagrant/.env` is provided for such purpose. In your terminal issue the following command:
 
 ```
-> source vagrant/.env
+cd vagrant
+vagrant> source .env
 ```
 
 #### Working with the dev enviroment
