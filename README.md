@@ -1,4 +1,4 @@
-### Ansible Deployment
+### Ansible Deployment [![Build Status](https://travis-ci.org/radiasoft/ansible-conf.svg?branch=master)](https://travis-ci.org/radiasoft/ansible-conf)
 
 This is a work in progress
 
