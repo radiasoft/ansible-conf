@@ -9,33 +9,56 @@ SSH_DIR = "ssh"
 
 ENV['ANSIBLE_CONFIG'] = ''
 
+VM_CONFIG = {
+    'robhome' => {
+        'ip' => '10.10.10.200',
+        'box' => 'fedora/24-cloud-base',
+        'autostart' => false
+    },
+    'jenkins' => {
+        'ip' => '10.10.10.201',
+        'box' => 'fedora/24-cloud-base',
+        'autostart' => false
+    }
+}
+
+def config_vm(config, vm_name)
+    conf = VM_CONFIG[vm_name]
+
+    config.vm.define vm_name, autostart: conf['autostart'] do |vm_config|
+        vm_config.ssh.insert_key = false
+
+        vm_config.vm.provider 'virtualbox' do |v|
+            v.linked_clone = true 
+            v.cpus = 2
+        end
+
+        vm_config.vm.box = conf['box']
+        vm_config.vm.box_check_update = true
+        vm_config.vm.network "private_network", ip: conf['ip']
+        vm_config.vm.synced_folder ".", "/vagrant", disabled: true
+
+        vm_config.ssh.insert_key = false
+        vm_config.ssh.private_key_path = [ "ssh/vagrant", "~/.vagrant.d/insecure_private_key" ]
+
+        vm_config.trigger.before :up do
+            run "#{PROVISION_DIR}/create_ssh_keys.sh"
+        end
+        
+        vm_config.trigger.after :destroy do
+            run "#{PROVISION_DIR}/destroy_clean.sh"
+        end
+
+        vm_config.vm.provision "ansible" do |ansible|
+            ansible.verbose = "" # Useful for debugging
+            ansible.playbook = "#{PROVISION_DIR}/vagrant.yml"
+        end
+    end
+end
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-    config.ssh.insert_key = false
-
-    config.vm.provider 'virtualbox' do |v|
-        v.linked_clone = true 
-        v.cpus = 2
-    end
-
-    config.vm.box = "fedora/23-cloud-base" 
-    config.vm.box_check_update = true
-    config.vm.network "private_network", ip: "10.10.10.200"
-    config.vm.synced_folder ".", "/vagrant", disabled: true
-
-    config.ssh.insert_key = false
-    config.ssh.private_key_path = [ "ssh/vagrant", "~/.vagrant.d/insecure_private_key" ]
-
-    config.trigger.before :up do
-        run "#{PROVISION_DIR}/create_ssh_keys.sh"
-    end
-    
-    config.trigger.after :destroy do
-        run "#{PROVISION_DIR}/destroy_clean.sh"
-    end
-
-    config.vm.provision "ansible" do |ansible|
-        ansible.verbose = "" # Useful for debugging
-        ansible.playbook = "#{PROVISION_DIR}/vagrant.yml"
+    VM_CONFIG.each_key do |vm_name|
+        config_vm config, vm_name
     end
 end
 

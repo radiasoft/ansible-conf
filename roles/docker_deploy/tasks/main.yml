@@ -1,17 +1,11 @@
 ---
-- name: install requirements
-  dnf: state=present name={{ item }}
-  with_items:
-    - python-docker-py
-- name: docker service running
-  systemd: name=docker state=started enabled=yes 
 - name: fetch docker {{ image_name }} image
   docker_image: name={{ image_name }}
 - name: start docker {{ image_name }} as {{ container_name }}
   docker_container:
     name: "{{ container_name }}"
     image: "{{ image_name }}"
-    volumes: "{{ volumes }}"
-    command: "{{ cmd }}"
+    volumes: "{{ volumes | default(omit) }}"
+    command: "{{ cmd | default(omit) }}"
     log_driver: journald
     tty: yes  

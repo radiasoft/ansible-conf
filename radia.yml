@@ -3,7 +3,17 @@
   remote_user: root
   roles:
     - bootstrap
-  gather_facts: false    
+  gather_facts: false
+- hosts: jenkins
+  remote_user: root
+  pre_tasks:
+    - name: create jenkins group on host to match container GID
+      group: name=jenkins gid=1000 state=present system=yes
+    - name: create jenkins user on host to match container UID
+      user: name=jenkins uid=1000 group=jenkins state=present system=yes createhome=no shell=/sbin/nologin
+  roles:
+    - utilities
+    - jenkins  
 - hosts: robhome 
   remote_user: root
   roles: 
