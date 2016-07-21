@@ -1,8 +1,8 @@
 sudo: required
 dist: trusty
 language: generic
-before_install: sudo ./travis/before_install.sh
-script: ./travis/script.sh
+install: sudo ./travis/install.sh $USER
+script: sudo -E su $USER -c ./travis/script.sh
 notifications:
   pushover:
     api_key:

@@ -16,6 +16,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         v.linked_clone = true 
         v.cpus = 2
     end
+    config.vm.provider :libvirt do |libvirt|
+        libvirt.driver = "qemu"
+        libvirt.cpus = 2
+        libvirt.memory = 1024
+        libvirt.volume_cache = 'unsafe'
+    end
 
     config.vm.box = "fedora/23-cloud-base" 
     config.vm.box_check_update = true
