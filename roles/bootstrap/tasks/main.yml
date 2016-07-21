@@ -1,5 +1,5 @@
 ---
-- name: install required packages
-  become: yes
+- name: install ansible minimum requirements
   raw: dnf install -y python2 python2-dnf libselinux-python facter
+  become: yes  
 

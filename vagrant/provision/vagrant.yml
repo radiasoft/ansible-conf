@@ -1,0 +1,16 @@
+---
+- hosts: all
+  gather_facts: no
+  roles:
+    - bootstrap
+- hosts: all
+  vars:
+    local_ssh_dir: "../ssh"
+    local_ssh_key: "{{ local_ssh_dir }}/vagrant"
+    local_ssh_known_hosts: "{{ local_ssh_dir  }}/known_hosts"  
+  tasks:
+    - authorized_key: user={{ item }} key="{{ lookup('file', '{{ local_ssh_key }}.pub') }}"
+      become: yes
+      with_items:
+        - vagrant
+        - root

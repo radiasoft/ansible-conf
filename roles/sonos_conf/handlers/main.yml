@@ -1,6 +1,5 @@
 ---
 - name: reload firewall
-  firewalld: zone=public service=sonos permanent=yes
-  become: yes
+  firewalld: zone=public service=sonos permanent=yes state=enabled 
 - name: restart firewall
   systemd: name=firewalld state=restarted 

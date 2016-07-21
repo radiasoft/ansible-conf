@@ -1,9 +1,11 @@
 ---
 - hosts: all
+  remote_user: root
   roles:
     - bootstrap
   gather_facts: false    
 - hosts: robhome 
+  remote_user: root
   roles: 
   - utilities
   - sonos   

@@ -1,7 +1,13 @@
 # -*-ruby-*-
+# vi: set ft=ruby :
 
 VAGRANTFILE_API_VERSION = "2"
 Vagrant.require_version ">= 1.8"
+
+PROVISION_DIR = "./provision"
+SSH_DIR = "ssh"
+
+ENV['ANSIBLE_CONFIG'] = ''
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.ssh.insert_key = false
@@ -16,12 +22,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.network "private_network", ip: "10.10.10.200"
     config.vm.synced_folder ".", "/vagrant", disabled: true
 
-    # http://docs.ansible.com/ansible/guide_vagrant.html
+    config.ssh.insert_key = false
+    config.ssh.private_key_path = [ "ssh/vagrant", "~/.vagrant.d/insecure_private_key" ]
+
+    config.trigger.before :up do
+        run "#{PROVISION_DIR}/create_ssh_keys.sh"
+    end
+    
+    config.trigger.after :destroy do
+        run "#{PROVISION_DIR}/destroy_clean.sh"
+    end
+
     config.vm.provision "ansible" do |ansible|
-        ansible.limit = "all"
-        ansible.inventory_path = "hosts"
-        ansible.verbose = "v"
-        ansible.playbook = "../radia.yml"
+        ansible.verbose = "" # Useful for debugging
+        ansible.playbook = "#{PROVISION_DIR}/vagrant.yml"
     end
 end
 

@@ -1,11 +1,9 @@
 ---
 - name: packages that need updating
-  become: yes
   dnf: name={{ item }} state=latest
   with_items:
     - vim-minimal
 - name: install utility packages
-  become: yes
   dnf: name={{ item }} state=present
   with_items:
     - bind-utils
@@ -20,7 +18,6 @@
     - htop
     - vim-enhanced
 - name: screenrc configuration
-  become: yes
   blockinfile: 
     dest: /etc/screenrc
     insertafter: EOF

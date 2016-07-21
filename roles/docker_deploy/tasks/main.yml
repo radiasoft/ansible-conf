@@ -3,15 +3,11 @@
   dnf: state=present name={{ item }}
   with_items:
     - python-docker-py
-  become: yes
 - name: docker service running
   systemd: name=docker state=started enabled=yes 
-  become: yes
 - name: fetch docker {{ image_name }} image
   docker_image: name={{ image_name }}
-  become: yes 
 - name: start docker {{ image_name }} as {{ container_name }}
-  become: yes
   docker_container:
     name: "{{ container_name }}"
     image: "{{ image_name }}"
