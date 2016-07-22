@@ -69,7 +69,9 @@ cd vagrant
 
 source .env
 
-travis_wait 30 vagrant up --provider=libvirt
+travis_wait 60 vagrant up --provider=libvirt
 
-travis_wait 30 ansible-playbook ../radia.yml
+echo $ANSIBLE_CONFIG
+
+travis_wait 60 ansible-playbook ../radia.yml
 
