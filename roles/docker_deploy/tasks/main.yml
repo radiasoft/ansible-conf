@@ -1,6 +1,15 @@
 ---
 - name: fetch docker {{ image_name }} image
   docker_image: name={{ image_name }}
+  when: not image_name|includes(':')
+
+# TODO: Test when ansible 2.2.0 is released
+# https://github.com/ansible/ansible-modules-core/issues/3719
+# https://github.com/ansible/ansible/pull/16680
+- name: fetch docker {{ image_name }} image with tag (workaround)
+  command: "{{ docker_path }} pull {{ image_name }}"
+  when: image_name|includes(':')
+
 - name: start docker {{ image_name }} as {{ container_name }}
   docker_container:
     name: "{{ container_name }}"
