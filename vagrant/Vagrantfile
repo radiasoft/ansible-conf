@@ -12,12 +12,12 @@ ENV['ANSIBLE_CONFIG'] = ''
 VM_CONFIG = {
     'robhome' => {
         'ip' => '10.10.10.200',
-        'box' => 'fedora/24-cloud-base',
+        'box' => 'fedora/23-cloud-base',
         'autostart' => false
     },
     'jenkins' => {
         'ip' => '10.10.10.201',
-        'box' => 'fedora/24-cloud-base',
+        'box' => 'fedora/23-cloud-base',
         'autostart' => false
     }
 }

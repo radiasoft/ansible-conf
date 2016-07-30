@@ -1,19 +1,32 @@
 ---
-- hosts: all
+- name: install hard requirements for ansible
+  hosts: all
   remote_user: root
   roles:
     - bootstrap
   gather_facts: false
-- hosts: jenkins
+
+- name: setup host machine 
+  hosts: all
   remote_user: root
-  pre_tasks:
-    - name: create jenkins group on host to match container GID
-      group: name=jenkins gid=1000 state=present system=yes
-    - name: create jenkins user on host to match container UID
-      user: name=jenkins uid=1000 group=jenkins state=present system=yes createhome=no shell=/sbin/nologin
   roles:
     - utilities
-    - jenkins  
+
+- hosts: jenkins
+  remote_user: root
+  vars:
+    jenkins_home: /var/lib/jenkins
+  pre_tasks:
+    - hostname: name=jenkins
+    - name: create jenkins user on host
+      user: name=jenkins state=present system=yes home={{ jenkins_home}} shell=/sbin/nologin move_home=yes
+      register: jenkins_user
+  roles:
+    - avahi
+    - role: jenkins
+      user: "{{ jenkins_user.uid }}:{{ jenkins_user.group }}"
+      home: "{{ jenkins_home }}" 
+
 - hosts: robhome 
   remote_user: root
   roles: 

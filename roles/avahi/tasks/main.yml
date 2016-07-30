@@ -1,0 +1,6 @@
+---
+- dnf: name=nss-mdns state=present
+  register: avahi_installed
+    
+- systemd: name=avahi-daemon enabled=yes daemon_reload=yes state=started
+  when: avahi_installed|changed

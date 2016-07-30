@@ -2,4 +2,7 @@
 dependencies:
   - role: docker_deploy 
     container_name: jenkins
-    image_name: docker.io/jenkins:alpine
+    image_name: docker.io/jenkins
+    docker_user: "{{ user }}" 
+    docker_volumes: "{{ home }}:/var/jenkins_home" 
+    docker_ports: ["8080:8080", "50000:50000"]   
