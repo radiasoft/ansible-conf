@@ -1,13 +1,20 @@
 ---
 - hosts: all
   gather_facts: no
+  become: yes
   roles:
     - bootstrap
 - hosts: all
+  become: yes
   vars:
     local_ssh_dir: "../ssh"
     local_ssh_key: "{{ local_ssh_dir }}/vagrant"
     local_ssh_known_hosts: "{{ local_ssh_dir  }}/known_hosts"  
+  pre_tasks:    
+    - hostname: name={{ vm_hostname }}
+  roles:
+    - { role: deploy_env, deploy_env_name: vagrant }  
+    - avahi
   tasks:
     - authorized_key: user={{ item }} key="{{ lookup('file', '{{ local_ssh_key }}.pub') }}"
       become: yes

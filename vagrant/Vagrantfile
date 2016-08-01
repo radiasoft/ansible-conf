@@ -52,6 +52,7 @@ def config_vm(config, vm_name)
         vm_config.vm.provision "ansible" do |ansible|
             ansible.verbose = "" # Useful for debugging
             ansible.playbook = "#{PROVISION_DIR}/vagrant.yml"
+            ansible.raw_arguments= ["--extra-vars", "vm_hostname=#{vm_name}"]
         end
     end
 end
