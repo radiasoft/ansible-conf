@@ -1,0 +1,29 @@
+---
+- block:
+    - command: /bin/mktemp -d
+      register: __jenkins_tmp_jar
+    - get_url: url=http://localhost:8080/jnlpJars/jenkins-cli.jar dest={{ __jenkins_tmp_jar.stdout }}/jenkins-cli.jar
+
+    - name: Update Jenkins plugin data.
+      shell: >
+        curl -L https://updates.jenkins-ci.org/update-center.json | sed '1d;$d' > "{{ jenkins_updates_dir }}/default.json"
+        creates="{{ jenkins_updates_dir }}/default.json"
+
+    - name: Permissions for default.json updates info.
+      file:
+        path: "{{ jenkins_updates_dir }}/default.json"
+        owner: "{{ jenkins_host_user.uid }}"
+        group: "{{ jenkins_host_user.group }}"
+        mode: 0755
+
+    - name: Install Jenkins plugins using password.
+      command: >
+        /bin/java -jar "{{ __jenkins_tmp_jar.stdout }}/jenkins-cli.jar" -s http://localhost:8080/
+        install-plugin "{{ item }}"
+        --username "{{ jenkins_admin_username }}"
+        --password "{{ jenkins_admin_password }}"
+        creates="{{ jenkins_home }}/plugins/{{ item }}.jpi"
+      with_items: "{{ jenkins_plugins }}"
+  always:
+    - file: name={{ __jenkins_tmp_jar.stdout }} state=absent
+    

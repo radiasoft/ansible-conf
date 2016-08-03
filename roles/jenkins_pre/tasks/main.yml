@@ -2,8 +2,14 @@
 - name: create jenkins user on host
   user: name={{ jenkins_username }} state=present system=yes home={{ jenkins_home}} shell=/sbin/nologin move_home=yes
   register: jenkins_host_user
-- file: path={{ jenkins_groovy_dir }} owner={{ jenkins_host_user.uid }} group={{ jenkins_host_user.group }} mode=0750 state=directory
+
+- file: path={{ item }} owner={{ jenkins_host_user.uid }} group={{ jenkins_host_user.group }} mode=0750 state=directory
+  with_items:
+    - "{{ jenkins_groovy_dir }}"
+    - "{{ jenkins_updates_dir }}"
+
 - name: jenkins_admin_password password is set
   assert: that="{{ jenkins_admin_password != ''}}"  
+    
 - template: src=admin_pass.j2 dest={{ jenkins_groovy_dir }}/admin_pass.groovy owner={{ jenkins_host_user.uid }} group={{ jenkins_host_user.group }} mode=0640 
   

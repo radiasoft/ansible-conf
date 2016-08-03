@@ -1,0 +1,4 @@
+---
+- dnf: name=java-1.8.0-openjdk-headless state=present
+- include: plugins.yml
+
