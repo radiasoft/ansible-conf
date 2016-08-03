@@ -1,0 +1,4 @@
+---
+- name: create jenkins user on host
+  user: name={{ jenkins_username }} state=present system=yes home={{ jenkins_home}} shell=/sbin/nologin move_home=yes
+  register: jenkins_host_user

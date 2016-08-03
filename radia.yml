@@ -14,18 +14,11 @@
 
 - hosts: jenkins
   remote_user: root
-  vars:
-    jenkins_home: /var/lib/jenkins
   pre_tasks:
     - hostname: name=jenkins
-    - name: create jenkins user on host
-      user: name=jenkins state=present system=yes home={{ jenkins_home}} shell=/sbin/nologin move_home=yes
-      register: jenkins_user
   roles:
     - avahi
-    - role: jenkins
-      user: "{{ jenkins_user.uid }}:{{ jenkins_user.group }}"
-      home: "{{ jenkins_home }}" 
+    - jenkins  
 
 - hosts: robhome 
   remote_user: root

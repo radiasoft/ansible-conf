@@ -34,4 +34,5 @@
     user: "{{ docker_user | default(omit) }}"  
     log_driver: journald
     tty: yes  
-    published_ports: "{{ docker_ports | default(omit) }}"  
+    published_ports: "{{ docker_ports | default(omit) }}" 
+    env: "{{ docker_env | default(omit) }}"

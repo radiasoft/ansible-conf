@@ -1,8 +1,11 @@
 ---
 dependencies:
+  - role: jenkins_pre
   - role: docker_deploy 
     container_name: jenkins
     image_name: docker.io/jenkins
-    docker_user: "{{ user }}" 
-    docker_volumes: "{{ home }}:/var/jenkins_home" 
-    docker_ports: ["8080:8080", "50000:50000"]   
+    docker_user: "{{ jenkins_host_user.uid }}:{{ jenkins_host_user.group }}" 
+    docker_volumes: "{{ jenkins_home }}:/var/jenkins_home" 
+    docker_ports: ["8080:8080", "50000:50000"]
+    docker_env:
+      JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"
