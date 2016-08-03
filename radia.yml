@@ -18,7 +18,8 @@
     - hostname: name=jenkins
   roles:
     - avahi
-    - jenkins  
+    - role: jenkins
+      jenkins_admin_password: 12345
 
 - hosts: robhome 
   remote_user: root
