@@ -14,9 +14,8 @@
 
 - hosts: jenkins
   remote_user: root
-  vars:
-    jenkins_plugins:
-      - pipeline-stage-step
+  vars_files:
+    - vars/jenkins/plugins.yml
   pre_tasks:
     - hostname: name=jenkins
   roles:
