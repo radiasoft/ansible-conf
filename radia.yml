@@ -32,6 +32,10 @@
 
   pre_tasks:
     - hostname: name=jenkins
+    # TODO: There is an ordering an implicit circular dependency between the nginx and ssl roles; where the ssl role
+    # depends on the nginx user being available and the nginx module requires the ssl keys existing. By installing nginx
+    # and creating the user, we break the circular dependency. Is there a more elegant way?
+    - dnf: name=nginx state=present   
 
   roles:
     - role: avahi
