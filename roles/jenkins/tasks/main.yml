@@ -1,4 +1,24 @@
 ---
-- dnf: name=java-1.8.0-openjdk-headless state=present
+- dnf: name={{ item }} state=present
+  with_items:
+    - policycoreutils-python-utils
+    - java-1.8.0-openjdk-headless
+    - wget  
 - include: plugins.yml
+- shell: wget http://{{ jenkins_domain }} || true
+  register: jenkins_semodule    
+  args:
+    creates: /root/jenkins.pp
+- shell: cat /var/log/audit/audit.log | grep nginx | grep denied | grep 'dest=8080' | audit2allow -M jenkins
+  register: jenkins_semodule    
+  args:
+    creates: /root/jenkins.pp
+- command: /sbin/semodule
+  register: jenkins_semodule    
+  args:
+    chdir: /root
+    creates: /root/jenkins.pp
+- command: /sbin/semodule -i /root/jenkins.pp
+  when: jenkins_semodule|changed
+
 

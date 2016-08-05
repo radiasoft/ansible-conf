@@ -22,12 +22,12 @@
 # https://github.com/ansible/ansible-modules-core/issues/3719
 # https://github.com/ansible/ansible/pull/16680
 - name: fetch docker {{ image_name }} image with tag (workaround)
-  command: "{{ docker_path }} pull {{ image_name }}"
+  command: "{{ docker_path }} pull {{ image_name }}"
   when: image_name|includes(':')
 
-- name: start docker {{ image_name }} as {{ container_name }}
+- name: create container {{ container_name }} from {{ image_name }} 
   docker_container:
-    name: "{{ container_name }}"
+    name: "{{ container_name }}"
     image: "{{ image_name }}"
     volumes: "{{ docker_volumes | default(omit) }}"
     command: "{{ cmd | default(omit) }}"
@@ -36,3 +36,9 @@
     tty: yes  
     published_ports: "{{ docker_ports | default(omit) }}" 
     env: "{{ docker_env | default(omit) }}"
+    state: present  
+
+- name: create systemd service for {{ container_name }}
+  template: src=systemd.j2 dest=/etc/systemd/system/{{ container_name }}.service owner=root group=root mode=0644
+    
+- systemd: name={{ container_name }} state=started enabled=yes daemon_reload=yes

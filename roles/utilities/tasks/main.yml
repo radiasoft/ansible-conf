@@ -16,6 +16,7 @@
     - tmux
     - htop
     - vim-enhanced
+    - the_silver_searcher  
 - name: screenrc configuration
   blockinfile: 
     dest: /etc/screenrc

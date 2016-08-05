@@ -4,3 +4,4 @@
 *.retry
 secret.yml
 *.pyc
+*.log

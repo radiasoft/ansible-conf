@@ -4,3 +4,9 @@
 [submodule "external/ansible-filter-plugins"]
 	path = external/ansible-filter-plugins
 	url = https://github.com/lxhunter/ansible-filter-plugins.git
+[submodule "roles/jdauphant.ssl-certs"]
+	path = external/jdauphant.ssl-certs
+	url = https://github.com/jdauphant/ansible-role-ssl-certs
+[submodule "roles/jdauphant.nginx"]
+	path = external/jdauphant.nginx
+	url = https://github.com/elventear/ansible-role-nginx
