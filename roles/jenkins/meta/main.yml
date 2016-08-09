@@ -2,9 +2,15 @@
 dependencies:
   - role: jdauphant.ssl-certs
     ssl_certs_common_name: "{{ jenkins_domain }}"
+    ssl_certs_path: /etc/ssl/star.radiasoft.org  
+    ssl_certs_cert_path: /etc/ssl/star.radiasoft.org/star.radiasoft.org.crt  
+    ssl_certs_privkey_path: /etc/ssl/star.radiasoft.org/star.radiasoft.org.key  
     ssl_certs_path_owner: root
     ssl_certs_path_group: nginx 
     when: deploy_env == "vagrant" 
+
+  - role: radiasoft_ssl
+    when: deploy_env != "vagrant"
 
   - role: jdauphant.nginx
     nginx_user: nginx
@@ -28,8 +34,8 @@ dependencies:
             access_log  /var/log/nginx/jenkins.access.log;
             error_log  /var/log/nginx/jenkins.error.log;
 
-            ssl_certificate     /etc/ssl/{{ jenkins_domain }}/{{ jenkins_domain }}.pem;
-            ssl_certificate_key /etc/ssl/{{ jenkins_domain }}/{{ jenkins_domain }}.key;
+            ssl_certificate     /etc/ssl/star.radiasoft.org/star.radiasoft.org.crt;
+            ssl_certificate_key /etc/ssl/star.radiasoft.org/star.radiasoft.org.key;
             
             location / {
                 proxy_set_header        Host $host:$server_port;

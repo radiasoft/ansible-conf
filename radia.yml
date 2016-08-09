@@ -20,7 +20,7 @@
       when: st.stat.exists
       register: f
 
-    - set_fact: deploy_env={{ f.stdout | default("") }} 
+    - set_fact: deploy_env={{ f.stdout | default("") }}
 
   roles:
     - utilities
@@ -37,6 +37,10 @@
     # and creating the user, we break the circular dependency. Is there a more elegant way?
     - dnf: name=nginx state=present   
 
+    - group: name=ssl state=present system=yes
+
+    - user: name=nginx append=yes state=present groups=ssl
+    
   roles:
     - role: avahi
       when: deploy_env == "vagrant"

@@ -2,6 +2,8 @@
 *.swp
 .venv
 *.retry
-secret.yml
+secret.*
 *.pyc
 *.log
+terraform.tfstate*
+.env.secret

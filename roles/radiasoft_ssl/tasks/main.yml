@@ -1,0 +1,7 @@
+---
+
+- file: path=/etc/ssl/star.radiasoft.org state=directory owner=root group=ssl mode=0750
+
+- copy: src=star.radiasoft.org.crt dest=/etc/ssl/star.radiasoft.org/star.radiasoft.org.crt owner=root group=ssl mode=0640
+
+- copy: src=star.radiasoft.org.key dest=/etc/ssl/star.radiasoft.org/star.radiasoft.org.key owner=root group=ssl mode=0640
