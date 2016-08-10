@@ -52,5 +52,5 @@ resource "aws_security_group" "allow_ssh" {
 
 resource "aws_key_pair" "ansible" {
     key_name = "ansible-key"
-    public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDLeMp/OhUrC1HIoAFEbLao/RGoyk/OKaK9IxWyVY0L4+tvP5mq5Kpewt0BifzwV25Qal1FPLKFS3yG4kq2WsbZfqud+f42lLjNSPMEpmnMbmi94ce3OVWMn1Rf53/k/Z+4QQuTw9Uv2FGiLD3LzzFezyIPadGQ71HzwY0ZQYCpI9N4WVr/gDhc6SlFTCiBVROD1pr1hV4w9flEeQbG/L+/opvUO/ceggEgiYfr1RWs+EQ0iykedatN85pYs2AJfDfFWwgZWt9Jj9b1A/gnP5NzppUUp8NsLwftDazNFqpdL8TCU8S5pSCeIdiFgQmqLGWEb5Q/4Vl+j0UYuK0RnVQRd/m4yazrXAMz9AMhK/LD5YHUAg3aDWIUYiSuCaVCLqj2kdviYHPIQ+alLLWzEKLGUBhxpdhXqwMXrZISChAmJ5pNA4mN6wP1awYEIK35WoJWZ/En92s2a9vNhXtzui09vMuLqJsMUTzsVlDuS8Uczyv9s2vlLcchx/+JpqCzYQ9CY0i0TtooXiBpZ7XbzBCnE8e3Tf5v5LMEPtsg6KmwZvOyzdhi68nr22KZyHadEbkS2j085TYKH8Jg0Ti4GuNZtxlRCn2+lYK/XxrsK8LVWrbomfWZeEs/qtXKGBZg3GruFI9hc5ffr/uLU6J8H8P8iOaIJ7MUCEIfFqhMzAIl7Q== elventear@dolguldur.lan"
+    public_key = "${file("../ssh/id_rsa.pub")}"
 }

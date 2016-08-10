@@ -27,9 +27,6 @@
 
 - hosts: jenkins
   remote_user: root
-  vars_files:
-    - [ "vars/jenkins/deploy_{{hostvars[inventory_hostname]['deploy_env']}}.yml", vars/jenkins/deploy_defaults.yml ]
-
   pre_tasks:
     - hostname: name=jenkins
     # TODO: There is an ordering an implicit circular dependency between the nginx and ssl roles; where the ssl role
@@ -44,8 +41,7 @@
   roles:
     - role: avahi
       when: deploy_env == "vagrant"
-    - role: jenkins
-      jenkins_admin_password: 12345
+    - jenkins
 
 - hosts: robhome 
   remote_user: root
