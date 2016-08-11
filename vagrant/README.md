@@ -1,30 +1,36 @@
-### Development Enviroment Setup
+# Vagrant
 
-The dev enviroment requieres the following packages to be already available on the system:
+## Setup
+
+### Requirements
 
 * [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 * [Vagrant](https://www.vagrantup.com/downloads.html)
-* [Python 2.7](https://www.python.org/downloads/)
-* [virtualenv](https://pypi.python.org/pypi/virtualenv) for Python 2.7
+* [vagrant-triggers plugin](https://github.com/emyl/vagrant-triggers)
+* Zeroconf:
+ * [Avahi](http://www.avahi.org) for Linux
+ * Bonjour for OSX
 
-#### Environment setup
+### Ansible
 
-The development enviroment requires additional packages and enviroment variables injected in your work enviroment. The file `vagrant/.env` is provided for such purpose. In your terminal issue the following command:
+#### Config file
 
-```
-cd vagrant
-vagrant> source .env
-```
+The `vagrant` enviroment sets the ansible config to be `vagrant/ansible_vagrant.cfg`. 
 
-#### Working with the dev enviroment
+#### Inventory
+
+The config file sets the ansible inventory to be `vagrant/vagrant_hosts`.
+
+## Working with the dev enviroment
 
 Our dev enviroment assumes that all executions use `vagrant/` as the working directory. 
 
 ```
 > cd vagrant
 # Spin up a Vagrant instance
-vagrant> vagrant up
+vagrant> vagrant up jenkins
 # Deploy with Ansible
 vagrant> ansible-playbook ../radia.yml
 # Bring down the Vagrant instance 
+vagrant> vagrant destroy -f jenkins
 ```
