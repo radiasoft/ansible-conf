@@ -1,5 +1,7 @@
 # Ansible Deployment
 
+This repository contains [Ansible](https://www.ansible.com) [playbooks](http://docs.ansible.com/ansible/playbooks.html), to provision radiasoft's servers.
+
 ## Setup
 
 ### Fetching the repo
