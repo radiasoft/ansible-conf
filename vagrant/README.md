@@ -15,11 +15,11 @@
 
 #### Config file
 
-The `vagrant` enviroment sets the ansible config to be `vagrant/ansible_vagrant.cfg`. 
+The `vagrant` enviroment sets the ansible [config](http://docs.ansible.com/ansible/intro_configuration.html) to be `vagrant/ansible_vagrant.cfg`. 
 
 #### Inventory
 
-The config file sets the ansible inventory to be `vagrant/vagrant_hosts`.
+The config file sets the ansible [inventory](http://docs.ansible.com/ansible/intro_inventory.html) to be `vagrant/vagrant_hosts`.
 
 ## Working with the dev enviroment
 

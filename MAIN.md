@@ -4,11 +4,11 @@
 
 ### Config file
 
-In the root directory, exists `ansible.cfg` which customizes ansible to use directly the contents of the repo without any further customization.
+In the root directory, exists [`ansible.cfg`](http://docs.ansible.com/ansible/intro_configuration.html) which customizes ansible to use directly the contents of the repo without any further customization.
 
 #### Inventory
 
-The config file sets the ansible invetory to be `hosts` located in the root directory.
+The config file sets the ansible [inventory](http://docs.ansible.com/ansible/intro_inventory.html) to be `hosts` located in the root directory.
 
 #### SSH
 
