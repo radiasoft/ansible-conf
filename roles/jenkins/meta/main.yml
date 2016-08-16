@@ -51,9 +51,11 @@ dependencies:
 
   - role: docker_deploy 
     container_name: jenkins
-    image_name: docker.io/jenkins:latest
+    image_name: radiasoft/jenkins:latest
     docker_user: "{{ jenkins_host_user.uid }}:{{ jenkins_host_user.group }}" 
-    docker_volumes: "{{ jenkins_home }}:/var/jenkins_home" 
+    docker_volumes: 
+      - "{{ jenkins_home }}:/var/jenkins_home"
+      - "/var/run/docker.sock:/var/run/docker.sock"  
     docker_ports: ["127.0.0.1:8080:8080", "50000:50000"]
     docker_env:
       JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"

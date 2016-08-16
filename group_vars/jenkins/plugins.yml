@@ -40,4 +40,3 @@ jenkins_plugins:
   - workflow-scm-step
   - workflow-step-api
   - workflow-support
-

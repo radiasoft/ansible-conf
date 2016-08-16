@@ -1,6 +1,21 @@
 ---
+- name: create jenkins group on host
+  group:
+    gid: 1000
+    name: jenkins
+    state: present
+    system: yes
+
 - name: create jenkins user on host
-  user: name={{ jenkins_username }} state=present system=yes home={{ jenkins_home}} shell=/sbin/nologin move_home=yes
+  user: 
+    uid: 1000
+    group: jenkins  
+    name: "{{ jenkins_username }}" 
+    state: present 
+    system: yes 
+    home: "{{ jenkins_home}}"
+    shell: /sbin/nologin 
+    move_home: yes
   register: jenkins_host_user
 
 - file: path={{ item }} owner={{ jenkins_host_user.uid }} group={{ jenkins_host_user.group }} mode=0750 state=directory
