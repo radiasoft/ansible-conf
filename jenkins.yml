@@ -1,32 +1,11 @@
 ---
 - name: install hard requirements for ansible
-  hosts: all
-  remote_user: root
+  hosts: jenkins
   gather_facts: false
   roles:
     - bootstrap
 
-- name: setup host machine 
-  hosts: all
-  remote_user: root
-  vars:
-    deploy_env_file: /etc/deploy_env.txt
-
-  pre_tasks:
-    - stat: path={{ deploy_env_file }}
-      register: st
-
-    - command: /bin/cat {{ deploy_env_file }} 
-      when: st.stat.exists
-      register: f
-
-    - set_fact: deploy_env={{ f.stdout | default("") }}
-
-  roles:
-    - utilities
-
 - hosts: jenkins
-  remote_user: root
   pre_tasks:
     - hostname: name=jenkins
     # TODO: There is an ordering an implicit circular dependency between the nginx and ssl roles; where the ssl role
@@ -39,12 +18,5 @@
     - user: name=nginx append=yes state=present groups=ssl
     
   roles:
-    - role: avahi
-      when: deploy_env == "vagrant"
+    - utilities
     - jenkins
-
-- hosts: robhome 
-  remote_user: root
-  roles: 
-  - utilities
-  - sonos   

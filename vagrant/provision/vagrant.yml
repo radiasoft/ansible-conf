@@ -4,6 +4,7 @@
   become: yes
   roles:
     - bootstrap
+
 - hosts: all
   become: yes
   vars:

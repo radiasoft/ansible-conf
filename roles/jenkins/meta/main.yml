@@ -7,10 +7,10 @@ dependencies:
     ssl_certs_privkey_path: /etc/ssl/star.radiasoft.org/star.radiasoft.org.key  
     ssl_certs_path_owner: root
     ssl_certs_path_group: nginx 
-    when: deploy_env == "vagrant" 
+    when: ansible_local.deploy_env is defined and ansible_local.deploy_env == "vagrant" 
 
   - role: radiasoft_ssl
-    when: deploy_env != "vagrant"
+    when: ansible_local.deploy_env is not defined or ansible_local.deploy_env != "vagrant"
 
   - role: jdauphant.nginx
     nginx_user: nginx

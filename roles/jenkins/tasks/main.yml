@@ -14,13 +14,13 @@
 - include: plugins.yml
 
 - shell: /bin/wget https://{{ jenkins_domain }} || true
-  when: deploy_env != "vagrant"
+  when: ansible_local.deploy_env is not defined or ansible_local.deploy_env != "vagrant"
   args:
     creates: /root/jenkins.pp
     warn: no  
 
 - shell: /bin/wget --no-check-certificate https://{{ jenkins_domain }} || true
-  when: deploy_env == "vagrant"
+  when: ansible_local.deploy_env is defined and ansible_local.deploy_env == "vagrant" 
   args:
     creates: /root/jenkins.pp
     warn: no  
