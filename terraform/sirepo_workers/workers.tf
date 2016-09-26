@@ -48,6 +48,26 @@ resource "aws_instance" "worker" {
     vpc_security_group_ids = ["${aws_security_group.worker.id}"]
     depends_on             = ["aws_internet_gateway.default", "aws_nat_gateway.default"]  
 
+    connection {
+        user        = "fedora"
+        host        = "${self.private_ip}"
+        agent       = false
+        private_key = "${file("id_rsa")}"
+
+        bastion_host = "${aws_instance.bastion.public_ip}"
+    }
+
+    provisioner "file" {
+        source      = "apa14b.bivio.biz.sh"
+        destination = "/tmp/apa14b.bivio.biz.sh"
+    }
+
+    provisioner "remote-exec" {
+        inline = [
+            "/usr/bin/sudo -i /bin/bash /tmp/apa14b.bivio.biz.sh"
+        ]
+    }
+
     tags {
         Name = "worker-${count.index}"
     }
