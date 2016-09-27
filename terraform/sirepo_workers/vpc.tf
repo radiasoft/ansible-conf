@@ -1,6 +1,11 @@
 resource "aws_vpc" "default" {
-    cidr_block = "${var.vpc_cidr}"
+    cidr_block           = "${var.vpc_cidr}"
     enable_dns_hostnames = true
+
+    lifecycle {
+        create_before_destroy = true
+    }
+
     tags {
         Name = "sirepo"
     }
@@ -41,12 +46,8 @@ resource "aws_route_table_association" "public" {
 
 # Subnet Private
 
-resource "aws_eip" "nat" {
-    vpc = true
-}
-
 resource "aws_nat_gateway" "default" {
-    allocation_id = "${aws_eip.nat.id}"
+    allocation_id = "${lookup(var.nat_eip, var.aws_region)}"
     subnet_id     = "${aws_subnet.public.id}"
 }
 

@@ -32,15 +32,33 @@ resource "aws_security_group" "bastion" {
     }
 }
 
+resource "aws_eip_association" "bastion" {
+    instance_id = "${aws_instance.bastion.id}"
+    allocation_id = "${lookup(var.bastion_eip, var.aws_region)}"
+}
+
 resource "aws_instance" "bastion" {
     ami           = "${lookup(var.amis, var.aws_region)}"
     instance_type = "t2.nano"
     subnet_id     = "${aws_subnet.public.id}"
     key_name      = "${aws_key_pair.sirepo.key_name}"
+    private_ip    = "${cidrhost("${var.public_subnet}", 5)}" 
     
-    associate_public_ip_address = true
     vpc_security_group_ids      = ["${aws_security_group.bastion.id}"]
     depends_on                  = ["aws_internet_gateway.default"]  
+
+    connection {
+        user        = "fedora"
+        host        = "${self.public_ip}"
+        agent       = false
+        private_key = "${file("${var.ssh_private_key}")}"
+    }
+    
+    provisioner "remote-exec" {
+        inline = [
+            "/usr/bin/sudo /usr/bin/dnf -y install htop nc tcpdump nmap tcping"
+        ]
+    }
 
     tags {
         Name = "bastion"
