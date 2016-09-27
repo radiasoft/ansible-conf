@@ -105,13 +105,13 @@ resource "aws_instance" "worker" {
     }
 
     provisioner "file" {
-        source      = "scripts/apa14b.bivio.biz.sh"
-        destination = "/tmp/apa14b.bivio.biz.sh"
+        source      = "scripts/worker_provision.sh"
+        destination = "/tmp/worker_provision.sh"
     }
 
     provisioner "remote-exec" {
         inline = [
-            "/bin/bash /tmp/apa14b.bivio.biz.sh"
+            "/bin/bash /tmp/worker_provision.sh"
         ]
     }
 
