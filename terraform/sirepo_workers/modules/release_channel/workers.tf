@@ -1,6 +1,6 @@
 resource "aws_security_group" "worker" {
-    vpc_id      = "${aws_vpc.default.id}"
-    name        = "worker"
+    vpc_id      = "${var.vpc_id}"
+    name        = "${var.channel}-worker"
     description = "worker servers security group"
 
     ingress {
@@ -9,9 +9,8 @@ resource "aws_security_group" "worker" {
         protocol  = "tcp"
         
         security_groups = [
-            "${aws_security_group.bastion.id}"
+            "${var.bastion_security_group_id}"
         ]
-        #cidr_blocks = ["${var.public_subnet}"]
     }
 
     ingress {
@@ -20,9 +19,8 @@ resource "aws_security_group" "worker" {
         protocol  = "icmp"
         
         security_groups = [
-            "${aws_security_group.bastion.id}"
+            "${var.bastion_security_group_id}"
         ]
-        #cidr_blocks = ["${var.public_subnet}"]
     }
 
     egress {
@@ -34,24 +32,23 @@ resource "aws_security_group" "worker" {
     }
 
     tags {
-        Name = "worker"
+        Name = "${var.channel}-worker"
     }
 }
 
 resource "aws_instance" "worker" {
-    ami           = "${lookup(var.amis, var.aws_region)}"
-    instance_type = "t2.nano"
+    ami           = "${var.worker_ami_id}"
+    instance_type = "${var.worker_instance_type}"
     subnet_id     = "${aws_subnet.private.id}"
-    key_name      = "${aws_key_pair.sirepo.key_name}"
+    key_name      = "${var.ssh_key_name}"
     count         = "${var.worker_count}"
-    private_ip    = "${cidrhost("${var.private_subnet}", 5 + count.index)}" 
+    private_ip    = "${cidrhost("${var.subnet_cidr}", 5 + count.index)}" 
     
     vpc_security_group_ids = ["${aws_security_group.worker.id}"]
-    depends_on             = ["aws_internet_gateway.default", "aws_nat_gateway.default"] 
 
     root_block_device {
         volume_type = "gp2"
-        volume_size = 30
+        volume_size = 10
         iops        = 100
     }
 
@@ -59,18 +56,18 @@ resource "aws_instance" "worker" {
         user        = "root"
         host        = "${self.private_ip}"
         agent       = false
-        private_key = "${file("${var.ssh_private_key}")}"
+        private_key = "${file(var.ssh_private_key)}"
 
         bastion_user = "fedora"
-        bastion_host = "${aws_instance.bastion.public_ip}"
+        bastion_host = "${var.bastion_public_ip}"
     }
 
     provisioner "remote-exec" {
         connection {
             user        = "fedora"
-            host        = "${aws_instance.bastion.public_ip}"
+            host        = "${var.bastion_public_ip}"
             agent       = false
-            private_key = "${file("${var.ssh_private_key}")}"
+            private_key = "${file(var.ssh_private_key)}"
         
             bastion_user = ""
             bastion_host = ""
@@ -104,6 +101,7 @@ resource "aws_instance" "worker" {
         ]
     }
 
+/*
     provisioner "file" {
         source      = "scripts/worker_provision.sh"
         destination = "/tmp/worker_provision.sh"
@@ -114,8 +112,9 @@ resource "aws_instance" "worker" {
             "/bin/bash /tmp/worker_provision.sh"
         ]
     }
+*/
 
     tags {
-        Name = "worker-${count.index}"
+        Name = "${var.channel}-worker-${count.index}"
     }
 }

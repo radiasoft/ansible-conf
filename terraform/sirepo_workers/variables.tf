@@ -35,22 +35,32 @@ variable "vpc_cidr" {
     default     = "10.14.0.0/16"
 }
 
-variable "private_subnet" {
-    description = "CIDR for the Sirepo Workers Subnet"
-    default     = "10.14.2.0/24"
-}
-    
 variable "public_subnet" {
     description = "CIDR for the Bastion Subnet"
     default     = "10.14.1.0/24"
 }
 
-variable "worker_count" {
-    description = "Number of Workers to create"
-    default     = 1
+variable "worker_subnet" {
+    description = "CIDR for the Sirepo worker's private subnet"
+
+    default {
+        alpha = "10.14.2.0/24" 
+        beta  = "10.14.3.0/24" 
+    }
 }
 
 variable "ssh_private_key" {
     description = "Path to SSH private key to use, expect to `.pub` public key alongside"
     default     = "id_rsa"
 }
+
+variable "alpha_worker_count" {
+    description = "Number of Workers to create for alpha channel"
+    default     = 1
+}
+
+variable "beta_worker_count" {
+    description = "Number of Workers to create for beta channel"
+    default     = 1
+}
+
