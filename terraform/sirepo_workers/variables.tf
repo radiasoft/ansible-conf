@@ -61,6 +61,6 @@ variable "alpha_worker_count" {
 
 variable "beta_worker_count" {
     description = "Number of Workers to create for beta channel"
-    default     = 1
+    default     = 0
 }
 

@@ -101,7 +101,6 @@ resource "aws_instance" "worker" {
         ]
     }
 
-/*
     provisioner "file" {
         source      = "scripts/worker_provision.sh"
         destination = "/tmp/worker_provision.sh"
@@ -109,10 +108,9 @@ resource "aws_instance" "worker" {
 
     provisioner "remote-exec" {
         inline = [
-            "/bin/bash /tmp/worker_provision.sh"
+            "/bin/bash /tmp/worker_provision.sh ${var.channel} ${self.private_ip}"
         ]
     }
-*/
 
     tags {
         Name = "${var.channel}-worker-${count.index}"

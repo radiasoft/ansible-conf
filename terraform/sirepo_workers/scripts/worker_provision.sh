@@ -2,6 +2,16 @@
 
 set -e -x
 
+CHANNEL=$1
+WORKER_IP=$2
+
+# For IPv4 only
+function extract_ip_pos {
+    echo $WORKER_IP | cut -d '.' -f $1
+}
+
+WORKER_HOST="okv14-$(extract_ip_pos 3)-$(extract_ip_pos 4)b.bivio.biz"
+
 if ! $(id -u vagrant > /dev/null 2>&1); then
     groupadd -g 1000 vagrant
     useradd -u 1000 -g vagrant vagrant
@@ -19,11 +29,11 @@ EOF
 dnf install -y nfs-utils htop nmap tmux vim tcpdump nmap iftop docker-engine
 
 echo net.ipv4.ip_forward=1 > /etc/sysctl.d/50-bivio-docker.conf
-echo okv14-2-5b.bivio.biz > /etc/hostname
+echo $WORKER_HOST > /etc/hostname
 chcon -Rt svirt_sandbox_file_t /home/vagrant
 mkdir -p /var/db/sirepo
 chown vagrant:vagrant /var/db/sirepo
-echo 'nfs-ext.alpha.sirepo.com:/var/db/sirepo /var/db/sirepo nfs nolock' >> /etc/fstab
+echo "nfs-ext.${CHANNEL}.sirepo.com:/var/db/sirepo /var/db/sirepo nfs nolock" >> /etc/fstab
 mount -a
 # https://github.com/docker/docker/issues/4213#issuecomment-89316474
 # allow docker access of nfs volumes
@@ -42,7 +52,7 @@ After=docker.service
 [Service]
 Restart=on-failure
 RestartSec=10
-ExecStart=/usr/bin/docker run --tty --rm --volume=/var/lib/celery-sirepo:/var/lib/celery-sirepo --volume=/var/db/sirepo:/var/db/sirepo --name %p --hostname okv14-2-5b radiasoft/sirepo:alpha bash -c "/radia-run $(id -u vagrant) $(id -g vagrant) /var/lib/celery-sirepo/bivio-service"
+ExecStart=/usr/bin/docker run --tty --rm --volume=/var/lib/celery-sirepo:/var/lib/celery-sirepo --volume=/var/db/sirepo:/var/db/sirepo --name %p --hostname ${WORKER_HOST} radiasoft/sirepo:${CHANNEL} bash -c "/radia-run $(id -u vagrant) $(id -g vagrant) /var/lib/celery-sirepo/bivio-service"
 ExecStop=-/usr/bin/docker stop -t 2 %p
 
 [Install]
@@ -54,13 +64,13 @@ cat > /var/lib/celery-sirepo/bivio-service <<'EOF'
 . ~/.bashrc
 set -e
 cd '/var/lib/celery-sirepo'
-export 'BIVIO_SERVICE_CHANNEL=alpha'
+export 'BIVIO_SERVICE_CHANNEL=${CHANNEL}'
 export 'BIVIO_SERVICE_DIR=/var/lib/celery-sirepo'
-export 'PYKERN_PKCONFIG_CHANNEL=alpha'
+export 'PYKERN_PKCONFIG_CHANNEL=${CHANNEL}'
 export 'PYKERN_PKDEBUG_REDIRECT_LOGGING=1'
 export 'PYKERN_PKDEBUG_WANT_PID_TIME=1'
 export 'PYTHONUNBUFFERED=1'
-export 'SIREPO_CELERY_TASKS_BROKER_URL=amqp://guest@rabbitmq-ext.alpha.sirepo.com//'
+export 'SIREPO_CELERY_TASKS_BROKER_URL=amqp://guest@rabbitmq-ext.${CHANNEL}.sirepo.com//'
 export 'SIREPO_CELERY_TASKS_CELERYD_CONCURRENCY=2'
 export 'SIREPO_CELERY_TASKS_CELERYD_TIME_LIMIT=43200'
 export 'SIREPO_MPI_CORES=8'
