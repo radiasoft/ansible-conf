@@ -42,7 +42,7 @@ After=docker.service
 [Service]
 Restart=on-failure
 RestartSec=10
-ExecStart=/usr/bin/docker run --tty --rm --volume=/var/lib/celery-sirepo:/var/lib/celery-sirepo --volume=/var/db/sirepo:/var/db/sirepo --name %p --hostname apa14b-c radiasoft/sirepo:beta bash -c "/radia-run $(id -u vagrant) $(id -g vagrant) /var/lib/celery-sirepo/bivio-service"
+ExecStart=/usr/bin/docker run --tty --rm --volume=/var/lib/celery-sirepo:/var/lib/celery-sirepo --volume=/var/db/sirepo:/var/db/sirepo --name %p --hostname okv14-2-5b radiasoft/sirepo:alpha bash -c "/radia-run $(id -u vagrant) $(id -g vagrant) /var/lib/celery-sirepo/bivio-service"
 ExecStop=-/usr/bin/docker stop -t 2 %p
 
 [Install]
@@ -54,19 +54,23 @@ cat > /var/lib/celery-sirepo/bivio-service <<'EOF'
 . ~/.bashrc
 set -e
 cd '/var/lib/celery-sirepo'
-export 'BIVIO_SERVICE_CHANNEL=beta'
+export 'BIVIO_SERVICE_CHANNEL=alpha'
 export 'BIVIO_SERVICE_DIR=/var/lib/celery-sirepo'
-export 'PYKERN_PKCONFIG_CHANNEL=beta'
+export 'PYKERN_PKCONFIG_CHANNEL=alpha'
 export 'PYKERN_PKDEBUG_REDIRECT_LOGGING=1'
 export 'PYKERN_PKDEBUG_WANT_PID_TIME=1'
 export 'PYTHONUNBUFFERED=1'
-export 'SIREPO_CELERY_TASKS_BROKER_URL=amqp://guest@rabbitmq.beta.sirepo.com//'
+export 'SIREPO_CELERY_TASKS_BROKER_URL=amqp://guest@rabbitmq-ext.alpha.sirepo.com//'
 export 'SIREPO_CELERY_TASKS_CELERYD_CONCURRENCY=2'
 export 'SIREPO_CELERY_TASKS_CELERYD_TIME_LIMIT=43200'
 export 'SIREPO_MPI_CORES=8'
-echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) celery worker -A sirepo.celery_tasks -l info -f celery.log" > init.log
+if [[ -f init.log ]]; then
+    mv -f init.log $(date +%Y%m%d%H%M%S)-init.log
+fi
+cmd=( celery worker -A sirepo.celery_tasks -Q celery,parallel )
+echo "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "${cmd[@]}" > init.log
 env >> init.log
-'celery' 'worker' '-A' 'sirepo.celery_tasks' '-Q' 'celery,parallel' >> init.log 2>&1
+"${cmd[@]}" >> init.log 2>&1
 EOF
 
 chown vagrant:vagrant /var/lib/celery-sirepo/bivio-service
