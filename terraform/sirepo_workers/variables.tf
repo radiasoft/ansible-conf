@@ -56,7 +56,7 @@ variable "ssh_private_key" {
 
 variable "alpha_worker_count" {
     description = "Number of Workers to create for alpha channel"
-    default     = 1
+    default     = 0
 }
 
 variable "beta_worker_count" {
