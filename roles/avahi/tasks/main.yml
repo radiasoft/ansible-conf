@@ -1,6 +1,11 @@
 ---
 - package: name=nss-mdns state=present
   register: avahi_installed
-- systemd: name=avahi-daemon daemon_reload=yes
+- systemd: name=avahi-daemon daemon_reload=yes enabled=yes state=started
+  with_items:
+    - avahi-daemon.service
+    - avahi-daemon.socket 
   when: avahi_installed|changed
-- systemd: name=avahi-daemon enabled=yes state=started
+- systemd: name={{ item }} state=restarted
+  with_items:
+    - network.service  
