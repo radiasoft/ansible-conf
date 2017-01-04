@@ -2,7 +2,6 @@
 # vi: set ft=ruby :
 
 VAGRANTFILE_API_VERSION = "2"
-Vagrant.require_version ">= 1.8"
 
 PROVISION_DIR = "./provision"
 SSH_DIR = "ssh"
@@ -10,16 +9,21 @@ SSH_DIR = "ssh"
 ENV['ANSIBLE_CONFIG'] = ''
 
 VM_CONFIG = {
+    'base' => {
+        'ip' => '10.10.10.202',
+        'box' => 'centos/7',
+        'autostart' => false,
+    },
     'robhome' => {
         'ip' => '10.10.10.200',
         'box' => 'fedora/23-cloud-base',
-        'autostart' => false
+        'autostart' => false,
     },
     'jenkins' => {
         'ip' => '10.10.10.201',
         'box' => 'fedora/23-cloud-base',
-        'autostart' => false
-    }
+        'autostart' => false,
+    },
 }
 
 def config_vm(config, vm_name)
@@ -29,7 +33,7 @@ def config_vm(config, vm_name)
         vm_config.ssh.insert_key = false
 
         vm_config.vm.provider 'virtualbox' do |v|
-            v.linked_clone = true 
+            v.linked_clone = true if Vagrant::VERSION =~ /^1.8/
             v.cpus = 2
         end
 
@@ -44,7 +48,7 @@ def config_vm(config, vm_name)
         vm_config.trigger.before :up do
             run "#{PROVISION_DIR}/create_ssh_keys.sh"
         end
-        
+
         vm_config.trigger.after :destroy do
             run "#{PROVISION_DIR}/destroy_clean.sh"
         end
@@ -52,7 +56,11 @@ def config_vm(config, vm_name)
         vm_config.vm.provision "ansible" do |ansible|
             ansible.verbose = "" # Useful for debugging
             ansible.playbook = "#{PROVISION_DIR}/vagrant.yml"
-            ansible.raw_arguments= ["--extra-vars", "vm_hostname=#{vm_name}"]
+            ansible.raw_arguments= [
+                "--extra-vars", "vm_hostname=#{vm_name} "\
+                                "deploy_env_name=vagrant "\
+                                "vm_base_image=#{conf['box']}"
+            ]
         end
     end
 end

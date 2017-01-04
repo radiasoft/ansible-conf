@@ -1,5 +1,7 @@
 ---
-- name: install ansible minimum requirements
-  raw: dnf install -y python2 python2-dnf libselinux-python facter htop tmux
-  become: yes  
-
+- block:
+  - include: centos.yml
+    when: "{{ vm_base_image.startswith('centos/') }}"
+  - include: fedora.yml
+    when: "{{ vm_base_image.startswith('fedora/') }}"
+  become: yes

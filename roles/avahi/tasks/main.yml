@@ -1,5 +1,5 @@
 ---
-- dnf: name=nss-mdns state=present
+- package: name=nss-mdns state=present
   register: avahi_installed
 - systemd: name=avahi-daemon daemon_reload=yes
   when: avahi_installed|changed

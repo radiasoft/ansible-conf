@@ -1,5 +1,2 @@
-[robhome]
-10.10.10.200
-
-[jenkins]
-jenkins.local
+[base]
+base.local

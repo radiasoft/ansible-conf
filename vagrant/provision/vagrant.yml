@@ -14,7 +14,7 @@
   pre_tasks:    
     - hostname: name={{ vm_hostname }}
   roles:
-    - { role: deploy_env, deploy_env_name: vagrant }  
+    - deploy_env
     - avahi
   tasks:
     - authorized_key: user={{ item }} key="{{ lookup('file', '{{ local_ssh_key }}.pub') }}"

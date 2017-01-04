@@ -1,0 +1,3 @@
+---
+- name: install ansible minimum requirements
+  raw: dnf install -y python2 python2-dnf libselinux-python facter htop tmux
