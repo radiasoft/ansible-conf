@@ -1,9 +1,0 @@
----
-jenkins_home: /var/lib/jenkins
-jenkins_groovy_dir: "{{ jenkins_home }}/init.groovy.d"
-jenkins_updates_dir: "{{ jenkins_home }}/updates"
-jenkins_username: jenkins
-jenkins_admin_username: admin
-jenkins_admin_password: ''
-jenkins_plugins: []  
-

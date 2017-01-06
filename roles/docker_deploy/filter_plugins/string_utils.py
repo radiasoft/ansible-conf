@@ -1,1 +1,1 @@
-../../../external/ansible-filter-plugins/string_utils.py
+../../../deps/ansible-filter-plugins/string_utils.py
