@@ -1,0 +1,9 @@
+---
+- name: enable firewalld service
+  systemd: name=firewalld.service daemon_reload=yes enabled=yes state=started
+- name: mdns firewall rules
+  firewalld:
+    service: mdns
+    permanent: yes
+    state: enabled
+  when: "{{ ansible_local.deploy_env == 'vagrant' }}"

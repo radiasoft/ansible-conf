@@ -1,24 +1,24 @@
 ---
-- name: packages that need updating
-  dnf: name={{ item }} state=latest
-  with_items:
-    - vim-minimal
+- include: "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}-docker.yml"
+
 - name: install utility packages
-  dnf: name={{ item }} state=present
+  package: name={{ item }} state=present
   with_items:
     - bind-utils
     - emacs-nox
+    - htop
+    - iftop  
+    - iotop  
     - lsof
     - openssl
     - screen
     - tar
-    - telnet
-    - tmux
-    - htop
-    - vim-enhanced
-    - the_silver_searcher 
     - tcpdump
-    - iftop  
+    - telnet
+    - the_silver_searcher 
+    - tmux
+    - vim-enhanced
+
 - name: screenrc configuration
   blockinfile: 
     dest: /etc/screenrc

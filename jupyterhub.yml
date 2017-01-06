@@ -1,0 +1,4 @@
+---
+- hosts: jupyterhub
+  roles:
+    - rsbase

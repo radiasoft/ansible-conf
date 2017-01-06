@@ -9,19 +9,9 @@ SSH_DIR = "ssh"
 ENV['ANSIBLE_CONFIG'] = ''
 
 VM_CONFIG = {
-    'base' => {
-        'ip' => '10.10.10.202',
-        'box' => 'centos/7',
-        'autostart' => false,
-    },
-    'robhome' => {
+    'jupyterhub' => {
         'ip' => '10.10.10.200',
-        'box' => 'fedora/23-cloud-base',
-        'autostart' => false,
-    },
-    'jenkins' => {
-        'ip' => '10.10.10.201',
-        'box' => 'fedora/23-cloud-base',
+        'box' => 'centos/7',
         'autostart' => false,
     },
 }
