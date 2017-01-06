@@ -1,6 +1,3 @@
-[submodule "external/ansible-modules-core"]
-	path = external/ansible-modules-core
-	url = https://github.com/elventear/ansible-modules-core.git
 [submodule "external/ansible-filter-plugins"]
 	path = external/ansible-filter-plugins
 	url = https://github.com/lxhunter/ansible-filter-plugins.git
