@@ -1,0 +1,25 @@
+---
+authenticator_class: oauthenticator.GitHubOAuthenticator
+guest_port: 8000
+host_port: 8000
+jupyterhub_container_conf: /srv/jupyterhub/conf/jupyterhub_config.py
+postgresql_host_data_d: "{{ postgresql_host_home_d }}/data"
+postgresql_host_home_d: /var/lib/postgresql-jupyterhub
+postgresql_host_run_d: "{{ postgresql_host_home_d }}/run"
+
+radia_containers:
+    postgresql:
+      command: postgres
+      image_name: radiasoft/postgresql-jupyterhub:{{ rs_channel }}
+      ports:
+        - 5432:5432
+      volumes:
+        - "{{ postgresql_host_data_d }}:/var/lib/postgresql/data"
+        - "{{ postgresql_host_run_d }}:/run/postgresql"
+
+    jupyterhub:
+      command: "jupyterhub -f {{ jupyterhub_container_conf }}"
+      image_name: radiasoft/jupyterhub:{{ rs_channel }}
+      ports:
+        - "{{ host_port }}:{{ guest_port}}"
+      want_docker_sock: yes

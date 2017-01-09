@@ -1,0 +1,1 @@
+OPTIONS='--selinux-enabled --log-driver=journald --iptables={{ 'true' if docker_manage_iptables else false }} {{ docker_tls_options }}'

@@ -1,4 +1,4 @@
 ---
 - hosts: jupyterhub
   roles:
-    - rsbase
+    - jupyterhub

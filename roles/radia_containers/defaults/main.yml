@@ -1,0 +1,3 @@
+---
+docker_sock_path: /run/docker.sock
+want_docker_sock: no

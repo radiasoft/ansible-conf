@@ -1,0 +1,21 @@
+---
+- name: pull docker image
+  docker_image: name={{ container.value.image_name }}
+
+- set_fact:
+    _volumes: "{{ container.value.volumes | default([]) }}"
+
+- set_fact:
+    _volumes: "{{ _volumes + [{{docker_sock_path}}:{{docker_sock_path}}] }}"
+  when: "{{ want_docker_sock }}" 
+
+- name: create docker container
+  docker_container:
+    command: "{{ container.value.command | default(omit) }}"
+    env: "{{ container.value.env | default(omit) }}"
+    image: "{{ container.value.image_name }}"
+    name: "{{ container.key }}"
+    published_ports: "{{ container.value.ports | default(omit) }}"
+    state: present
+    volumes: "{{ _volumes }}"
+    

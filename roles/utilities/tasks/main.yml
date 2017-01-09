@@ -1,6 +1,4 @@
 ---
-- include: "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}-docker.yml"
-
 - name: install utility packages
   package: name={{ item }} state=present
   with_items:
