@@ -9,16 +9,23 @@ _jupyterhub_postgresql_host_home_d: /var/lib/postgresql-jupyterhub
 # same name the nodes where information should be overloaded. Ansible will merge the defaults
 # and user hashes to derive the final execution state.
 jupyterhub:
-  authenticator_class: oauthenticator.GitHubOAuthenticator
+  aux_contents: ''
   container_conf: /srv/jupyterhub/conf/jupyterhub_config.py
+  cookie_secret: null
+  db_pass: null
+  debug: no
   guest_conf_d: "{{ _jupyterhub_guest_conf_d }}"
   guest_port: 8000
   host_conf_d: "{{ _jupyterhub_host_conf_d }}"
   host_port: 8000
+  proxy_auth_token: null
+  auth:
+    class: null
   postgresql:
     host_data_d: "{{ _jupyterhub_postgresql_host_home_d }}/data"
     host_home_d: "{{ _jupyterhub_postgresql_host_home_d }}"
     host_run_d: "{{ _jupyterhub_postgresql_host_home_d }}/run"
+    name: postgresql-jupyterhub
 
 # This defines the configuration tree for the radia_containers role
 # This tree encodes internal knowledge about how the containers should be configured
@@ -34,6 +41,8 @@ radia_containers:
       volumes:
         - "{{ jupyterhub.postgresql.host_data_d }}:/var/lib/postgresql/data"
         - "{{ jupyterhub.postgresql.host_run_d }}:/run/postgresql"
+      service_state: started
+      on_boot: yes
 
     jupyterhub:
       command: "jupyterhub -f {{ jupyterhub.container_conf }}"
@@ -44,3 +53,5 @@ radia_containers:
       volumes:
         - "{{ jupyterhub.host_conf_d }}:{{ jupyterhub.guest_conf_d }}"
       want_docker_sock: yes
+      service_state: started
+      on_boot: yes

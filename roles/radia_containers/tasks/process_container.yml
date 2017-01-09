@@ -19,4 +19,21 @@
     state: "{{ container.value.state | default(omit) }}"
     user: "{{ container.value.user | default(omit) }}"
     volumes: "{{ _volumes }}"
+
+- block:
+    - template: 
+        src: templates/systemd_service.j2
+        dest: '/etc/systemd/system/{{ container.key }}.service'
+        owner: root
+        group: root
+        mode: 0644
+      register: docker_service_installed
+
+    - systemd:
+        name: "{{ container.key }}.service"
+        daemon_reload: yes
+        state: "{{ container.value.service_state }}"
+        enabled: "{{ container.value.on_boot }}"
+      when: docker_service_installed|changed
+  when: docker_systemd_service
     

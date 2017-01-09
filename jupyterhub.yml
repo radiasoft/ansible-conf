@@ -1,4 +1,13 @@
 ---
 - hosts: jupyterhub
+  pre_tasks:
+    - file: state=directory path={{ jupyterhub.host_conf_d }}
+    - file: state=directory path={{ jupyterhub.postgresql.host_home_d }}
+    - template:
+        src: jupyterhub/jupyterhub_config.py.j2
+        dest: "{{ jupyterhub.host_conf_d }}/jupyterhub_config.py"
+
   roles:
-    - jupyterhub
+    - radia_base
+    - role: radia_containers
+      docker_manage_iptables: yes

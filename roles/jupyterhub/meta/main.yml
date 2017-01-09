@@ -1,5 +1,0 @@
----
-dependencies:
-  - radia_base
-  - role: radia_containers
-    docker_manage_iptables: yes

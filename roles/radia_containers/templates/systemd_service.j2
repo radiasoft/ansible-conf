@@ -1,0 +1,12 @@
+[Unit]
+Description={{ container.key }}
+
+[Service]
+Restart=on-failure
+RestartSec=10
+ExecStartPre=-/usr/bin/docker rm --force {{ container.key }}
+ExecStart=/usr/bin/docker run --tty --log-driver=journald --name {{ container.key }}
+ExecStop=-/usr/bin/docker stop {{ container.key }}
+
+[Install]
+WantedBy=multi-user.target
