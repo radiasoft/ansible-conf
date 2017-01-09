@@ -16,6 +16,7 @@
     image: "{{ container.value.image_name }}"
     name: "{{ container.key }}"
     published_ports: "{{ container.value.ports | default(omit) }}"
-    state: present
+    state: "{{ container.value.state | default(omit) }}"
+    user: "{{ container.value.user | default(omit) }}"
     volumes: "{{ _volumes }}"
     

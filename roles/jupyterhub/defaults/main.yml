@@ -1,25 +1,46 @@
 ---
-authenticator_class: oauthenticator.GitHubOAuthenticator
-guest_port: 8000
-host_port: 8000
-jupyterhub_container_conf: /srv/jupyterhub/conf/jupyterhub_config.py
-postgresql_host_data_d: "{{ postgresql_host_home_d }}/data"
-postgresql_host_home_d: /var/lib/postgresql-jupyterhub
-postgresql_host_run_d: "{{ postgresql_host_home_d }}/run"
+_jupyterhub_guest_conf_d: /srv/jupyterhub/conf
+_jupyterhub_host_conf_d: /var/lib/jupyterhub/conf
+_jupyterhub_postgresql_host_home_d: /var/lib/postgresql-jupyterhub
 
+# This defines the configuration tree for the jupyterhub role
+# The `jupyterhub` hash is meant to be a parameter where for the role. If
+# the user wants to customize the defaults, then he should create another hash with the
+# same name the nodes where information should be overloaded. Ansible will merge the defaults
+# and user hashes to derive the final execution state.
+jupyterhub:
+  authenticator_class: oauthenticator.GitHubOAuthenticator
+  container_conf: /srv/jupyterhub/conf/jupyterhub_config.py
+  guest_conf_d: "{{ _jupyterhub_guest_conf_d }}"
+  guest_port: 8000
+  host_conf_d: "{{ _jupyterhub_host_conf_d }}"
+  host_port: 8000
+  postgresql:
+    host_data_d: "{{ _jupyterhub_postgresql_host_home_d }}/data"
+    host_home_d: "{{ _jupyterhub_postgresql_host_home_d }}"
+    host_run_d: "{{ _jupyterhub_postgresql_host_home_d }}/run"
+
+# This defines the configuration tree for the radia_containers role
+# This tree encodes internal knowledge about how the containers should be configured
+# and it is meant as invocation parameter for radia_containers. The information that
+# it encodes is meant to be private.
 radia_containers:
     postgresql:
       command: postgres
       image_name: radiasoft/postgresql-jupyterhub:{{ rs_channel }}
       ports:
         - 5432:5432
+      user: postgres
       volumes:
-        - "{{ postgresql_host_data_d }}:/var/lib/postgresql/data"
-        - "{{ postgresql_host_run_d }}:/run/postgresql"
+        - "{{ jupyterhub.postgresql.host_data_d }}:/var/lib/postgresql/data"
+        - "{{ jupyterhub.postgresql.host_run_d }}:/run/postgresql"
 
     jupyterhub:
-      command: "jupyterhub -f {{ jupyterhub_container_conf }}"
+      command: "jupyterhub -f {{ jupyterhub.container_conf }}"
       image_name: radiasoft/jupyterhub:{{ rs_channel }}
       ports:
-        - "{{ host_port }}:{{ guest_port}}"
+        - "{{ jupyterhub.host_port }}:{{ jupyterhub.guest_port}}"
+      user: root
+      volumes:
+        - "{{ jupyterhub.host_conf_d }}:{{ jupyterhub.guest_conf_d }}"
       want_docker_sock: yes
