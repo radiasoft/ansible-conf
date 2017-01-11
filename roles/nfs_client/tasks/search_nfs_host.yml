@@ -1,0 +1,4 @@
+---
+- set_fact:
+    nfs_host: '{{ item.value }}'
+  when: '{{ item.value.inventory_hostname_short == "radia-nfs" }}'

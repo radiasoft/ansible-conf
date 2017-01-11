@@ -11,6 +11,5 @@
   roles:
     - radia_base
     - role: nfs_client
-      nfs_host: radia-nfs.local
       imports:
         - jupyterhub

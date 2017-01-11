@@ -7,6 +7,6 @@
   mount:
     fstype: nfs
     name: "{{ nfs_import_prefix }}/{{ import_group }}/{{ item.name }}"
-    src: "{{ nfs_host }}:{{ nfs_export_prefix }}/{{ import_group }}/{{ item.name }}" 
+    src: "{{ nfs_host.inventory_hostname }}:{{ nfs_export_prefix }}/{{ import_group }}/{{ item.name }}" 
     state: mounted 
   with_items: '{{ nfs_exports[import_group] }}'
