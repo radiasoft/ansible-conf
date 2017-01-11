@@ -8,7 +8,11 @@
 - hosts: jupyterhub
   vars_files:
     - vars/jupyterhub/nfs_exports.yml
-  tasks: []
+  roles:
+    - role: nfs_client
+      nfs_host: radia-nfs.local
+      imports:
+        - jupyterhub
   #vars_files:
     #- vars/jupyterhub/nfs_exports.yml
 #  pre_tasks:

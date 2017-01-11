@@ -1,5 +1,5 @@
 # ansible managed do not edit manually
 # contains exports for {{ export.key }}
 {% for export_info in export.value %}
-{{ export_info.path }} {{ export_info.extra }}
+"{{ nfs_export_prefix }}/{{ export.key }}/{{ export_info.name }}" {{ export_info.nfs_config }}
 {% endfor %}

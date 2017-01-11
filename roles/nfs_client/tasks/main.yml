@@ -1,0 +1,17 @@
+---
+- name: install nfs packages
+  package: name={{ item }} state=installed
+  with_items:
+    - nfs-utils
+    - rpcbind  
+
+- name: enable nfs services
+  service: name={{ item }} state=started enabled=yes
+  with_items:
+    - rpcbind
+    - nfs-server
+
+- include: manage_import.yml
+  with_items: '{{ imports }}' 
+  loop_control: 
+    loop_var: import_group

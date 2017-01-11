@@ -1,0 +1,12 @@
+---
+- name: create imported mount point
+  file: path={{ nfs_import_prefix }}/{{ import_group }}/{{ item.name }} state=directory
+  with_items: '{{ nfs_exports[import_group] }}'
+
+- name: mount nfs imports
+  mount:
+    fstype: nfs
+    name: "{{ nfs_import_prefix }}/{{ import_group }}/{{ item.name }}"
+    src: "{{ nfs_host }}:{{ nfs_export_prefix }}/{{ import_group }}/{{ item.name }}" 
+    state: mounted 
+  with_items: '{{ nfs_exports[import_group] }}'
