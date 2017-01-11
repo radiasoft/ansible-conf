@@ -14,6 +14,11 @@ VM_CONFIG = {
         'box' => 'centos/7',
         'autostart' => false,
     },
+    'jupyterhub-nfs' => {
+        'ip' => '10.10.10.201',
+        'box' => 'centos/7',
+        'autostart' => false,
+    },
 }
 
 def config_vm(config, vm_name)

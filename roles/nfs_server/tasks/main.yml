@@ -1,0 +1,11 @@
+---
+- package: name=nfs-utils state=installed
+- service: name=rpcbind state=started enabled=yes
+- file: path={{ item.path }} state=directory
+  with_items: '{{ nfs_exports }}'
+- template: src=exports.j2 dest=/etc/exports owner=root group=root mode=0644
+  notify: 'exports changed'
+  register: exports_config
+- service: name=nfs-server state=restarted
+  when: exports_config|changed
+- service: name=nfs-server state=started enabled=yes

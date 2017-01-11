@@ -1,2 +1,5 @@
+[nfs]
+jupyterhub-nfs.local
+
 [jupyterhub]
 jupyterhub.local
