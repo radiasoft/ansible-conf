@@ -1,0 +1,7 @@
+---
+nfs_exports:
+  jupyterhub:
+    - path: /run/nfs/notebook
+      extra: '*(rw,no_root_squash,sync,fsid=5000)'
+    - path: /run/nfs/scratch
+      extra: '*(rw,no_root_squash,sync,fsid=5001)'

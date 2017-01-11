@@ -1,6 +1,0 @@
----
-nfs_exports:
-  - path: /run/nfs/notebook
-    extra: '*(rw,no_root_squash,sync)'
-  - path: /run/nfs/scratch
-    extra: '*(rw,no_root_squash,sync)'

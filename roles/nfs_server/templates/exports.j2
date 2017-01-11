@@ -1,4 +1,5 @@
 # ansible managed do not edit manually
-{% for export in nfs_exports %}
-{{ export.path }} {{ export.extra }}
+# contains exports for {{ export.key }}
+{% for export_info in export.value %}
+{{ export_info.path }} {{ export_info.extra }}
 {% endfor %}

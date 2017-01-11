@@ -1,5 +1,5 @@
 [nfs]
-jupyterhub-nfs.local
+radia-nfs.local
 
 [jupyterhub]
 jupyterhub.local

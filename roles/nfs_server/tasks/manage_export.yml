@@ -1,0 +1,7 @@
+---
+- name: create exported filesystems
+  file: path={{ item.path }} state=directory
+  with_items: '{{ export.value }}'
+
+- template: src=exports.j2 dest=/etc/exports.d/{{ export.key }} owner=root group=root mode=0644
+  notify: 'exports changed'

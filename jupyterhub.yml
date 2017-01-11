@@ -1,13 +1,24 @@
 ---
-- hosts: jupyterhub
-  pre_tasks:
-    - file: state=directory path={{ jupyterhub.host_conf_d }}
-    - file: state=directory path={{ jupyterhub.postgresql.host_home_d }}
-    - template:
-        src: jupyterhub/jupyterhub_config.py.j2
-        dest: "{{ jupyterhub.host_conf_d }}/jupyterhub_config.py"
-
+- hosts: nfs
+  vars_files:
+    - vars/jupyterhub/nfs_exports.yml
   roles:
-    - radia_base
-    - role: radia_containers
-      docker_manage_iptables: yes
+    - nfs_server
+
+- hosts: jupyterhub
+  vars_files:
+    - vars/jupyterhub/nfs_exports.yml
+  tasks: []
+  #vars_files:
+    #- vars/jupyterhub/nfs_exports.yml
+#  pre_tasks:
+#    - file: state=directory path={{ jupyterhub.host_conf_d }}
+#    - file: state=directory path={{ jupyterhub.postgresql.host_home_d }}
+#    - template:
+#        src: jupyterhub/jupyterhub_config.py.j2
+#        dest: "{{ jupyterhub.host_conf_d }}/jupyterhub_config.py"
+#
+#  roles:
+#    - radia_base
+#    - role: radia_containers
+#      docker_manage_iptables: yes
