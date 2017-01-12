@@ -9,6 +9,4 @@
 
 - hosts: jupyterhub
   roles:
-    - role: nfs_client
-      imports:
-        - jupyterhub
+    - nfs_client
