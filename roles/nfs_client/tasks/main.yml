@@ -11,10 +11,8 @@
     - rpcbind
     - nfs-server
 
-- include: search_nfs_host.yml
-  with_dict: '{{ hostvars }}'
-
 - include: manage_import.yml
-  with_items: '{{ imports }}' 
-  loop_control: 
+  with_items: '{{ imports }}'
+  loop_control:
     loop_var: import_group
+

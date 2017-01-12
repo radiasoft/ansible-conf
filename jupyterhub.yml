@@ -1,15 +1,14 @@
 ---
+- hosts: all
+  roles:
+    - radia_base
+
 - hosts: nfs
-  vars_files:
-    - vars/jupyterhub/nfs_exports.yml
   roles:
     - nfs_server
 
 - hosts: jupyterhub
-  vars_files:
-    - vars/jupyterhub/nfs_exports.yml
   roles:
-    - radia_base
     - role: nfs_client
       imports:
         - jupyterhub
