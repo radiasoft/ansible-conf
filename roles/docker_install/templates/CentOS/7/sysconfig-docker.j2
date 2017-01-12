@@ -1,1 +1,1 @@
-OPTIONS='--selinux-enabled --log-driver=journald --iptables={{ 'true' if docker_manage_iptables else false }} {{ docker_tls_options }}'
+OPTIONS='{% if docker_user_namespaces %} --userns-remap=default {% endif %} --log-driver=journald --iptables={{ 'true' if docker_manage_iptables else false }} {{ docker_tls_options }}'

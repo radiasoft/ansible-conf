@@ -8,5 +8,20 @@
     - nfs_server
 
 - hosts: jupyterhub
+  pre_tasks:
+    - file:
+        group: root
+        mode: 0640
+        owner: root
+        path: '{{ jupyterhub.host.conf_d }}'
+        state: directory
+
+    - template:
+        dest: '{{ jupyterhub.host.conf_d }}/jupyterhub_config.py'
+        group: 0640
+        owner: root
+        src: templates/jupyterhub/jupyterhub_config.py.j2
+
   roles:
     - nfs_client
+    - radia_containers  

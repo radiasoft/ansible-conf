@@ -5,3 +5,4 @@ docker_service_name: docker.service
 docker_tls_options: ''
 os_ver_d: "{{ ansible_distribution }}/{{ ansible_distribution_major_version }}"
 sysconfig_d: /etc/sysconfig
+docker_user_namespaces: yes

@@ -2,56 +2,60 @@
 _jupyterhub_guest_conf_d: /srv/jupyterhub/conf
 _jupyterhub_host_conf_d: /var/lib/jupyterhub/conf
 _jupyterhub_postgresql_host_home_d: /var/lib/postgresql-jupyterhub
-
 # This defines the configuration tree for the jupyterhub role
 # The `jupyterhub` hash is meant to be a parameter where for the role. If
 # the user wants to customize the defaults, then he should create another hash with the
 # same name the nodes where information should be overloaded. Ansible will merge the defaults
 # and user hashes to derive the final execution state.
 jupyterhub:
+  admin_users: []
   aux_contents: ''
   container_conf: /srv/jupyterhub/conf/jupyterhub_config.py
-  cookie_secret: null
+  cookie_secret: change me
   db_pass: null
   debug: no
-  guest_conf_d: "{{ _jupyterhub_guest_conf_d }}"
-  guest_port: 8000
-  host_conf_d: "{{ _jupyterhub_host_conf_d }}"
-  host_port: 8000
-  proxy_auth_token: null
+  github_client_id: ''
+  github_client_secret: ''
+  host_name: ''
+  jupyter_image_name: 'radiasoft/beamsim-jupyter:{{ rs_channel }}'
+  proxy_auth_token: change me
   auth:
-    class: null
+    class: jupyterhub.auth.PAMAuthenticator
+  guest:
+    conf_d: "{{ _jupyterhub_guest_conf_d }}"
+    notebook_d: "{{ nfs_import_prefix }}/jupyterhub/notebook"
+    port: 8000
+    scratch_d: "{{ nfs_import_prefix }}/jupyterhub/scratch"
+    user: root
+  host:
+    conf_d: "{{ _jupyterhub_host_conf_d }}"
+    notebook_d: "{{ nfs_import_prefix }}/jupyterhub/notebook"
+    port: 8000
+    scratch_d: "{{ nfs_import_prefix }}/jupyterhub/scratch"
   postgresql:
+    db_pass: ''
     host_data_d: "{{ _jupyterhub_postgresql_host_home_d }}/data"
     host_home_d: "{{ _jupyterhub_postgresql_host_home_d }}"
     host_run_d: "{{ _jupyterhub_postgresql_host_home_d }}/run"
     name: postgresql-jupyterhub
+  jupyter:
+    guest_user: vagrant 
 
 # This defines the configuration tree for the radia_containers role
 # This tree encodes internal knowledge about how the containers should be configured
 # and it is meant as invocation parameter for radia_containers. The information that
 # it encodes is meant to be private.
 radia_containers:
-    postgresql:
-      command: postgres
-      image_name: radiasoft/postgresql-jupyterhub:{{ rs_channel }}
-      ports:
-        - 5432:5432
-      user: postgres
-      volumes:
-        - "{{ jupyterhub.postgresql.host_data_d }}:/var/lib/postgresql/data"
-        - "{{ jupyterhub.postgresql.host_run_d }}:/run/postgresql"
-      service_state: started
-      on_boot: yes
-
     jupyterhub:
       command: "jupyterhub -f {{ jupyterhub.container_conf }}"
       image_name: radiasoft/jupyterhub:{{ rs_channel }}
       ports:
-        - "{{ jupyterhub.host_port }}:{{ jupyterhub.guest_port}}"
+        - "{{ jupyterhub.host.port }}:{{ jupyterhub.guest.port}}"
       user: root
       volumes:
-        - "{{ jupyterhub.host_conf_d }}:{{ jupyterhub.guest_conf_d }}"
+        - "{{ jupyterhub.host.conf_d }}:{{ jupyterhub.guest.conf_d }}"
+        - "{{ jupyterhub.host.notebook_d }}:{{ jupyterhub.guest.notebook_d }}"
+        - "{{ jupyterhub.host.scratch_d }}:{{ jupyterhub.guest.scratch_d }}"
       want_docker_sock: yes
       service_state: started
       on_boot: yes
