@@ -1,4 +1,23 @@
 ---
+- package: name=shadow-utils state=present
+  when: docker_user_namespaces
+
+- user:
+    name: dockremap
+    state: present
+  when: docker_user_namespaces
+
+- copy:
+    src: sub_uid_gid
+    group: root
+    mode: 0644
+    owner: root
+    dest: '/etc/{{ item }}'
+  with_items:
+    - subuid
+    - subgid  
+  when: docker_user_namespaces
+    
 - name: add docker repo
   copy: 
     src: "{{ os_ver_d }}/docker.repo" 
