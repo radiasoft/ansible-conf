@@ -1,13 +1,16 @@
 ---
-- package: name=shadow-utils state=present
+- name: user namespaces requirements
+  package: name=shadow-utils state=present
   when: docker_user_namespaces
 
-- user:
+- name: create dockremap user
+  user:
     name: dockremap
     state: present
   when: docker_user_namespaces
 
-- copy:
+- name: set user and group remap configuration
+  copy:
     src: sub_uid_gid
     group: root
     mode: 0644
