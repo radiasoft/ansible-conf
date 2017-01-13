@@ -5,7 +5,7 @@ Description={{ container.key }}
 Restart=on-failure
 RestartSec=10
 ExecStartPre=-/usr/bin/docker rm --force {{ container.key }}
-ExecStart=/usr/bin/docker run --tty --log-driver=journald --name {{ container.key }}
+ExecStart=/usr/bin/docker run --tty --log-driver=journald --name {{ container.key }} {{ container.value.image_name }} {{ container.value.command }} 
 ExecStop=-/usr/bin/docker stop {{ container.key }}
 
 [Install]
