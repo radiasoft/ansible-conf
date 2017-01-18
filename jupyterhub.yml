@@ -8,6 +8,7 @@
     - nfs_server
 
 - hosts: jupyterhub
+
   pre_tasks:
     - name: jupyterhub configuration directory
       file: 
@@ -23,7 +24,16 @@
         group: 0640
         owner: root
         src: templates/jupyterhub/jupyterhub_config.py.jinja
+      register: jupyterhub_config
 
   roles:
     - nfs_client
-    - radia_containers  
+    - radia_containers
+    
+  tasks:
+    - debug: var=jupyterhub
+    - debug: var=radia_containers
+
+    - name: restart jupyterhub service
+      systemd: name=jupyterhub.service state=restarted
+      when: jupyterhub_config|changed

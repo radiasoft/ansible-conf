@@ -4,17 +4,21 @@
 # and it is meant as invocation parameter for radia_containers. The information that
 # it encodes is meant to be private.
 radia_containers:
+  want_docker_sock: yes
   containers:
     jupyterhub:
       command: "jupyterhub -f {{ jupyterhub.guest.conf_d }}/jupyterhub_config.py"
       image_name: "{{ jupyterhub.image_name }}"
       ports:
-        - "{{ jupyterhub.host.port }}:{{ jupyterhub.guest.port}}"
+        - "{{ jupyterhub.host.port }}:{{ jupyterhub.guest.port }}"
       user: "{{ jupyterhub.host.user }}"
       volumes:
         - "{{ jupyterhub.host.conf_d }}:{{ jupyterhub.guest.conf_d }}"
         - "{{ jupyterhub.host.notebook_d }}:{{ jupyterhub.guest.notebook_d }}"
         - "{{ jupyterhub.host.scratch_d }}:{{ jupyterhub.guest.scratch_d }}"
-      want_docker_sock: yes
       service_state: started
       on_boot: yes
+
+    jupyter:
+      image_name: "{{ jupyterhub.jupyter.image_name }}"
+      state: absent

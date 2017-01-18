@@ -9,7 +9,7 @@ jupyterhub:
   aux_contents: ''
   cookie_secret: change me
   debug: no
-  host_name: ''
+  host_name: null
   image_name: 'radiasoft/jupyterhub:{{ rs_channel }}'
   proxy_auth_token: change me
   auth:
@@ -38,4 +38,6 @@ jupyterhub:
   jupyter:
     image_name: "radiasoft/beamsim-jupyter:{{ rs_channel }}"
     guest:
+      notebook_d: /home/vagrant/jupyter
+      scratch_d: /home/vagrant/scratch
       user: vagrant 

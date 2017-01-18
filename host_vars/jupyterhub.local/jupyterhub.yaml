@@ -1,0 +1,2 @@
+jupyterhub:
+  host_name: 'http://jupyterhub.local:8000'

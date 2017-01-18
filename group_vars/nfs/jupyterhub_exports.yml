@@ -1,7 +1,12 @@
 ---
 nfs_exports:
   jupyterhub:
-    - name: notebook
-      nfs_config: '*(rw,no_root_squash,sync,fsid=5000)'
-    - name: scratch
-      nfs_config: '*(rw,no_root_squash,sync,fsid=5001)'
+    - group: 1000
+      name: notebook
+      nfs_config: '*(rw,insecure,no_root_squash,no_subtree_check,sync,fsid=5000)'
+      owner: 1000
+
+    - group: 1000
+      name: scratch
+      nfs_config: '*(rw,insecure,no_root_squash,no_subtree_check,sync,fsid=5001)'
+      owner: 1000
