@@ -1,9 +1,9 @@
 ---
-# This defines the configuration tree for the radia_containers role
+# This defines the configuration tree for the rs_containers role
 # This tree encodes internal knowledge about how the containers should be configured
-# and it is meant as invocation parameter for radia_containers. The information that
+# and it is meant as invocation parameter for rs_containers. The information that
 # it encodes is meant to be private.
-radia_containers:
+rs_containers:
   want_docker_sock: yes
   containers:
     jupyterhub:

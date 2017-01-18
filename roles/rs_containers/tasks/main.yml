@@ -1,5 +1,5 @@
 ---
 - include: process_container.yml
-  with_dict: "{{ radia_containers.containers }}"
+  with_dict: "{{ rs_containers.containers }}"
   loop_control:
     loop_var: container

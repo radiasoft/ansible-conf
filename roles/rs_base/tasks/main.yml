@@ -1,0 +1,9 @@
+---
+- name: disable selinux
+  selinux: state=disabled
+
+- name: vagrant group exists
+  group: name=vagrant gid=1000 state=present system=no
+
+- name: vagrant user exists
+  user: name=vagrant uid=1000 group=vagrant state=present system=no

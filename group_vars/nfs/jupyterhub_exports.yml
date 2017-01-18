@@ -1,12 +1,12 @@
 ---
 nfs_exports:
   jupyterhub:
-    - group: 1000
+    - group: vagrant
       name: notebook
       nfs_config: '*(rw,insecure,no_root_squash,no_subtree_check,sync,fsid=5000)'
-      owner: 1000
+      owner: vagrant
 
-    - group: 1000
+    - group: vagrant
       name: scratch
       nfs_config: '*(rw,insecure,no_root_squash,no_subtree_check,sync,fsid=5001)'
-      owner: 1000
+      owner: vagrant
