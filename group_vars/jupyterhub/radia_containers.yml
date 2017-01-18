@@ -1,57 +1,16 @@
 ---
-_jupyterhub_guest_conf_d: /srv/jupyterhub/conf
-_jupyterhub_host_conf_d: /var/lib/jupyterhub/conf
-_jupyterhub_postgresql_host_home_d: /var/lib/postgresql-jupyterhub
-# This defines the configuration tree for the jupyterhub role
-# The `jupyterhub` hash is meant to be a parameter where for the role. If
-# the user wants to customize the defaults, then he should create another hash with the
-# same name the nodes where information should be overloaded. Ansible will merge the defaults
-# and user hashes to derive the final execution state.
-jupyterhub:
-  admin_users: []
-  aux_contents: ''
-  container_conf: /srv/jupyterhub/conf/jupyterhub_config.py
-  cookie_secret: change me
-  db_pass: null
-  debug: no
-  github_client_id: ''
-  github_client_secret: ''
-  host_name: ''
-  jupyter_image_name: 'radiasoft/beamsim-jupyter:{{ rs_channel }}'
-  proxy_auth_token: change me
-  auth:
-    class: jupyterhub.auth.PAMAuthenticator
-  guest:
-    conf_d: "{{ _jupyterhub_guest_conf_d }}"
-    notebook_d: "{{ nfs_import_prefix }}/jupyterhub/notebook"
-    port: 8000
-    scratch_d: "{{ nfs_import_prefix }}/jupyterhub/scratch"
-    user: root
-  host:
-    conf_d: "{{ _jupyterhub_host_conf_d }}"
-    notebook_d: "{{ nfs_import_prefix }}/jupyterhub/notebook"
-    port: 8000
-    scratch_d: "{{ nfs_import_prefix }}/jupyterhub/scratch"
-  postgresql:
-    db_pass: ''
-    host_data_d: "{{ _jupyterhub_postgresql_host_home_d }}/data"
-    host_home_d: "{{ _jupyterhub_postgresql_host_home_d }}"
-    host_run_d: "{{ _jupyterhub_postgresql_host_home_d }}/run"
-    name: postgresql-jupyterhub
-  jupyter:
-    guest_user: vagrant 
-
 # This defines the configuration tree for the radia_containers role
 # This tree encodes internal knowledge about how the containers should be configured
 # and it is meant as invocation parameter for radia_containers. The information that
 # it encodes is meant to be private.
 radia_containers:
+  containers:
     jupyterhub:
-      command: "jupyterhub -f {{ jupyterhub.container_conf }}"
-      image_name: radiasoft/jupyterhub:{{ rs_channel }}
+      command: "jupyterhub -f {{ jupyterhub.guest.conf_d }}/jupyterhub_config.py"
+      image_name: "{{ jupyterhub.image_name }}"
       ports:
         - "{{ jupyterhub.host.port }}:{{ jupyterhub.guest.port}}"
-      user: root
+      user: "{{ jupyterhub.host.user }}"
       volumes:
         - "{{ jupyterhub.host.conf_d }}:{{ jupyterhub.guest.conf_d }}"
         - "{{ jupyterhub.host.notebook_d }}:{{ jupyterhub.guest.notebook_d }}"

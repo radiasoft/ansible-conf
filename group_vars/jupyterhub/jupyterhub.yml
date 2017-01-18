@@ -1,0 +1,41 @@
+---
+# This defines the configuration tree for the jupyterhub role
+# The `jupyterhub` hash is meant to be a parameter where for the role. If
+# the user wants to customize the defaults, then he should create another hash with the
+# same name the nodes where information should be overloaded. Ansible will merge the defaults
+# and user hashes to derive the final execution state.
+jupyterhub:
+  admin_users: []
+  aux_contents: ''
+  cookie_secret: change me
+  debug: no
+  host_name: ''
+  image_name: 'radiasoft/jupyterhub:{{ rs_channel }}'
+  proxy_auth_token: change me
+  auth:
+    class: jupyterhub.auth.PAMAuthenticator
+    github:
+      client_id: ''
+      client_secret: ''
+  guest:
+    conf_d: /srv/jupyterhub/conf
+    notebook_d: "{{ nfs_import_prefix }}/jupyterhub/notebook"
+    port: 8000
+    scratch_d: "{{ nfs_import_prefix }}/jupyterhub/scratch"
+    user: root
+  host:
+    conf_d: /var/lib/jupyterhub/conf
+    notebook_d: "{{ nfs_import_prefix }}/jupyterhub/notebook"
+    port: 8000
+    scratch_d: "{{ nfs_import_prefix }}/jupyterhub/scratch"
+    user: root
+  postgresql:
+    db_pass: ''
+    host_data_d: null 
+    host_home_d: null
+    host_run_d: null
+    name: postgresql-jupyterhub
+  jupyter:
+    image_name: "radiasoft/beamsim-jupyter:{{ rs_channel }}"
+    guest:
+      user: vagrant 

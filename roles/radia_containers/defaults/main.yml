@@ -1,4 +1,6 @@
 ---
 docker_sock_path: /run/docker.sock
-want_docker_sock: no
 docker_systemd_service: yes
+radia_containers:
+  want_docker_sock: no
+  containers: {}

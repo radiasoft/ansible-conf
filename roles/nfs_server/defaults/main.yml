@@ -1,3 +1,2 @@
 ---
-nfs_export_prefix: /run/nfs
 nfs_exports: {}

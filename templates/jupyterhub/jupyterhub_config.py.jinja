@@ -11,13 +11,13 @@ class _Spawner(DockerSpawner):
         for v in binds:
             if not os.path.exists(v):
                 os.mkdir(v)
-                if '{{ jupyterhub.jupyter.guest_user}}' != '{{ jupyterhub.guest.user}}':
-                    pw = pwd.getpwnam('{{ jupyterhub.jupyter.guest_user}}')
+                if '{{ jupyterhub.jupyter.guest.user}}' != '{{ jupyterhub.guest.user}}':
+                    pw = pwd.getpwnam('{{ jupyterhub.jupyter.guest.user}}')
                     os.chown(v, pw.pw_uid, pw.pw_gid)
         return binds
 
-c.Authenticator.admin_users = set(['{{ jupyterhub.admin_users|join("', '") }}'])
-c.DockerSpawner.container_image = '{{ jupyterhub.jupyter_image_name }}'
+c.Authenticator.admin_users = set([{{ jupyterhub.admin_users|join(',') }}])
+c.DockerSpawner.container_image = '{{ jupyterhub.jupyter.image_name }}'
 c.DockerSpawner.remove_containers = True
 c.DockerSpawner.use_internal_ip = True
 c.DockerSpawner.volumes = {
@@ -32,8 +32,8 @@ c.DockerSpawner.volumes = {
     },
 }
 
-#c.GitHubOAuthenticator.client_id = '{{ jupyterhub.github_client_id }}'
-#c.GitHubOAuthenticator.client_secret = '{{ jupyterhub.github_client_secret }}'
+#c.GitHubOAuthenticator.client_id = '{{ jupyterhub.auth.github.client_id }}'
+#c.GitHubOAuthenticator.client_secret = '{{ jupyterhub.auth.github.client_secret }}'
 #c.GitHubOAuthenticator.oauth_callback_url = 'https://{{ jupyterhub.host_name }}/hub/oauth_callback'
 
 c.JupyterHub.authenticator_class = '{{ jupyterhub.auth.class }}'
