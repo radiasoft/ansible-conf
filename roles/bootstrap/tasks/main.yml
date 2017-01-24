@@ -1,7 +1,3 @@
 ---
-- block:
-  - include: centos.yml
-    when: "{{ vm_base_image.startswith('centos/') }}"
-  - include: fedora.yml
-    when: "{{ vm_base_image.startswith('fedora/') }}"
+- include: "{{ os_ver_d }}/bootstrap.yml"
   become: yes

@@ -1,3 +1,3 @@
 ---
-- include: "{{ os_ver_d }}//docker.yml"
+- include: "{{ os_ver_d }}/docker.yml"
 - meta: flush_handlers  

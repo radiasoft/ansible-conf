@@ -7,3 +7,4 @@ secret.yml
 *.log
 terraform.tfstate*
 .env.secret
+secret.tfvars
