@@ -12,6 +12,6 @@ class LookupModule(LookupBase):
         for hostname in groups['all']:
             host = hostvars[hostname]
             for export in host.get(nfs_exports, {}).get(import_group, []):
-                o.append({'hostname':hostname, 'name':export['name']})
+                o.append({'hostname':hostname, 'name':export['name'], 'host':host})
 
         return o

@@ -26,3 +26,22 @@ resource "aws_route_table_association" "public" {
     route_table_id = "${aws_route_table.public.id}"
 }
 
+resource "aws_security_group" "internal" {
+    vpc_id      = "${aws_vpc.default.id}"
+    name        = "internal"
+    
+    ingress {
+        from_port = 0
+        to_port   = 0
+        protocol  = "-1"
+        self      = true
+    }
+
+    egress {
+        from_port = 0
+        to_port   = 0
+        protocol  = "-1"
+        self      = true
+    }
+}
+

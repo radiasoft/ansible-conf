@@ -7,6 +7,8 @@
   mount:
     fstype: nfs
     name: "{{ nfs_import_prefix }}/{{ import_group }}/{{ item.name }}"
-    src: "{{ item.hostname }}:{{ nfs_export_prefix }}/{{ import_group }}/{{ item.name }}" 
+    src: "{{ item.host.ansible_default_ipv4.address }}:{{ nfs_export_prefix }}/{{ import_group }}/{{ item.name }}" 
     state: mounted 
   with_nfs_imports: '{{ import_group }}'
+  loop_control:
+    label: "{{ import_group }}/{{ item.hostname }}"

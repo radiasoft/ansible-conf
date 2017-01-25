@@ -11,6 +11,14 @@ resource "aws_security_group" "jupyterhub" {
     }
     
     ingress {
+        from_port = 8000
+        to_port   = 8000
+        protocol  = "tcp"
+
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    
+    ingress {
         from_port = 443
         to_port   = 443
         protocol  = "tcp"
@@ -58,6 +66,9 @@ resource "aws_instance" "jupyterhub" {
     }
 
     associate_public_ip_address = true
-    vpc_security_group_ids      = ["${aws_security_group.jupyterhub.id}"]
+    vpc_security_group_ids      = [
+        "${aws_security_group.internal.id}",
+        "${aws_security_group.jupyterhub.id}",
+    ]
     depends_on                  = ["aws_internet_gateway.default"]  
 }
