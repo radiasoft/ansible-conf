@@ -2,6 +2,8 @@
 - name: create imported mount point
   file: path={{ nfs_import_prefix }}/{{ import_group }}/{{ item.name }} state=directory
   with_nfs_imports: '{{ import_group }}'
+  loop_control:
+    label: "{{ item.hostname }}:{{ import_group }}/{{ item.name }}"
 
 - name: mount nfs imports
   mount:
@@ -11,4 +13,4 @@
     state: mounted 
   with_nfs_imports: '{{ import_group }}'
   loop_control:
-    label: "{{ import_group }}/{{ item.hostname }}"
+    label: "{{ item.hostname }}:{{ import_group }}/{{ item.name }}"
