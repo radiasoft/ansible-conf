@@ -10,7 +10,7 @@
   when: "{{ rs_containers.want_docker_sock }}"
 
 - block:
-    - name: install systemd service for {{ container.value.image_name }}
+    - name: install systemd service for {{ container.key }}
       template: 
         src: templates/systemd_service.jinja
         dest: '/etc/systemd/system/{{ container.key }}.service'
@@ -19,11 +19,18 @@
         mode: 0644
       register: docker_service_installed
 
-    - name: start systemd service for {{ container.value.image_name }}
+    - name: enable systemd service for {{ container.key }}
       systemd:
         name: "{{ container.key }}.service"
         daemon_reload: yes
         state: "{{ container.value.service_state }}"
         enabled: "{{ container.value.on_boot }}"
       when: docker_service_installed|changed
+    
+    - name: restart systemd service for {{ container.key }}
+      systemd:
+        name: "{{ container.key }}.service"
+        state: restarted
+      when: "{{ docker_service_installed|changed and container.value.service_state == 'started' }}"
+
   when: "{{ docker_systemd_service and container.value.state|default('present') == 'present' }}"
