@@ -3,12 +3,7 @@
   roles:
     - rs_base
 
-- hosts: nfs
-  roles:
-    - nfs_server
-
 - hosts: jupyterhub
-
   pre_tasks:
     - name: jupyterhub configuration directory
       file: 

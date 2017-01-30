@@ -1,5 +1,11 @@
-[nfs]
+[nfs_vagrant]
 radia-nfs.local
 
-[jupyterhub]
+[jupyterhub_vagrant]
 jupyterhub.local
+
+[jupyterhub:children]
+jupyterhub_vagrant
+
+[nfs:children]
+nfs_vagrant
