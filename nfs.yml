@@ -1,8 +1,5 @@
 ---
-- hosts: all
-  roles:
-    - rs_base
-
 - hosts: nfs
   roles:
+    - rs_base
     - nfs_server

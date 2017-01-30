@@ -2,4 +2,5 @@
 dependencies:
   - bootstrap
   - timesync
+  - rs_firewall  
   - utilities  

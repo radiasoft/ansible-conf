@@ -1,0 +1,5 @@
+---
+rs_firewall:
+  services:
+    enabled:
+      - nfs

@@ -1,0 +1,11 @@
+---
+rs_firewall:
+  defaults:
+    services:
+      disabled:
+        - dhcpv6-client
+      enabled:
+        - ssh
+  services:
+    disabled: []
+    enabled: []
