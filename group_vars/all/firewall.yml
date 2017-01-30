@@ -4,6 +4,7 @@ rs_firewall:
     services:
       disabled:
         - dhcpv6-client
+        - mdns  
       enabled:
         - ssh
   services:

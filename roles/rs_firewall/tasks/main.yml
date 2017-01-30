@@ -4,7 +4,11 @@
 
 - set_fact:
     fw_enabled_services: "{{ rs_firewall.services.enabled | union(rs_firewall.defaults.services.enabled) }}"
-    
+   
+- set_fact:
+    fw_enabled_services: "{{ fw_enabled_services | union(['mdns']) }}"
+  when: "{{ ansible_local.deploy_env == 'vagrant' }}"
+
 - set_fact:
     fw_disabled_services: "{{ rs_firewall.services.disabled | union(rs_firewall.defaults.services.disabled) | difference(fw_enabled_services) }}"
 
@@ -21,11 +25,3 @@
     service: "{{ item }}"
     state: disabled
   with_items: "{{ fw_disabled_services }}"
-
-- name: mdns firewall rules
-  firewalld:
-    permanent: yes
-    service: mdns
-    state: enabled
-  when: "{{ ansible_local.deploy_env == 'vagrant' }}"
-
