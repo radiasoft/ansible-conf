@@ -1,11 +1,7 @@
 [nfs:children]
 nfs_alpha
+nfs_vagrant
 
 [jupyterhub:children]
 jupyterhub_alpha
-
-[jupyterhub_alpha:vars]
-rs_channel=alpha
-
-[nfs_alpha:vars]
-rs_channel=alpha
+jupyterhub_vagrant
