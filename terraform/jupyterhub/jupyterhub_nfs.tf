@@ -63,11 +63,6 @@ resource "aws_instance" "jupyterhub_nfs" {
     depends_on                  = ["aws_internet_gateway.default"]  
 }
 
-resource "aws_eip_association" "jupyterhub_nfs" {
-  instance_id = "${aws_instance.jupyterhub_nfs.id}"
-  allocation_id = "${data.terraform_remote_state.elastic_ips.jupyterhub_eip_id["${var.rs_channel}"]}"
-}
-
 resource "aws_route53_record" "jupyterhub_nfs_private" {
     name    = "jupyterhub_nfs.${var.private_domain}"
     records = ["${aws_instance.jupyterhub_nfs.private_ip}"]

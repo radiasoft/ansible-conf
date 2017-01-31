@@ -86,3 +86,8 @@ resource "aws_route53_record" "jupyterhub_private" {
     type    = "A"
     zone_id = "${aws_route53_zone.private.zone_id}"
 }
+
+resource "aws_eip_association" "jupyterhub" {
+    instance_id = "${aws_instance.jupyterhub.id}"
+    allocation_id = "${data.terraform_remote_state.elastic_ips.jupyterhub_eip_id["${var.rs_channel}"]}"
+}
