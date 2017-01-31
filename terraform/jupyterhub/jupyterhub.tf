@@ -72,3 +72,19 @@ resource "aws_instance" "jupyterhub" {
     ]
     depends_on                  = ["aws_internet_gateway.default"]  
 }
+
+resource "aws_route53_record" "jupyterhub_public" {
+    name    = "jupyterhub.${var.public_domain}"
+    records = ["${aws_instance.jupyterhub.public_ip}"]
+    ttl     = "60"
+    type    = "A"
+    zone_id = "${aws_route53_zone.public.zone_id}"
+}
+
+resource "aws_route53_record" "jupyterhub_private" {
+    name    = "jupyterhub.${var.private_domain}"
+    records = ["${aws_instance.jupyterhub.private_ip}"]
+    ttl     = "60"
+    type    = "A"
+    zone_id = "${aws_route53_zone.private.zone_id}"
+}

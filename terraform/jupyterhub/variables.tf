@@ -29,3 +29,11 @@ variable "ansible_ssh_key" {
 variable "rs_channel" {
     default = "alpha"
 }
+
+variable "public_domain" {
+    default = "radia.antropoide.net"
+}
+
+variable "private_domain" {
+    default = "radia.internal"
+}
