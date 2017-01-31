@@ -36,7 +36,7 @@ c.DockerSpawner.volumes = {
 {% if 'GitHubOAuthenticator' in jupyterhub.auth.class %}
 c.GitHubOAuthenticator.client_id = '{{ jupyterhub.auth.github.client_id }}'
 c.GitHubOAuthenticator.client_secret = '{{ jupyterhub.auth.github.client_secret }}'
-c.GitHubOAuthenticator.oauth_callback_url = 'https://{{ jupyterhub.host_name }}/hub/oauth_callback'
+c.GitHubOAuthenticator.oauth_callback_url = 'http://{{ jupyterhub.host_name }}/hub/oauth_callback'
 {% endif %}
 
 c.JupyterHub.authenticator_class = '{{ jupyterhub.auth.class }}'
