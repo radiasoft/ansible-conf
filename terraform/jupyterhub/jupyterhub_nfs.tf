@@ -60,7 +60,7 @@ resource "aws_instance" "jupyterhub_nfs" {
 
 resource "aws_route53_record" "jupyterhub_nfs_public" {
     name    = "jupyterhub_nfs.${var.public_domain}"
-    records = ["${aws_instance.jupyterhub.public_ip}"]
+    records = ["${aws_instance.jupyterhub_nfs.public_ip}"]
     ttl     = "60"
     type    = "A"
     zone_id = "${aws_route53_zone.public.zone_id}"
@@ -68,7 +68,7 @@ resource "aws_route53_record" "jupyterhub_nfs_public" {
 
 resource "aws_route53_record" "jupyterhub_nfs_private" {
     name    = "jupyterhub_nfs.${var.private_domain}"
-    records = ["${aws_instance.jupyterhub.private_ip}"]
+    records = ["${aws_instance.jupyterhub_nfs.private_ip}"]
     ttl     = "60"
     type    = "A"
     zone_id = "${aws_route53_zone.private.zone_id}"

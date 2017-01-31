@@ -1,0 +1,2 @@
+jupyterhub:
+  host_name: 'http://jupyterhub.radia.antropoide.net:8000'
