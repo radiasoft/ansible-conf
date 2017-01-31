@@ -1,3 +1,0 @@
----
-- include: "{{ os_ver_d }}/bootstrap.yml"
-  become: yes

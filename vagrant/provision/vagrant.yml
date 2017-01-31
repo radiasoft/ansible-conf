@@ -1,11 +1,5 @@
 ---
 - hosts: all
-  gather_facts: yes
-  become: yes
-  roles:
-    - bootstrap
-
-- hosts: all
   become: yes
   vars:
     local_ssh_dir: "../ssh"
@@ -14,6 +8,7 @@
   pre_tasks:    
     - hostname: name={{ vm_hostname }}
   roles:
+    - geerlingguy.repo-epel
     - deploy_env
     - avahi
   tasks:

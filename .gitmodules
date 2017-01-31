@@ -1,3 +1,6 @@
 [submodule "external/ansible-filter-plugins"]
 	path = deps/ansible-filter-plugins
 	url = https://github.com/lxhunter/ansible-filter-plugins.git
+[submodule "deps/ansible-role-repo-epel"]
+	path = deps/ansible-role-repo-epel
+	url = https://github.com/geerlingguy/ansible-role-repo-epel.git

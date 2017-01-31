@@ -1,6 +1,6 @@
 ---
 dependencies:
-  - bootstrap
+  - geerlingguy.repo-epel
   - timesync
   - rs_firewall  
   - utilities  
