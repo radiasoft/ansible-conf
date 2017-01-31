@@ -1,0 +1,11 @@
+---
+rs_containers:
+  containers:
+    nginx_test:
+      image_name: nginx
+      on_boot: yes
+      service_state: started
+      ports:
+        - 8080:80
+      volumes:
+        - /srv/www/html:/usr/share/nginx/html:ro

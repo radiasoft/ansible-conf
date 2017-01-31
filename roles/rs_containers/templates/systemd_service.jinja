@@ -1,16 +1,20 @@
-{% set docker_options = ['--tty', '--log-driver=journald', '--name', container.key ] %}
+{% set docker_cmd_line = ['/usr/bin/docker', 'run', '--tty', '--log-driver=journald', '--name', container.key ] %}
 {% if container.value.ports is defined %}
 {% for port in container.value.ports %}
-{% do docker_options.extend(['-p', port]) %}
+{% do docker_cmd_line.extend(['-p', port]) %}
 {% endfor %}
 {% endif %}
 {% if _volumes is defined %}
 {% for volume in _volumes %}
-{% do docker_options.extend(['-v', volume]) %}
+{% do docker_cmd_line.extend(['-v', volume]) %}
 {% endfor %}
 {% endif %}
 {% if container.value.user is defined %}
-{% do docker_options.extend(['-u', container.value.user]) %}
+{% do docker_cmd_line.extend(['-u', container.value.user]) %}
+{% endif %}
+{% do docker_cmd_line.extend([container.value.image_name]) %}
+{% if container.value.command is defined %}
+{% do docker_cmd_line.extend([container.value.command]) %}
 {% endif %}
 [Unit]
 Description={{ container.key }}
@@ -19,7 +23,7 @@ Description={{ container.key }}
 Restart=on-failure
 RestartSec=10
 ExecStartPre=-/usr/bin/docker rm --force {{ container.key }}
-ExecStart=/usr/bin/docker run {{ docker_options|join(' ') }} {{ container.value.image_name }} {{ container.value.command }} 
+ExecStart={{ docker_cmd_line|join(' ') }} 
 ExecStop=-/usr/bin/docker stop {{ container.key }}
 
 [Install]

@@ -1,5 +1,10 @@
 ---
 - hosts: nfs
+  pre_tasks:
+    - file: state=directory path=/srv/www/html owner=root group=root mode=0755
+    - copy: src=files/nfs/index.html dest=/srv/www/html/index.html owner=root group=root mode=0644
+
   roles:
     - rs_base
     - nfs_server
+    - rs_containers  

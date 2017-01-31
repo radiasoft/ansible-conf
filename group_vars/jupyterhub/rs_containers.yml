@@ -9,15 +9,15 @@ rs_containers:
     jupyterhub:
       command: "jupyterhub -f {{ jupyterhub.guest.conf_d }}/jupyterhub_config.py"
       image_name: "{{ jupyterhub.image_name }}"
+      on_boot: yes
+      service_state: started
+      user: "{{ jupyterhub.host.user }}"
       ports:
         - "{{ jupyterhub.host.port }}:{{ jupyterhub.guest.port }}"
-      user: "{{ jupyterhub.host.user }}"
       volumes:
         - "{{ jupyterhub.host.conf_d }}:{{ jupyterhub.guest.conf_d }}"
         - "{{ jupyterhub.host.notebook_d }}:{{ jupyterhub.guest.notebook_d }}"
         - "{{ jupyterhub.host.scratch_d }}:{{ jupyterhub.guest.scratch_d }}"
-      service_state: started
-      on_boot: yes
 
     jupyter:
       image_name: "{{ jupyterhub.jupyter.image_name }}"
