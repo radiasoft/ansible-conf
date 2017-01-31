@@ -1,4 +1,4 @@
 ---
 nfs_imports:
   jupyterhub:
-    host: jupyterhub_nfs.radia.internal
+    host: jupyterhub_nfs.internal.radiasoft
