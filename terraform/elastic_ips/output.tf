@@ -7,3 +7,11 @@ output "jupyterhub_eip_id" {
         )
     }"
 }
+
+output "jupyterhub_eip_ip" {
+    value = "${
+        map(
+            "alpha", "${aws_eip.alpha-jupyterhub.public_ip}"
+        )
+    }"
+}

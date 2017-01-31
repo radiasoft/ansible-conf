@@ -40,9 +40,9 @@ resource "aws_instance" "jupyterhub_nfs" {
     }
    
     connection {
-        user        = "centos"
         agent       = false
         private_key = "${file("${var.ansible_ssh_key}")}"
+        user        = "centos"
     }
 
     provisioner "remote-exec" {
@@ -55,7 +55,7 @@ resource "aws_instance" "jupyterhub_nfs" {
         ]
     }
     
-    associate_public_ip_address = true
+    associate_public_ip_address = true 
     vpc_security_group_ids      = [
         "${aws_security_group.internal.id}",
         "${aws_security_group.jupyterhub.id}",
@@ -63,7 +63,7 @@ resource "aws_instance" "jupyterhub_nfs" {
     depends_on                  = ["aws_internet_gateway.default"]  
 }
 
-resource "aws_eip_association" "jupyterhub_nfs_eip" {
+resource "aws_eip_association" "jupyterhub_nfs" {
   instance_id = "${aws_instance.jupyterhub_nfs.id}"
   allocation_id = "${data.terraform_remote_state.elastic_ips.jupyterhub_eip_id["${var.rs_channel}"]}"
 }

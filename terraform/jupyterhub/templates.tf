@@ -3,7 +3,7 @@ data "template_file" "ansible_inventory" {
 
     vars {
         jupyterhub_ip = "${aws_instance.jupyterhub.public_ip}"
-        jupyterhub_nfs_ip = "${aws_instance.jupyterhub_nfs.public_ip}"
+        jupyterhub_nfs_ip = "${aws_eip_association.jupyterhub_nfs.public_ip}"
         channel = "${var.rs_channel}"
     }
 }
