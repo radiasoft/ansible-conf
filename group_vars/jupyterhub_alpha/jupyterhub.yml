@@ -1,2 +1,5 @@
+---
 jupyterhub:
-  host_name: 'http://jupyterhub.radia.antropoide.net:8000'
+  host_name: 'jupyterhub.radia.antropoide.net:8000'
+  auth:
+    class: oauthenticator.GitHubOAuthenticator
