@@ -1,16 +1,16 @@
 ---
 - name: create imported mount point
-  file: path={{ nfs_import_prefix }}/{{ import_group }}/{{ item.name }} state=directory
-  with_nfs_imports: '{{ import_group }}'
+  file: path={{ nfs_import_prefix }}/{{ import_group.key }}/{{ item }} state=directory
+  with_items: "{{ import_group.value.names }}"
   loop_control:
-    label: "{{ item.hostname }}:{{ import_group }}/{{ item.name }}"
+    label: "{{ import_group.value.host }}:{{ import_group.key }}/{{ item }}"
 
 - name: mount nfs imports
   mount:
     fstype: nfs
-    name: "{{ nfs_import_prefix }}/{{ import_group }}/{{ item.name }}"
-    src: "{{ item.host.ansible_default_ipv4.address }}:{{ nfs_export_prefix }}/{{ import_group }}/{{ item.name }}" 
+    name: "{{ nfs_import_prefix }}/{{ import_group.key }}/{{ item }}"
+    src: "{{ import_group.value.host }}:{{ nfs_export_prefix }}/{{ import_group.key }}/{{ item }}" 
     state: mounted 
-  with_nfs_imports: '{{ import_group }}'
+  with_items: "{{ import_group.value.names }}"
   loop_control:
-    label: "{{ item.hostname }}:{{ import_group }}/{{ item.name }}"
+    label: "{{ import_group.value.host }}:{{ import_group.key }}/{{ item }}"

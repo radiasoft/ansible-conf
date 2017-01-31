@@ -12,7 +12,7 @@
     - nfs-server
 
 - include: manage_import.yml
-  with_items: '{{ nfs_imports }}'
+  with_dict: '{{ nfs_imports }}'
   loop_control:
     loop_var: import_group
 

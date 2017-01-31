@@ -1,0 +1,4 @@
+---
+nfs_imports:
+  jupyterhub:
+    host: radia-nfs.local

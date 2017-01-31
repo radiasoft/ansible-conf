@@ -3,3 +3,4 @@ rs_firewall:
   services:
     enabled:
       - nfs
+      - rpc-bind  
