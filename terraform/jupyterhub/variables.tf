@@ -19,3 +19,7 @@ variable "rs_channel" {
 variable "private_domain" {
     default = "internal.radiasoft"
 }
+
+variable "deploy_env" {
+    default = "ec2"
+}

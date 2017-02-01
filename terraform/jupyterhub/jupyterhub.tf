@@ -19,14 +19,6 @@ resource "aws_security_group" "jupyterhub" {
     }
     
     ingress {
-        from_port = 443
-        to_port   = 443
-        protocol  = "tcp"
-
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-    
-    ingress {
         from_port = 8
         to_port   = 0
         protocol  = "icmp"
@@ -55,28 +47,21 @@ resource "aws_instance" "jupyterhub" {
         volume_type = "gp2"
     }
 
-    connection {
-        user        = "centos"
-        agent       = false
-        private_key = "${file("${var.ansible_ssh_key}")}"
-    }
-
-    provisioner "remote-exec" {
-        inline = [
-            "/usr/bin/sudo -i /bin/mkdir -p /etc/ansible/facts.d",
-            "/usr/bin/sudo -i /bin/bash  -c \"echo '\"ec2\"' > /etc/ansible/facts.d/deploy_env.fact\"",
-            "/usr/bin/sudo -i /bin/mv /home/centos/.ssh/authorized_keys /root/.ssh",
-            "/usr/bin/sudo -i /bin/chown -R root:root /root/.ssh",
-            "/usr/bin/sudo -i /usr/sbin/userdel -f -r centos",
-        ]
-    }
-
     associate_public_ip_address = true
-    vpc_security_group_ids      = [
+
+    vpc_security_group_ids = [
         "${aws_security_group.internal.id}",
         "${aws_security_group.jupyterhub.id}",
     ]
-    depends_on                  = ["aws_internet_gateway.default"]  
+
+    depends_on = ["aws_internet_gateway.default"]  
+}
+
+module "jupyterhub_provision" {
+    host        = "${aws_instance.jupyterhub.public_ip}"
+    instance_id = "${aws_instance.jupyterhub.id}" 
+    source      = "../modules/aws_centos7_init"
+    ssh_key     = "${file("${var.ansible_ssh_key}")}"
 }
 
 resource "aws_route53_record" "jupyterhub_private" {
@@ -88,6 +73,6 @@ resource "aws_route53_record" "jupyterhub_private" {
 }
 
 resource "aws_eip_association" "jupyterhub" {
-    instance_id = "${aws_instance.jupyterhub.id}"
     allocation_id = "${data.terraform_remote_state.elastic_ips.jupyterhub_eip_id["${var.rs_channel}"]}"
+    instance_id   = "${aws_instance.jupyterhub.id}"
 }
