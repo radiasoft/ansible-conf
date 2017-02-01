@@ -51,7 +51,7 @@ resource "aws_instance" "jupyterhub_nfs" {
     
     vpc_security_group_ids = [
         "${aws_security_group.internal.id}",
-        "${aws_security_group.jupyterhub.id}",
+        "${aws_security_group.jupyterhub_nfs.id}",
     ]
 
     depends_on = ["aws_internet_gateway.default"]  
