@@ -1,5 +1,7 @@
 ---
 dependencies:
+  - role: vm_swap
+    when: "{{ ansible_local.deploy_env == 'ec2' }}"
   - geerlingguy.repo-epel
   - timesync
   - rs_firewall  

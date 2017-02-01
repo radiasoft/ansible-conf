@@ -1,0 +1,11 @@
+[Unit]
+Description=Encrypted Swap File
+Requires=systemd-cryptsetup@swapfile.service
+After=systemd-cryptsetup@swapfile.service
+Before=swap.target
+
+[Swap]
+What=/dev/mapper/swapfile
+
+[Install]
+WantedBy=swap.target

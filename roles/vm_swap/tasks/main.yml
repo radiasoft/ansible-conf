@@ -1,0 +1,36 @@
+---
+- name: create secure directory for swapfile
+  file: state=directory path=/var/vm owner=root group=root mode=0700
+
+- name: allocate swapfile
+  command: /usr/bin/fallocate -l 1G /var/vm/swapfile.crypt
+  args:
+    creates: /var/vm/swapfile.crypt
+
+- name: secure permissions for swapfile
+  file: state=file path=/var/vm/swapfile.crypt owner=root group=root mode=0600
+
+- name: copy encrypted swapfile service
+  copy: 
+    dest: /etc/systemd/system/systemd-cryptsetup@swapfile.service 
+    group: root
+    mode: 0644
+    owner: root 
+    src: systemd-cryptsetup@swapfile.service
+  register: swap_cryptsetup_service
+
+- name: copy systemd swapfile
+  copy:
+    dest: /etc/systemd/system/dev-mapper-swapfile.swap
+    group: root
+    mode: 0644
+    owner: root
+    src: dev-mapper-swapfile.swap
+  register: swap_service
+
+- name: enable swapfile on systemd
+  systemd: 
+    name: dev-mapper-swapfile.swap
+    daemon_reload: "{{ swap_service|changed }}"
+    enabled: yes
+    state: started
