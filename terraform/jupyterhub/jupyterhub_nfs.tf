@@ -11,8 +11,16 @@ resource "aws_security_group" "jupyterhub_nfs" {
     }
     
     ingress {
-        from_port = 8080
-        to_port   = 8080
+        from_port = 80
+        to_port   = 80
+        protocol  = "tcp"
+
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    
+    ingress {
+        from_port = 443
+        to_port   = 443
         protocol  = "tcp"
 
         cidr_blocks = ["0.0.0.0/0"]
@@ -70,4 +78,9 @@ resource "aws_route53_record" "jupyterhub_nfs_private" {
     ttl     = "60"
     type    = "A"
     zone_id = "${aws_route53_zone.private.zone_id}"
+}
+
+resource "aws_eip_association" "jupyterhub_nfs" {
+    allocation_id = "${data.terraform_remote_state.elastic_ips.jupyterhub_eip_id["${var.rs_channel}"]}"
+    instance_id   = "${aws_instance.jupyterhub_nfs.id}"
 }

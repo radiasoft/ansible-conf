@@ -11,14 +11,6 @@ resource "aws_security_group" "jupyterhub" {
     }
     
     ingress {
-        from_port = 8000
-        to_port   = 8000
-        protocol  = "tcp"
-
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-    
-    ingress {
         from_port = 8
         to_port   = 0
         protocol  = "icmp"
@@ -70,9 +62,4 @@ resource "aws_route53_record" "jupyterhub_private" {
     ttl     = "60"
     type    = "A"
     zone_id = "${aws_route53_zone.private.zone_id}"
-}
-
-resource "aws_eip_association" "jupyterhub" {
-    allocation_id = "${data.terraform_remote_state.elastic_ips.jupyterhub_eip_id["${var.rs_channel}"]}"
-    instance_id   = "${aws_instance.jupyterhub.id}"
 }

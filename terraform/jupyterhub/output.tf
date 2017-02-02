@@ -1,9 +1,9 @@
 output "jupyterhub_ip" {
-    value = "${aws_eip_association.jupyterhub.public_ip}"
+    value = "${aws_instance.jupyterhub.public_ip}"
 }
 
 output "jupyterhub_nfs_ip" {
-    value = "${aws_instance.jupyterhub_nfs.public_ip}"
+    value = "${aws_eip_association.jupyterhub_nfs.public_ip}"
 }
 
 output "ansible_inventory" {
