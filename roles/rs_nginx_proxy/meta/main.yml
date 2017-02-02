@@ -1,0 +1,7 @@
+---
+dependencies:
+  - rs_global_defaults
+  - rs_ssl
+  - rs_nginx_proxy/setup
+  - role: rs_containers
+    rs_containers: "{{ nginx_proxy_container }}"

@@ -7,4 +7,5 @@
   roles:
     - rs_base
     - nfs_server
-    - rs_containers  
+    - rs_nginx_proxy
+    - rs_containers

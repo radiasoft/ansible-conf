@@ -1,0 +1,16 @@
+---
+nginx_conf_d: /etc/nginx/conf.d
+nginx_proxy_container:
+  want_docker_sock: no
+  containers:
+    nginx_proxy:
+      image_name: nginx
+      on_boot: yes
+      service_state: started
+      ports:
+        - 80:80
+        - 443:433
+      volumes:
+        - "{{ nginx_conf_d }}:{{ nginx_conf_d }}"  
+        - "{{ ssl_storage.certs }}:{{ ssl_storage.certs }}" 
+        - "{{ ssl_storage.private }}:{{ ssl_storage.private }}"

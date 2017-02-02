@@ -1,0 +1,21 @@
+server {
+    listen 80;
+    server_name {{ item.key }};
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443;
+    server_name {{ item.key }};
+
+    ssl on;
+    ssl_certificate {{ ssl_storage.certs }}/{{ ssl_radia_star }}.crt;
+    ssl_certificate_key {{ ssl_storage.private }}/{{ ssl_radia_star }}.key;
+
+    location / {
+        proxy_http_version 1.1;
+        proxy_pass {{ item.value }};
+        proxy_set_header Connection $http_connection;
+        proxy_set_header Upgrade $http_upgrade;
+    }
+}

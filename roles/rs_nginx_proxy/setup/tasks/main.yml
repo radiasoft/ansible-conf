@@ -1,0 +1,9 @@
+---
+- name: nginx log directory
+  file: state=directory path=/var/log/nginx owner=root group=root mode=755
+  
+- name: nginx config directory
+  file: state=directory path=/etc/nginx/conf.d owner=root group=root mode=755
+
+- include: manage_proxy_entry.yml
+  with_dict: "{{ rs_nginx_proxy }}"

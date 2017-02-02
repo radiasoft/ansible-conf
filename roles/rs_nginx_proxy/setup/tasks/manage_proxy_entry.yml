@@ -1,0 +1,8 @@
+---
+- name: nginx config for {{ item.key }}
+  template:
+    dest: "{{ nginx_conf_d }}/{{ item.key }}.conf"
+    group: root
+    mode: 0640
+    owner: root
+    src: nginx_conf.jinja
