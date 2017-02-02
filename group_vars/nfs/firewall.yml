@@ -1,9 +1,5 @@
 ---
 rs_firewall:
-  ports:
-    open:
-      - 8080/tcp
-
   services:
     enabled:
       - http  

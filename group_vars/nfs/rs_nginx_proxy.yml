@@ -1,3 +1,3 @@
 ---
 rs_nginx_proxy:
-  alpha-jupyterhub.radiasoft.org: http://jupyterhub.internal.radiasoft:8000
+  alpha-jupyter.radiasoft.org: http://jupyterhub.internal.radiasoft:8000
