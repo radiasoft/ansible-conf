@@ -83,4 +83,5 @@ resource "aws_route53_record" "jupyterhub_nfs_private" {
 resource "aws_eip_association" "jupyterhub_nfs" {
     allocation_id = "${data.terraform_remote_state.elastic_ips.jupyterhub_eip_id["${var.rs_channel}"]}"
     instance_id   = "${aws_instance.jupyterhub_nfs.id}"
+    depends_on    = ["aws_instance.jupyterhub_nfs", "module.jupyterhub_nfs_provision"]
 }
