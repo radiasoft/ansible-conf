@@ -7,7 +7,7 @@
 
 - set_fact:
     _volumes: "{{ _volumes + ['{{docker_sock_path}}:{{docker_sock_path}}'] }}"
-  when: "{{ rs_containers.want_docker_sock }}"
+  when: "{{ container.want_docker_sock | default(False) }}"
 
 - block:
     - name: install systemd service for {{ container.key }}

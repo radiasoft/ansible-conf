@@ -1,7 +1,6 @@
 ---
 nginx_conf_d: /etc/nginx/conf.d
 nginx_proxy_container:
-  want_docker_sock: no
   containers:
     nginx_proxy:
       image_name: nginx

@@ -30,11 +30,12 @@ jupyterhub:
     scratch_d: "{{ nfs_import_prefix }}/jupyterhub/scratch"
     user: root
   postgresql:
-    db_pass: ''
+    db_pass: null
     host_data_d: null 
     host_home_d: null
     host_run_d: null
-    name: postgresql-jupyterhub
+    image_name: radiasoft/postgresql-jupyterhub
+    name: postgresql
   jupyter:
     image_name: "radiasoft/beamsim-jupyter:{{ rs_channel }}"
     guest:

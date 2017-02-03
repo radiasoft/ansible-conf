@@ -4,7 +4,6 @@
 # and it is meant as invocation parameter for rs_containers. The information that
 # it encodes is meant to be private.
 rs_containers:
-  want_docker_sock: yes
   containers:
     jupyterhub:
       command: "jupyterhub -f {{ jupyterhub.guest.conf_d }}/jupyterhub_config.py"
@@ -12,6 +11,7 @@ rs_containers:
       on_boot: yes
       service_state: started
       user: "{{ jupyterhub.host.user }}"
+      want_docker_sock: yes
       ports:
         - "{{ jupyterhub.host.port }}:{{ jupyterhub.guest.port }}"
       volumes:
@@ -22,3 +22,8 @@ rs_containers:
     jupyter:
       image_name: "{{ jupyterhub.jupyter.image_name }}"
       state: absent
+
+    "{{ jupyterhub.postgresql.name }}":
+      image_name: "{{ jupyterhub.postgresql.image_name }}" 
+      on_boot: yes
+      service_state: stopped
