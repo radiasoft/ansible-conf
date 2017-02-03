@@ -1,5 +1,5 @@
 ---
 jupyterhub:
-  host_name: 'alpha-jupyter.radiasoft.org:8000'
+  host_name: 'alpha-jupyter.radiasoft.org'
   auth:
     class: oauthenticator.GitHubOAuthenticator
