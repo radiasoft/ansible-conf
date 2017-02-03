@@ -10,6 +10,7 @@
     - lsof
     - openssl
     - screen
+    - strace  
     - tar
     - tcpdump
     - telnet
