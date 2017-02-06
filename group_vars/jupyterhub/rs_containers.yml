@@ -27,3 +27,4 @@ rs_containers:
       image_name: "{{ jupyterhub.postgresql.image_name }}" 
       on_boot: yes
       service_state: stopped
+      volumes:

@@ -26,6 +26,7 @@
     - rs_containers
     
   tasks:
+    - include: tasks/jupyterhub/postgresql.yml
     - name: restart jupyterhub service
       systemd: name=jupyterhub.service state=restarted
       when: jupyterhub_config|changed

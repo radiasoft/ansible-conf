@@ -31,9 +31,14 @@ jupyterhub:
     user: root
   postgresql:
     db_pass: null
-    host_data_d: null 
-    host_home_d: null
-    host_run_d: null
+    sentinel_f: PG_VERSION
+    host:
+      data_d: "{{ nfs_import_prefix }}/postgresql/data"
+      home_d: "{{ nfs_import_prefix }}/postgresql"
+      run_d: "{{ nfs_import_prefix }}/postgresql/run"
+    guest:
+      data_d: /var/lib/postgresql/data
+      run_d: /run/postgresql
     image_name: radiasoft/postgresql-jupyterhub
     name: postgresql
   jupyter:
