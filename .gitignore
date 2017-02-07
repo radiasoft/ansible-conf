@@ -2,7 +2,6 @@
 *.swp
 .venv
 *.retry
-secret.yml
 *.pyc
 *.log
 terraform.tfstate*

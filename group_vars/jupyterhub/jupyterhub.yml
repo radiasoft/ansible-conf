@@ -7,16 +7,16 @@
 jupyterhub:
   admin_users: []
   aux_contents: ''
-  cookie_secret: change me
+  cookie_secret: null
   debug: no
   host_name: null
   image_name: 'radiasoft/jupyterhub:{{ rs_channel }}'
-  proxy_auth_token: change me
+  proxy_auth_token: null
   auth:
     class: jupyterhub.auth.PAMAuthenticator
     github:
-      client_id: ''
-      client_secret: ''
+      client_id: null
+      client_secret: null
   guest:
     conf_d: /srv/jupyterhub/conf
     notebook_d: "{{ nfs_import_prefix }}/jupyterhub/notebook"
@@ -30,7 +30,10 @@ jupyterhub:
     scratch_d: "{{ nfs_import_prefix }}/jupyterhub/scratch"
     user: root
   postgresql:
+    admin_pass: null
     db_pass: null
+    image_name: radiasoft/postgresql-jupyterhub
+    name: postgresql
     sentinel_f: PG_VERSION
     host:
       data_d: "{{ nfs_import_prefix }}/postgresql/data"
@@ -39,8 +42,7 @@ jupyterhub:
     guest:
       data_d: /var/lib/postgresql/data
       run_d: /run/postgresql
-    image_name: radiasoft/postgresql-jupyterhub
-    name: postgresql
+      user: postgres 
   jupyter:
     image_name: "radiasoft/beamsim-jupyter:{{ rs_channel }}"
     guest:

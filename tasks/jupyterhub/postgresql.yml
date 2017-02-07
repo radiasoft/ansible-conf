@@ -1,1 +1,19 @@
 ---
+- set_fact: _pg_container={{ rs_containers.containers.postgresql }}
+
+- name: postgresql ancillary directories exist
+  file: state=directory owner=vagrant group=vagrant path={{ item }} mode=0700
+  with_items:
+    - "{{ jupyterhub.postgresql.host.data_d }}"
+    - "{{ jupyterhub.postgresql.host.run_d }}"
+
+- name: run init script
+  command: >
+    /usr/bin/docker run --rm -e POSTGRES_PASSWORD -e JPY_PSQL_PASSWORD -u {{ _pg_container.user }}
+    -v {{ _pg_container.volumes[0] }} -v {{ _pg_container.volumes[1] }}
+    {{ _pg_container.image_name }} /bin/bash /radia-init.sh
+  args:
+    creates: "{{ jupyterhub.postgresql.host.data_d }}/{{ jupyterhub.postgresql.sentinel_f }}"
+  environment:
+    JPY_PSQL_PASSWORD: "{{ jupyterhub.postgresql.db_pass }}"
+    POSTGRES_PASSWORD: "{{ jupyterhub.postgresql.admin_pass }}"
