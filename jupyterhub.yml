@@ -30,8 +30,7 @@
     
   tasks:
     - include: tasks/jupyterhub/postgresql.yml
-      tags:
-        - test
+    
     - name: restart jupyterhub service
       systemd: name=jupyterhub.service state=restarted
       when: jupyterhub_config|changed
