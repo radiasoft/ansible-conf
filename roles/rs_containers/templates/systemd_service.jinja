@@ -4,6 +4,11 @@
 {% do docker_cmd_line.extend(['-p', port]) %}
 {% endfor %}
 {% endif %}
+{% if container.value.links is defined %}
+{% for container in container.value.links %}
+{% do docker_cmd_line.extend(['--link', container]) %}
+{% endfor %}
+{% endif %}
 {% if _volumes is defined %}
 {% for volume in _volumes %}
 {% do docker_cmd_line.extend(['-v', volume]) %}

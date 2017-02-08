@@ -38,9 +38,11 @@ jupyterhub:
     host:
       data_d: "{{ nfs_import_prefix }}/postgresql/data"
       home_d: "{{ nfs_import_prefix }}/postgresql"
+      port: 5432
       run_d: "{{ nfs_import_prefix }}/postgresql/run"
     guest:
       data_d: /var/lib/postgresql/data
+      port: 5432
       run_d: /run/postgresql
       user: postgres 
   jupyter:
