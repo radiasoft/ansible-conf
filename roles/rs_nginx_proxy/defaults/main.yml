@@ -2,8 +2,8 @@
 nginx_conf_d: /etc/nginx/conf.d
 nginx_proxy_container:
   containers:
-    nginx_proxy:
-      image_name: nginx
+    - image_name: nginx
+      name: nginx_proxy
       on_boot: yes
       service_state: started
       ports:

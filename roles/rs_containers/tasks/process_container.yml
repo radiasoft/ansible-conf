@@ -1,36 +1,36 @@
 ---
-- name: pull docker image {{ container.value.image_name }}
-  docker_image: name={{ container.value.image_name }}
+- name: pull docker image {{ container.image_name }}
+  docker_image: name={{ container.image_name }}
 
 - set_fact:
-    _volumes: "{{ container.value.volumes | default([]) }}"
+    _volumes: "{{ container.volumes | default([]) }}"
 
 - set_fact:
     _volumes: "{{ _volumes + ['{{docker_sock_path}}:{{docker_sock_path}}'] }}"
-  when: "{{ container.value.want_docker_sock | default(false) }}"
+  when: "{{ container.want_docker_sock | default(false) }}"
 
 - block:
-    - name: install systemd service for {{ container.key }}
+    - name: install systemd service for {{ container.name }}
       template: 
         src: templates/systemd_service.jinja
-        dest: '/etc/systemd/system/{{ container.key }}.service'
+        dest: '/etc/systemd/system/{{ container.name }}.service'
         owner: root
         group: root
         mode: 0644
       register: docker_service_installed
 
-    - name: enable systemd service for {{ container.key }}
+    - name: enable systemd service for {{ container.name }}
       systemd:
-        name: "{{ container.key }}.service"
+        name: "{{ container.name }}.service"
         daemon_reload: yes
-        state: "{{ container.value.service_state }}"
-        enabled: "{{ container.value.on_boot }}"
+        state: "{{ container.service_state }}"
+        enabled: "{{ container.on_boot }}"
       when: docker_service_installed|changed
     
-    - name: restart systemd service for {{ container.key }}
+    - name: restart systemd service for {{ container.name }}
       systemd:
-        name: "{{ container.key }}.service"
+        name: "{{ container.name }}.service"
         state: restarted
-      when: "{{ docker_service_installed|changed and container.value.service_state == 'started' }}"
+      when: "{{ docker_service_installed|changed and container.service_state == 'started' }}"
 
-  when: "{{ docker_systemd_service and container.value.state|default('present') == 'present' }}"
+  when: "{{ container.state|default('present') == 'present' }}"

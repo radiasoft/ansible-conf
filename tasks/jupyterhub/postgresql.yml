@@ -1,5 +1,5 @@
 ---
-- set_fact: _pg_container={{ rs_containers.containers.postgresql }}
+- set_fact: _pg_container={{ rs_containers.containers | selectattr('name', 'equalto', jupyterhub.postgresql.name) | first }}
 
 - name: postgresql ancillary directories exist
   file: state=directory owner=vagrant group=vagrant path={{ item }} mode=0700

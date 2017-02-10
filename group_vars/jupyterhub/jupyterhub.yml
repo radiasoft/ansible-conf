@@ -11,6 +11,7 @@ jupyterhub:
   debug: no
   host_name: null
   image_name: 'radiasoft/jupyterhub:{{ rs_channel }}'
+  name: jupyterhub
   proxy_auth_token: null
   auth:
     class: jupyterhub.auth.PAMAuthenticator
@@ -36,10 +37,9 @@ jupyterhub:
     name: postgresql
     sentinel_f: PG_VERSION
     host:
-      data_d: "{{ nfs_import_prefix }}/postgresql/data"
-      home_d: "{{ nfs_import_prefix }}/postgresql"
+      data_d: "/var/lib/postgresql/data"
       port: 5432
-      run_d: "{{ nfs_import_prefix }}/postgresql/run"
+      run_d: "/var/lib/postgresql/run"
     guest:
       data_d: /var/lib/postgresql/data
       port: 5432
