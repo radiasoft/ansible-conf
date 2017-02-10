@@ -45,7 +45,7 @@ resource "aws_security_group" "jupyterhub_nfs" {
 
 resource "aws_instance" "jupyterhub_nfs" {
     ami           = "${lookup(var.amis, var.aws_region)}"
-    instance_type = "t2.micro"
+    instance_type = "t2.nano"
     key_name      = "${aws_key_pair.ansible.key_name}"
     subnet_id     = "${aws_subnet.public.id}"
     
