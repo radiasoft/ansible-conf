@@ -18,8 +18,8 @@ class _Spawner(DockerSpawner):
         return binds
 
 c.Authenticator.admin_users = set([{{ jupyterhub.admin_users|join(',') }}])
-c.Authenticator.http_timeout = 60
 c.DockerSpawner.container_image = '{{ jupyterhub.jupyter.image_name }}'
+c.DockerSpawner.http_timeout = 60
 c.DockerSpawner.remove_containers = True
 c.DockerSpawner.use_internal_ip = True
 c.DockerSpawner.volumes = {

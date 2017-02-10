@@ -29,7 +29,7 @@ resource "aws_security_group" "jupyterhub" {
 
 resource "aws_instance" "jupyterhub" {
     ami           = "${lookup(var.amis, var.aws_region)}"
-    instance_type = "t2.small"
+    instance_type = "t2.micro"
     key_name      = "${aws_key_pair.ansible.key_name}"
     subnet_id     = "${aws_subnet.public.id}"
     
