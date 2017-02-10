@@ -1,0 +1,6 @@
+---
+dependencies:
+  - jupyterhub_nfs/pre 
+  - rs_base
+  - nfs_server
+  - rs_nginx_proxy

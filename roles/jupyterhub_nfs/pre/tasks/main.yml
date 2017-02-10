@@ -1,0 +1,6 @@
+---
+- name: ensure html serve directory exists
+  file: state=directory path=/srv/www/html owner=root group=root mode=0755
+
+- name: copy default index.html
+  copy: src=index.html dest=/srv/www/html/index.html owner=root group=root mode=0644
