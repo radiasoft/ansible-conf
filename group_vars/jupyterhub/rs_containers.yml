@@ -5,22 +5,6 @@
 # it encodes is meant to be private.
 rs_containers:
   containers:
-    jupyterhub:
-      command: "jupyterhub -f {{ jupyterhub.guest.conf_d }}/jupyterhub_config.py"
-      image_name: "{{ jupyterhub.image_name }}"
-      on_boot: yes
-      service_state: started
-      user: "{{ jupyterhub.host.user }}"
-      want_docker_sock: yes
-      links:
-        - postgresql
-      ports:
-        - "{{ jupyterhub.host.port }}:{{ jupyterhub.guest.port }}"
-      volumes:
-        - "{{ jupyterhub.host.conf_d }}:{{ jupyterhub.guest.conf_d }}"
-        - "{{ jupyterhub.host.notebook_d }}:{{ jupyterhub.guest.notebook_d }}"
-        - "{{ jupyterhub.host.scratch_d }}:{{ jupyterhub.guest.scratch_d }}"
-
     jupyter:
       image_name: "{{ jupyterhub.jupyter.image_name }}"
       state: absent
@@ -36,3 +20,22 @@ rs_containers:
       volumes:
         - "{{ jupyterhub.postgresql.host.data_d }}:{{ jupyterhub.postgresql.guest.data_d }}"
         - "{{ jupyterhub.postgresql.host.run_d }}:{{ jupyterhub.postgresql.guest.run_d }}"
+    
+    jupyterhub:
+      command: "jupyterhub -f {{ jupyterhub.guest.conf_d }}/jupyterhub_config.py"
+      image_name: "{{ jupyterhub.image_name }}"
+      on_boot: yes
+      service_state: started
+      user: "{{ jupyterhub.host.user }}"
+      want_docker_sock: yes
+      after:
+        - postgresql
+      links:
+        - postgresql
+      ports:
+        - "{{ jupyterhub.host.port }}:{{ jupyterhub.guest.port }}"
+      volumes:
+        - "{{ jupyterhub.host.conf_d }}:{{ jupyterhub.guest.conf_d }}"
+        - "{{ jupyterhub.host.notebook_d }}:{{ jupyterhub.guest.notebook_d }}"
+        - "{{ jupyterhub.host.scratch_d }}:{{ jupyterhub.guest.scratch_d }}"
+
