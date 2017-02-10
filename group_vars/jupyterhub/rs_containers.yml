@@ -25,7 +25,7 @@ rs_containers:
       image_name: "{{ jupyterhub.image_name }}"
       name: "{{ jupyterhub.name }}" 
       on_boot: yes
-      service_state: started
+      service_state: stopped
       user: "{{ jupyterhub.host.user }}"
       want_docker_sock: yes
       after:

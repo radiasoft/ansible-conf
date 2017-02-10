@@ -1,0 +1,9 @@
+---
+dependencies:
+  - rs_vars
+  - rs_base
+  - jupyterhub/pre
+  - nfs_client
+  - rs_containers
+  - jupyterhub/postgresql
+  - jupyterhub/services 

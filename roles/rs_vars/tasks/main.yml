@@ -1,0 +1,3 @@
+---
+- name: include secret vars for {{ rs_role }}:{{ rs_channel }}
+  include_vars: "vars/secret/{{ rs_role }}/{{ rs_channel }}.yml" 

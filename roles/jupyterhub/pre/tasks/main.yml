@@ -1,0 +1,16 @@
+---
+- name: jupyterhub configuration directory
+  file: 
+    group: root
+    mode: 0640
+    owner: root
+    path: '{{ jupyterhub.host.conf_d }}'
+    state: directory
+
+- name: write jupyterhub configuration
+  template:
+    dest: '{{ jupyterhub.host.conf_d }}/jupyterhub_config.py'
+    group: 0640
+    owner: root
+    src: jupyterhub_config.py.jinja
+  register: jupyterhub_config
