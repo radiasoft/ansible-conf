@@ -1,5 +1,5 @@
 ---
 - hosts: mpi_cluster_master
   roles:
-    - nfs
-    - jupyterhub
+    - jupyterhub_nfs
+    - jupyterhub  

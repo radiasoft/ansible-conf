@@ -5,7 +5,7 @@ radia-nfs.local
 jupyterhub.local
 
 [mpi_cluster_master_vagrant]
-cluster1.local
+cluster-master.local
 
 [mpi_cluster_slave_vagrant]
-cluster2.local
+cluster-slave.local

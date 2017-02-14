@@ -1,0 +1,2 @@
+jupyterhub:
+  host_name: 'cluster-master.local:8000'

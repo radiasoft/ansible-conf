@@ -1,2 +1,94 @@
 ---
+jupyterhub:
+  admin_users: []
+  aux_contents: ''
+  cookie_secret: null
+  debug: no
+  host_name: null
+  image_name: 'radiasoft/jupyterhub:{{ rs_channel }}'
+  name: jupyterhub
+  proxy_auth_token: null
+  auth:
+    class: jupyterhub.auth.PAMAuthenticator
+    github:
+      client_id: null
+      client_secret: null
+  guest:
+    conf_d: /srv/jupyterhub/conf
+    notebook_d: "{{ nfs_import_prefix }}/jupyterhub/notebook"
+    port: 8000
+    scratch_d: "{{ nfs_import_prefix }}/jupyterhub/scratch"
+    user: root
+  host:
+    conf_d: /var/lib/jupyterhub/conf
+    notebook_d: "{{ nfs_import_prefix }}/jupyterhub/notebook"
+    port: 8000
+    scratch_d: "{{ nfs_import_prefix }}/jupyterhub/scratch"
+    user: root
+  postgresql:
+    admin_pass: null
+    db_pass: null
+    image_name: radiasoft/postgresql-jupyterhub
+    name: postgresql
+    sentinel_f: PG_VERSION
+    host:
+      data_d: "/var/lib/postgresql/data"
+      port: 5432
+      run_d: "/var/lib/postgresql/run"
+    guest:
+      data_d: /var/lib/postgresql/data
+      port: 5432
+      run_d: /run/postgresql
+      user: postgres 
+  jupyter:
+    image_name: "radiasoft/beamsim-jupyter:{{ rs_channel }}"
+    guest:
+      notebook_d: /home/vagrant/jupyter
+      scratch_d: /home/vagrant/scratch
+      user: vagrant 
+
+nfs_imports:
+  jupyterhub:
+    host: null
+    names:
+      - notebook  
+      - postgresql  
+      - scratch
+
+jupyterhub_rs_containers:
+  containers:
+    - image_name: "{{ jupyterhub.jupyter.image_name }}"
+      name: jupyter
+      state: absent
+
+    - command: postgres
+      image_name: "{{ jupyterhub.postgresql.image_name }}" 
+      name: "{{ jupyterhub.postgresql.name }}" 
+      on_boot: yes
+      service_state: stopped
+      user: "{{ jupyterhub.postgresql.guest.user }}"
+      ports:
+        - "{{ jupyterhub.postgresql.host.port }}:{{ jupyterhub.postgresql.guest.port }}"
+      volumes:
+        - "{{ jupyterhub.postgresql.host.data_d }}:{{ jupyterhub.postgresql.guest.data_d }}"
+        - "{{ jupyterhub.postgresql.host.run_d }}:{{ jupyterhub.postgresql.guest.run_d }}"
+    
+    - command: "jupyterhub -f {{ jupyterhub.guest.conf_d }}/jupyterhub_config.py"
+      image_name: "{{ jupyterhub.image_name }}"
+      name: "{{ jupyterhub.name }}" 
+      on_boot: yes
+      service_state: stopped
+      user: "{{ jupyterhub.host.user }}"
+      want_docker_sock: yes
+      after:
+        - postgresql
+      links:
+        - postgresql
+      ports:
+        - "{{ jupyterhub.host.port }}:{{ jupyterhub.guest.port }}"
+      volumes:
+        - "{{ jupyterhub.host.conf_d }}:{{ jupyterhub.guest.conf_d }}"
+        - "{{ jupyterhub.host.notebook_d }}:{{ jupyterhub.guest.notebook_d }}"
+        - "{{ jupyterhub.host.scratch_d }}:{{ jupyterhub.guest.scratch_d }}"
+
 rs_role: jupyterhub

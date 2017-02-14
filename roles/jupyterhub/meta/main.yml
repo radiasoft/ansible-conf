@@ -4,6 +4,8 @@ dependencies:
   - rs_base
   - jupyterhub/pre
   - nfs_client
-  - rs_containers
-  - jupyterhub/postgresql
+  - role: rs_containers
+    rs_containers: "{{ jupyterhub_rs_containers }}"
+  - role: jupyterhub/postgresql
+    rs_containers: "{{ jupyterhub_rs_containers }}"
   - jupyterhub/services 
