@@ -19,6 +19,16 @@ VM_CONFIG = {
         'box' => 'centos/7',
         'autostart' => false,
     },
+    'cluster1' => {
+        'ip' => '10.10.10.202',
+        'box' => 'centos/7',
+        'autostart' => false,
+    },
+    'cluster2' => {
+        'ip' => '10.10.10.203',
+        'box' => 'centos/7',
+        'autostart' => false,
+    },
 }
 
 def config_vm(config, vm_name)

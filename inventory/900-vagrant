@@ -1,0 +1,11 @@
+[nfs_vagrant]
+radia-nfs.local
+
+[jupyterhub_vagrant]
+jupyterhub.local
+
+[mpi_cluster_master_vagrant]
+cluster1.local
+
+[mpi_cluster_slave_vagrant]
+cluster2.local

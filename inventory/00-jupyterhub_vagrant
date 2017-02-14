@@ -1,5 +1,0 @@
-[nfs_vagrant]
-radia-nfs.local
-
-[jupyterhub_vagrant]
-jupyterhub.local

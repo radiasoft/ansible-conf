@@ -1,7 +1,0 @@
-[alpha:children]
-jupyterhub_alpha
-nfs_alpha
-
-[vagrant:children]
-jupyterhub_vagrant
-nfs_vagrant
