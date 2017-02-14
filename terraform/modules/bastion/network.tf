@@ -1,12 +1,8 @@
-resource "aws_internet_gateway" "bastion" {
-    vpc_id = "${var.vpc_id}"
-}
-
 resource "aws_route_table" "bastion" {
     vpc_id = "${var.vpc_id}"
 
     route {
-        gateway_id = "${aws_internet_gateway.bastion.id}"
+        gateway_id = "${var.internet_gw_id}"
         cidr_block = "0.0.0.0/0"
     }
 }

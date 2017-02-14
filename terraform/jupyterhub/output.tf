@@ -1,11 +1,8 @@
-output "jupyterhub_ip" {
-    value = "${aws_instance.jupyterhub.public_ip}"
-}
-
-output "jupyterhub_nfs_ip" {
-    value = "${aws_eip_association.jupyterhub_nfs.public_ip}"
+output "bastion_ip" {
+    value = "${module.bastion.bastion_public_ip}"
 }
 
 output "ansible_inventory" {
     value = "${data.template_file.ansible_inventory.rendered}"
 }
+

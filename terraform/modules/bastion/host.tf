@@ -6,8 +6,6 @@ resource "aws_instance" "bastion" {
     
     associate_public_ip_address = true
     
-    depends_on = ["aws_internet_gateway.bastion"]  
-
     vpc_security_group_ids = [
         "${aws_security_group.bastion.id}",
     ]
