@@ -46,7 +46,7 @@ resource "aws_security_group" "jupyterhub_nfs" {
 resource "aws_instance" "jupyterhub_nfs" {
     ami           = "${lookup(var.amis, var.aws_region)}"
     instance_type = "t2.nano"
-    key_name      = "${aws_key_pair.ansible.key_name}"
+    key_name      = "${aws_key_pair.provision.key_name}"
     subnet_id     = "${aws_subnet.public.id}"
     
     root_block_device {
@@ -69,7 +69,7 @@ module "jupyterhub_nfs_provision" {
     host        = "${aws_instance.jupyterhub_nfs.public_ip}"
     instance_id = "${aws_instance.jupyterhub_nfs.id}" 
     source      = "../modules/aws_centos7_init"
-    ssh_key     = "${file("${var.ansible_ssh_key}")}"
+    ssh_key     = "${file("${var.provision_ssh_key}")}"
 }
 
 resource "aws_route53_record" "jupyterhub_nfs_private" {
