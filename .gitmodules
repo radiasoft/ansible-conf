@@ -4,3 +4,6 @@
 [submodule "deps/ansible-role-repo-epel"]
 	path = deps/ansible-role-repo-epel
 	url = https://github.com/geerlingguy/ansible-role-repo-epel.git
+[submodule "deps/jdauphant.ssl-certs"]
+	path = deps/jdauphant.ssl-certs
+	url = https://github.com/jdauphant/ansible-role-ssl-certs.git

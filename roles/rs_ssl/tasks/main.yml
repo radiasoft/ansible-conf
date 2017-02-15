@@ -1,14 +1,15 @@
 ---
 - name: ssl private permissions
-  file: path={{ ssl_storage.private }} state=directory owner=root group=root mode=0750
+  file: path={{ ssl_storage.private }} state=file owner=root group=root mode=0750
 
 - name: copy radia start ssl certs
   copy: 
-    src: "{{ ssl_radia_star }}.{{ item.ext }}"
-    dest: "{{ item.path }}/{{ ssl_radia_star }}.{{ item.ext }}" 
-    owner: root 
+    dest: "{{ item.path }}" 
     group: root 
     mode: 0640
+    owner: root 
+    src: "star.radiasoft.org.{{ item.ext }}"
   with_items:
     - { path: "{{ ssl_storage.certs }}", ext: crt }
     - { path: "{{ ssl_storage.private }}", ext: key }
+  when: ansible_local.deploy_env != 'vagrant'

@@ -1,0 +1,4 @@
+---
+ssl_storage:
+  certs: /etc/pki/tls/certs/star.radiasoft.org.crt
+  private: /etc/pki/tls/private/star.radiasoft.org.key

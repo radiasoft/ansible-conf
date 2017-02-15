@@ -1,0 +1,4 @@
+---
+ssl_storage:
+  certs: "/etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.pem"
+  private: "/etc/ssl/{{ inventory_hostname }}/{{ inventory_hostname }}.key"

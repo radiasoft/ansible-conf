@@ -1,3 +1,9 @@
 ---
 dependencies:
-  - rs_global_defaults 
+  - rs_global_defaults
+  - role: jdauphant.ssl-certs
+    ssl_certs_common_name: "{{ inventory_hostname }}"
+    ssl_certs_mode: 0640
+    ssl_certs_path_group: root
+    ssl_certs_path_owner: root
+    when: ansible_local.deploy_env == 'vagrant'

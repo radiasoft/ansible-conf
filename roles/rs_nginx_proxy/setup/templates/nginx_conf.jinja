@@ -8,8 +8,8 @@ server {
     listen 443 ssl http2;
     server_name {{ item.key }};
 
-    ssl_certificate {{ ssl_storage.certs }}/{{ ssl_radia_star }}.crt;
-    ssl_certificate_key {{ ssl_storage.private }}/{{ ssl_radia_star }}.key;
+    ssl_certificate {{ ssl_storage.certs }};
+    ssl_certificate_key {{ ssl_storage.private }};
 
     # From https://cipherli.st
     add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload";
