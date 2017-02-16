@@ -1,21 +1,19 @@
 ---
-- name: firewalld is installed
-  package: name=firewalld state=present
-
-- name: enable firewalld service
-  systemd: name=firewalld.service daemon_reload=no enabled=yes state=started
+- set_fact:
+    _ports: "{{ rs_firewall.ports | default({}) }}"
+    _services: "{{ rs_firewall.services | default({}) }}"
 
 - set_fact:
-    fw_enabled_services: "{{ rs_firewall.services.enabled | union(rs_firewall.defaults.services.enabled) }}"
-   
+    _enabled_services: "{{ _services.enabled | default([]) | union(rs_firewall_defaults.services.enabled) }}"
+
 - set_fact:
-    fw_enabled_services: "{{ fw_enabled_services | union(['mdns']) }}"
+    _enabled_services: "{{ _enabled_services | union(['mdns']) }}"
   when: "{{ ansible_local.deploy_env == 'vagrant' }}"
 
 - set_fact:
-    fw_disabled_services: "{{ rs_firewall.services.disabled | union(rs_firewall.defaults.services.disabled) | difference(fw_enabled_services) }}"
-    fw_open_ports: "{{ rs_firewall.ports.open | union(rs_firewall.defaults.ports.open) }}"
-    fw_closed_ports: "{{ rs_firewall.ports.closed | difference(rs_firewall.defaults.ports.open) }}"
+    _disabled_services: "{{ _services.disabled | default([]) | union(rs_firewall_defaults.services.disabled) | difference(_enabled_services) }}"
+    _open_ports: "{{ _ports.open | default([]) | union(rs_firewall_defaults.ports.open) }}"
+    _closed_ports: "{{ _ports.closed | default([]) | difference(rs_firewall_defaults.ports.open) }}"
 
 - name: configure firewall enabled services
   firewalld:
@@ -23,7 +21,7 @@
     permanent: yes
     service: "{{ item }}"
     state: enabled
-  with_items: "{{ fw_enabled_services }}"
+  with_items: "{{ _enabled_services }}"
 
 - name: configure firewall disabled services
   firewalld:
@@ -31,7 +29,7 @@
     permanent: yes
     service: "{{ item }}"
     state: disabled
-  with_items: "{{ fw_disabled_services }}"
+  with_items: "{{ _disabled_services }}"
 
 - name: configure firewall open ports
   firewalld:
@@ -39,7 +37,7 @@
     permanent: yes
     port: "{{ item }}"
     state: enabled
-  with_items: "{{ fw_open_ports }}"
+  with_items: "{{ _open_ports }}"
 
 - name: configure firewall closed ports
   firewalld:
@@ -47,4 +45,4 @@
     permanent: yes
     port: "{{ item }}"
     state: disabled
-  with_items: "{{ fw_closed_ports }}"
+  with_items: "{{ _closed_ports }}"

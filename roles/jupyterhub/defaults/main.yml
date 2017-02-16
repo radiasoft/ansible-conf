@@ -13,6 +13,10 @@ jupyterhub:
     github:
       client_id: null
       client_secret: null
+  firewall:
+    ports:
+      open:
+        - 8000/tcp
   guest:
     conf_d: /srv/jupyterhub/conf
     notebook_d: "{{ nfs_import_prefix }}/jupyterhub/notebook"
@@ -25,6 +29,19 @@ jupyterhub:
     port: 8000
     scratch_d: "{{ nfs_import_prefix }}/jupyterhub/scratch"
     user: root
+  jupyter:
+    image_name: "radiasoft/beamsim-jupyter:{{ rs_channel }}"
+    guest:
+      notebook_d: /home/vagrant/jupyter
+      scratch_d: /home/vagrant/scratch
+      user: vagrant 
+  nfs_imports:
+    jupyterhub:
+      host: null
+      names:
+        - notebook  
+        - postgresql  
+        - scratch
   postgresql:
     admin_pass: null
     db_pass: null
@@ -40,20 +57,6 @@ jupyterhub:
       port: 5432
       run_d: /run/postgresql
       user: postgres 
-  jupyter:
-    image_name: "radiasoft/beamsim-jupyter:{{ rs_channel }}"
-    guest:
-      notebook_d: /home/vagrant/jupyter
-      scratch_d: /home/vagrant/scratch
-      user: vagrant 
-
-nfs_imports:
-  jupyterhub:
-    host: null
-    names:
-      - notebook  
-      - postgresql  
-      - scratch
 
 jupyterhub_rs_containers:
   containers:

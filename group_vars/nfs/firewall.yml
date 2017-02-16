@@ -1,8 +1,0 @@
----
-rs_firewall:
-  services:
-    enabled:
-      - http  
-      - https
-      - nfs
-      - rpc-bind

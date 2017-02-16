@@ -2,5 +2,8 @@
 dependencies:
   - jupyterhub_nfs/pre 
   - rs_base
-  - nfs_server
+  - role: nfs_server
+    nfs_exports: "{{ jupyterhub_nfs_exports }}"
   - rs_nginx_proxy
+  - role: rs_firewall
+    rs_firewall: "{{ jupyterhub_nfs_firewall }}"

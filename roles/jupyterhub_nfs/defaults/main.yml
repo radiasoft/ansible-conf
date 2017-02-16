@@ -1,5 +1,13 @@
 ---
-nfs_exports:
+jupyterhub_nfs_firewall:
+  services:
+    enabled:
+      - http  
+      - https
+      - nfs
+      - rpc-bind
+
+jupyterhub_nfs_exports:
   jupyterhub:
     - group: vagrant
       name: notebook

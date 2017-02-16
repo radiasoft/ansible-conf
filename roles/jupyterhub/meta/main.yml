@@ -3,9 +3,12 @@ dependencies:
   - rs_vars
   - rs_base
   - jupyterhub/pre
-  - nfs_client
+  - role: nfs_client
+    nfs_imports: "{{ jupyterhub.nfs_imports }}"
   - role: rs_containers
     rs_containers: "{{ jupyterhub_rs_containers }}"
   - role: jupyterhub/postgresql
     rs_containers: "{{ jupyterhub_rs_containers }}"
-  - jupyterhub/services 
+  - jupyterhub/services
+  - role: rs_firewall
+    rs_firewall: "{{ jupyterhub.firewall }}"

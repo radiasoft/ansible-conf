@@ -1,5 +1,0 @@
----
-rs_firewall:
-  ports:
-    open:
-      - 8000/tcp

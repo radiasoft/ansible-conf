@@ -1,16 +1,16 @@
 ---
+rs_firewall_defaults:
+  ports:
+    closed: []
+    open: []
+  services:
+    disabled:
+      - dhcpv6-client
+      - mdns  
+    enabled:
+      - ssh
+
 rs_firewall:
-  defaults:
-    ports:
-      closed: []
-      open: []
-    services:
-      disabled:
-        - dhcpv6-client
-        - mdns  
-      enabled:
-        - ssh
-  
   ports:
     closed: []
     open: []
