@@ -1,0 +1,4 @@
+---
+dependencies:
+  - jupyterhub_nfs
+  - jupyterhub  
