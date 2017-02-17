@@ -1,8 +1,8 @@
 [mpi_cluster_master:children]
 mpi_cluster_master_vagrant
 
-[mpi_cluster_slave:children]
-mpi_cluster_slave_vagrant
+[mpi_cluster_worker:children]
+mpi_cluster_worker_vagrant
 
 [nfs:children]
 nfs_alpha
@@ -19,5 +19,5 @@ nfs_alpha
 [vagrant:children]
 jupyterhub_vagrant
 mpi_cluster_master_vagrant
-mpi_cluster_slave_vagrant
+mpi_cluster_worker_vagrant
 nfs_vagrant

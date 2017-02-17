@@ -24,7 +24,7 @@ VM_CONFIG = {
         'box' => 'centos/7',
         'autostart' => false,
     },
-    'cluster-slave' => {
+    'cluster-worker' => {
         'ip' => '10.10.10.203',
         'box' => 'centos/7',
         'autostart' => false,

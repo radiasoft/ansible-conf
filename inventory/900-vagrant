@@ -7,5 +7,5 @@ jupyterhub.local
 [mpi_cluster_master_vagrant]
 cluster-master.local
 
-[mpi_cluster_slave_vagrant]
-cluster-slave.local
+[mpi_cluster_worker_vagrant]
+cluster-worker.local
