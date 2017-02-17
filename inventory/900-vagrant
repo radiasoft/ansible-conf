@@ -4,8 +4,8 @@ radia-nfs.local
 [jupyterhub_vagrant]
 jupyterhub.local
 
-[mpi_cluster_master_vagrant]
-cluster-master.local
+[mpi_cluster_coordinator_vagrant]
+cluster-coordinator.local
 
 [mpi_cluster_worker_vagrant]
 cluster-worker.local

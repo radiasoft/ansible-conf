@@ -19,7 +19,7 @@ VM_CONFIG = {
         'box' => 'centos/7',
         'autostart' => false,
     },
-    'cluster-master' => {
+    'cluster-coordinator' => {
         'ip' => '10.10.10.202',
         'box' => 'centos/7',
         'autostart' => false,
