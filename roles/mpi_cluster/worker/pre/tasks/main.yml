@@ -23,3 +23,11 @@
     mode: 0640
     owner: vagrant
     src: sshd_config.jinja
+
+- name: create sshd start config
+  template:
+    dest: "{{ mpi_cluster.worker.host.sshd_config_d }}/_sshd.sh"
+    group: vagrant
+    mode: 0750
+    owner: vagrant
+    src: _sshd.sh.jinja

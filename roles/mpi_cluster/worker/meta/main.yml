@@ -1,3 +1,6 @@
 ---
 dependencies:
   - rs_base
+  - mpi_cluster/worker/pre  
+  - role: rs_containers
+    rs_containers: "{{ mpi_cluster_worker_containers }}" 

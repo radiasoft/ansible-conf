@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+# Starts sshd
+#
+set -e
+cd $(dirname "$0")
+SSHD_CONFIG="{{ mpi_cluster.worker.guest.sshd_config_d }}/sshd_config"
+# mpi makes multiple connections so sshd has to run in daemon mode
+if [[ -z $RADIA_DEBUG ]]; then
+    /usr/sbin/sshd -f "$SSHD_CONFIG"
+    sleep infinity
+else
+    # get output to log in non-daemon mode
+    while true; do
+        /usr/sbin/sshd -D -d -d -d -f "$SSHD_CONFIG" > sshd.log 2>&1
+    done
+fi

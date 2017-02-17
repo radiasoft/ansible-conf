@@ -1,13 +1,28 @@
 ---
 mpi_cluster:
   ssh2_algos:
-    - dsa  
     - ecdsa
+    - ed25519
     - rsa
 
   worker:
+    image_name: 'radiasoft/beamsim-jupyter:{{ rs_channel }}'
+    sshd_port: 2200
     guest:
       sshd_config_d: /etc/ssh
     host:
       sshd_config_d: /var/lib/mpi_worker/ssh
-    sshd_port: 22
+
+mpi_cluster_worker_containers:
+  containers:
+    - command: "{{ mpi_cluster.worker.guest.sshd_config_d }}/_sshd.sh" 
+      image_name: "{{ mpi_cluster.worker.image_name }}"
+      name: mpi_worker
+      on_boot: yes
+      service_state: started
+      user: vagrant
+      ports:
+        - "{{ mpi_cluster.worker.sshd_port }}:{{ mpi_cluster.worker.sshd_port }}"
+      volumes:
+        - "{{ mpi_cluster.worker.host.sshd_config_d }}:{{ mpi_cluster.worker.guest.sshd_config_d }}"
+
