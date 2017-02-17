@@ -1,0 +1,30 @@
+AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
+AcceptEnv LC_IDENTIFICATION LC_ALL LANGUAGE
+AcceptEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
+AcceptEnv XMODIFIERS
+AuthorizedKeysFile %h/.ssh/authorized_keys
+ChallengeResponseAuthentication no
+ClientAliveCountMax 3
+ClientAliveInterval 0
+GSSAPIAuthentication yes
+GSSAPICleanupCredentials no
+{% for algo in mpi_cluster.ssh2_algos %}
+HostKey {{ mpi_cluster.worker.guest.sshd_config_d }}/ssh_host_{{ algo }}_key
+{% endfor %}
+HostbasedAuthentication no
+IgnoreRhosts yes
+# DEBUG3 or QUIET or INFO
+LogLevel DEBUG
+PasswordAuthentication no
+PidFile sshd.pid
+Port {{ mpi_cluster.worker.sshd_port }}
+PrintLastLog no
+PrintMotd no
+Protocol 2
+StrictModes yes
+# When run with -e, doesn't write to syslog
+SyslogFacility USER
+TCPKeepAlive yes
+UseDNS no
+# WARNING: 'UsePAM no' is not supported in Fedora and may cause several problems.
+UsePAM yes

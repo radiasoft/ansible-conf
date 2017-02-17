@@ -1,0 +1,13 @@
+---
+mpi_cluster:
+  ssh2_algos:
+    - dsa  
+    - ecdsa
+    - rsa
+
+  worker:
+    guest:
+      sshd_config_d: /etc/ssh
+    host:
+      sshd_config_d: /var/lib/mpi_worker/ssh
+    sshd_port: 22
