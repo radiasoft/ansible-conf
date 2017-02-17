@@ -1,0 +1,18 @@
+---
+- name: verify coordinator user exists
+  changed_when: coordinator_user_exists.rc != 0
+  command: "/bin/docker exec {{ jupyterhub.name }} /usr/bin/id {{ mpi_cluster.coordinator.user_name }}"
+  failed_when: no
+  register: coordinator_user_exists
+
+- name: create coordinator user
+  changed_when: no
+  command: "/bin/docker exec {{ jupyterhub.name }} /usr/sbin/useradd {{ mpi_cluster.coordinator.user_name }}"
+  when: coordinator_user_exists|changed
+
+- name: set coordinator user password
+  changed_when: no
+  shell: >
+    echo "{{ mpi_cluster.coordinator.user_name }}:{{ mpi_cluster.coordinator.user_password }}" | 
+    /bin/docker exec -i {{ jupyterhub.name }} /usr/sbin/chpasswd {{ mpi_cluster.coordinator.user_name }}
+  when: coordinator_user_exists|changed

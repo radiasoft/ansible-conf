@@ -1,4 +1,5 @@
 ---
 dependencies:
+  - rs_vars
   - jupyterhub_nfs
   - jupyterhub  

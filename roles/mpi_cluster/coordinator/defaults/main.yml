@@ -1,0 +1,7 @@
+---
+mpi_cluster:
+  coordinator: {}
+    #user_name: null
+    #user_password: null
+
+rs_role: mpi_cluster_coordinator

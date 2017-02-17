@@ -3,8 +3,6 @@
   hosts: mpi_cluster_coordinator
   roles:
     - mpi_cluster/coordinator
-    - jupyterhub_nfs
-    - jupyterhub  
 
 - name: configure mpi cluster worker
   hosts: mpi_cluster_worker
