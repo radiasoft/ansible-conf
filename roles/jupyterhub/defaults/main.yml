@@ -13,6 +13,9 @@ jupyterhub:
     github:
       client_id: null
       client_secret: null
+  extra_user_dirs: []
+    # - host_d: null
+    #   dirname: null
   firewall:
     ports:
       open:
@@ -32,6 +35,7 @@ jupyterhub:
   jupyter:
     image_name: "radiasoft/beamsim-jupyter:{{ rs_channel }}"
     guest:
+      home_d: /home/vagrant
       notebook_d: /home/vagrant/jupyter
       scratch_d: /home/vagrant/scratch
       user: vagrant 

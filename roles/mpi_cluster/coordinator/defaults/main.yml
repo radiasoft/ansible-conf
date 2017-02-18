@@ -1,7 +1,10 @@
 ---
 mpi_cluster:
-  coordinator: {}
+  coordinator:
+    ssh:
+      host_d: /srv/jupyterhub/ssh
+      dirname: .ssh
     #user_name: null
     #user_password: null
-
+  
 rs_role: mpi_cluster_coordinator

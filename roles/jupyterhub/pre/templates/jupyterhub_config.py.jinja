@@ -32,6 +32,11 @@ c.DockerSpawner.volumes = {
         # POSIT: notebook_dir in containers/radiasoft/beamsim-jupyter/build.sh
         'bind': '{{ jupyterhub.jupyter.guest.scratch_d }}',
     },
+{% for user_d in jupyterhub.extra_user_dirs %}
+    '{{ user_d.host_d }}/{username}': {
+        'bind': '{{ jupyterhub.jupyter.guest.home_d }}/{{ user_d.dirname }}',
+    },
+{% endfor %}
 }
 
 {% if 'GitHubOAuthenticator' in jupyterhub.auth.class %}

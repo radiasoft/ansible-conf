@@ -1,4 +1,7 @@
 ---
+- name: wait for jupyterhub container to be ready
+  wait_for: port={{ jupyterhub.host.port }} delay=15 state=present timeout=60
+
 - name: verify coordinator user exists
   changed_when: coordinator_user_exists.rc != 0
   command: "/bin/docker exec {{ jupyterhub.name }} /usr/bin/id {{ mpi_cluster.coordinator.user_name }}"
@@ -16,3 +19,19 @@
     echo "{{ mpi_cluster.coordinator.user_name }}:{{ mpi_cluster.coordinator.user_password }}" | 
     /bin/docker exec -i {{ jupyterhub.name }} /usr/sbin/chpasswd {{ mpi_cluster.coordinator.user_name }}
   when: coordinator_user_exists|changed
+
+- name: create coordinator user ssh dir
+  file:
+    group: vagrant
+    mode: 0700
+    owner: vagrant
+    path: "{{ mpi_cluster.coordinator.ssh.host_d }}/{{ mpi_cluster.coordinator.user_name }}"
+    state: directory
+
+- name: create coordinator user ssh key
+  command: "/usr/bin/ssh-keygen -f id_rsa -N ''"
+  args:
+    chdir: "{{ mpi_cluster.coordinator.ssh.host_d }}/{{ mpi_cluster.coordinator.user_name }}"
+    creates: id_rsa
+  become: yes
+  become_user: vagrant
