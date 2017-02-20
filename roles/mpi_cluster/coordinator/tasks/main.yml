@@ -35,3 +35,11 @@
     creates: id_rsa
   become: yes
   become_user: vagrant
+
+- name: read coordinator user pub key
+  slurp:
+    src: "{{ mpi_cluster.coordinator.ssh.host_d }}/{{ mpi_cluster.coordinator.user_name }}/id_rsa.pub"
+  register: _pk 
+
+- set_fact:
+    coordinator_pub_key: "{{ _pk.content | b64decode }}"

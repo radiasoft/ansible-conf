@@ -1,24 +1,16 @@
 ---
-- name: create ssh config directory
-  file: 
-    group: vagrant 
-    mode: 0750
-    owner: vagrant 
-    path: "{{ mpi_cluster.worker.host.ssh_config_d }}"
-    state: directory 
-
 - name: create sshd config directory
   file: 
     group: vagrant 
     mode: 0750
     owner: vagrant 
-    path: "{{ mpi_cluster.worker.host.sshd_config_d }}"
+    path: "{{ mpi_cluster.worker.host.sshd_conf_d }}"
     state: directory 
 
 - name: create host key
   command: "/usr/bin/ssh-keygen -f ssh_host_{{ item }}_key -N '' -t {{ item }}"
   args:
-    chdir: "{{ mpi_cluster.worker.host.sshd_config_d }}"
+    chdir: "{{ mpi_cluster.worker.host.sshd_conf_d }}"
     creates: "ssh_host_{{ item }}_key"
   become: yes
   become_user: vagrant
@@ -26,7 +18,7 @@
 
 - name: create sshd configuration
   template:
-    dest: "{{ mpi_cluster.worker.host.sshd_config_d }}/sshd_config"
+    dest: "{{ mpi_cluster.worker.host.sshd_conf_d }}/sshd_config"
     group: vagrant
     mode: 0640
     owner: vagrant
@@ -34,8 +26,25 @@
 
 - name: create sshd start config
   template:
-    dest: "{{ mpi_cluster.worker.host.sshd_config_d }}/_sshd.sh"
+    dest: "{{ mpi_cluster.worker.host.sshd_conf_d }}/_sshd.sh"
     group: vagrant
     mode: 0750
     owner: vagrant
     src: _sshd.sh.jinja
+
+- name: create ssh config directory
+  file: 
+    group: vagrant 
+    mode: 0750
+    owner: vagrant 
+    path: "{{ mpi_cluster.worker.host.ssh_conf_d }}"
+    state: directory 
+
+
+- name: create authorized_keys file
+  template:
+    dest: "{{ mpi_cluster.worker.host.ssh_conf_d }}/authorized_keys"
+    group: vagrant
+    mode: 0640
+    owner: vagrant
+    src: authorized_keys.jinja
