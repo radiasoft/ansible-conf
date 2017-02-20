@@ -4,7 +4,6 @@ mpi_cluster:
     - ecdsa
     - ed25519
     - rsa
-
   worker:
     image_name: 'radiasoft/beamsim-jupyter:{{ rs_channel }}'
     sshd_port: 2200
@@ -28,4 +27,9 @@ mpi_cluster_worker_containers:
       volumes:
         - "{{ mpi_cluster.worker.host.ssh_conf_d }}:{{ mpi_cluster.worker.guest.ssh_conf_d }}"
         - "{{ mpi_cluster.worker.host.sshd_conf_d }}:{{ mpi_cluster.worker.guest.sshd_conf_d }}"
+
+mpi_cluster_worker_firewall:
+  ports:
+    open:
+      - "{{ mpi_cluster.worker.sshd_port }}/tcp"
 
