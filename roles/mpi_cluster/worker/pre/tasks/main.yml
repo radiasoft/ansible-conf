@@ -1,4 +1,12 @@
 ---
+- name: create ssh config directory
+  file: 
+    group: vagrant 
+    mode: 0750
+    owner: vagrant 
+    path: "{{ mpi_cluster.worker.host.ssh_config_d }}"
+    state: directory 
+
 - name: create sshd config directory
   file: 
     group: vagrant 
