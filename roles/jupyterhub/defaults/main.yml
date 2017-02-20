@@ -60,7 +60,12 @@ jupyterhub:
       data_d: /var/lib/postgresql/data
       port: 5432
       run_d: /run/postgresql
-      user: postgres 
+      user: postgres
+
+jupyterhub_default_volumes:
+  - "{{ jupyterhub.host.conf_d }}:{{ jupyterhub.guest.conf_d }}"
+  - "{{ jupyterhub.host.notebook_d }}:{{ jupyterhub.guest.notebook_d }}"
+  - "{{ jupyterhub.host.scratch_d }}:{{ jupyterhub.guest.scratch_d }}"
 
 jupyterhub_rs_containers:
   containers:
@@ -93,9 +98,6 @@ jupyterhub_rs_containers:
         - postgresql
       ports:
         - "{{ jupyterhub.host.port }}:{{ jupyterhub.guest.port }}"
-      volumes:
-        - "{{ jupyterhub.host.conf_d }}:{{ jupyterhub.guest.conf_d }}"
-        - "{{ jupyterhub.host.notebook_d }}:{{ jupyterhub.guest.notebook_d }}"
-        - "{{ jupyterhub.host.scratch_d }}:{{ jupyterhub.guest.scratch_d }}"
+      volumes: "{{ jupyterhub_default_volumes + jupyterhub.extra_user_dirs|user_dirs_to_volumes }}"
 
 rs_role: jupyterhub
