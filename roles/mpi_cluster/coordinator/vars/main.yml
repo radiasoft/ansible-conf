@@ -1,5 +1,5 @@
 ---
 jupyterhub:
   extra_user_dirs:
-    - host_d: "{{ mpi_cluster.coordinator.ssh.host_d }}" 
-      dirname: "{{ mpi_cluster.coordinator.ssh.dirname }}"
+    - host_d: "{{ mpi_cluster.coordinator.mpi_bin.host_d }}" 
+      dirname: "{{ mpi_cluster.coordinator.mpi_bin.dirname }}"

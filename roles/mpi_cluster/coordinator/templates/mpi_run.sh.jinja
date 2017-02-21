@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e
+dash_x=
+if [[ -n $RADIA_DEBUG ]]; then
+    set -x
+    dash_x=-x
+fi
+conf_dir="$HOME/{{ mpi_cluster.coordinator.mpi_bin.dirname }}"
+export PATH="$conf_dir:$PATH"
+exec mpiexec  \
+     --mca btl_tcp_if_include '{{ mpi_cluster.subnet }}' \
+     --mca oob_tcp_if_include '{{ mpi_cluster.subnet }}' \
+     -hostfile "$conf_dir/mpi_hosts" \
+     bash $dash_x vagrant
+echo mpiexec failed 1>&2

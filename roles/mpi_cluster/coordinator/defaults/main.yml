@@ -1,10 +1,11 @@
 ---
 mpi_cluster:
+  ssh_cmd: /usr/bin/ssh
   #worker_addresses: []
   coordinator:
-    ssh:
+    mpi_bin:
       host_d: /srv/jupyterhub/ssh
-      dirname: .ssh
+      dirname: bin 
     #user_name: null
     #user_password: null
   worker:

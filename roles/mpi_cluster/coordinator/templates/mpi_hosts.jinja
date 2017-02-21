@@ -1,0 +1,7 @@
+{% for worker in mpi_cluster.worker_addresses %}
+{% if is_vagrant_env %}
+{{ worker|docker_get_ip }}
+{% else %}
+{{ worker }}
+{% endif %}
+{% endfor %}
