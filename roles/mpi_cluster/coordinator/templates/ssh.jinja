@@ -1,22 +1,25 @@
 #!/bin/bash
 #
 set -e
+
+SSH_CMD="/usr/bin/ssh -F $HOME/{{ mpi_cluster.coordinator.mpi_bin.dirname }}/ssh_config"
+
 if [[ -z $RADIA_DEBUG ]]; then
-    exec {{ mpi_cluster.ssh_cmd }} "$@"
+    exec $SSH_CMD "$@"
 else
     # Only necessary for debugging with logs
     set -e
     flag=$1
     shift
-    host=$2
+    host=$1
     shift
     # Set to strace if necessary
     strace=
     logdir="$HOME/{{ mpi_cluster.coordinator.mpi_bin.dirname }}/log/$host"
     test -d $logdir || mkdir -p "$logdir"
     log="$logdir/ssh.log"
-    echo "Executing: {{ mpi_cluster.ssh_cmd }} ${cmd[*]} $*" >> "$log"
-    exec {{ mpi_cluster.ssh_cmd }} "$flag" "$host" $strace "$@" 2>&1 | tee -a "$log"
+    echo "Executing: $SSH_CMD ${cmd[*]} $*" >> "$log"
+    exec $SSH_CMD "$flag" "$host" $strace "$@" 2>&1 | tee -a "$log"
 fi
-echo "ERROR: {{ mpi_cluster.ssh_cmd }} '$@'" 1>&2
+echo "ERROR: $SSH_CMD '$@'" 1>&2
 exit 1
