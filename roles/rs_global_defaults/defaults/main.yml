@@ -1,3 +1,5 @@
 ---
+is_ec2_env:  "{{ ansible_local.deploy_env == 'ec2' }}"
+is_vagrant_env: "{{ ansible_local.deploy_env == 'vagrant' }}"
 nfs_export_prefix: /srv/nfs
 nfs_import_prefix: /run/nfs

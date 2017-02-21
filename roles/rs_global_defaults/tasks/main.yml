@@ -1,6 +1,6 @@
 ---
 - include_vars: ssl_self_signed.yml
-  when: ansible_local.deploy_env == 'vagrant'
+  when: is_vagrant_env
 
 - include_vars: ssl_radiasoft_star.yml
-  when: ansible_local.deploy_env != 'vagrant'
+  when: not is_vagrant_env

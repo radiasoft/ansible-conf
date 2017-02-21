@@ -43,3 +43,11 @@
 
 - set_fact:
     coordinator_pub_key: "{{ _pk.content | b64decode }}"
+
+- name: create ssh config for workers
+  template:
+    dest: "{{ mpi_cluster.coordinator.ssh.host_d }}/{{ mpi_cluster.coordinator.user_name }}/config"
+    group: vagrant
+    mode: 0640
+    owner: vagrant
+    src: ssh_config.jinja

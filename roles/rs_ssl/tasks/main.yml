@@ -12,4 +12,4 @@
   with_items:
     - { path: "{{ ssl_storage.certs }}", ext: crt }
     - { path: "{{ ssl_storage.private }}", ext: key }
-  when: ansible_local.deploy_env != 'vagrant'
+  when: not is_vagrant_env

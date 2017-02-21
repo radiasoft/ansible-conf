@@ -1,0 +1,12 @@
+{% for worker in mpi_cluster.worker_addresses %}
+Host {{ worker }}
+{% if is_vagrant_env %}
+    HostName {{ worker|docker_get_ip }}
+{% endif %}
+    Port {{ mpi_cluster.worker.sshd_port }}
+    IdentityFile ~/.ssh/id_rsa
+    StrictHostKeyChecking no
+    User vagrant
+    UserKnownHostsFile=/dev/null
+
+{% endfor %}

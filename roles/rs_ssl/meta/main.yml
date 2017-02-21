@@ -6,4 +6,4 @@ dependencies:
     ssl_certs_mode: 0640
     ssl_certs_path_group: root
     ssl_certs_path_owner: root
-    when: ansible_local.deploy_env == 'vagrant'
+    when: is_vagrant_env

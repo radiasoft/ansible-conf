@@ -8,7 +8,7 @@
 
 - set_fact:
     _enabled_services: "{{ _enabled_services | union(['mdns']) }}"
-  when: "{{ ansible_local.deploy_env == 'vagrant' }}"
+  when: is_vagrant_env
 
 - set_fact:
     _disabled_services: "{{ _services.disabled | default([]) | union(rs_firewall_defaults.services.disabled) | difference(_enabled_services) }}"

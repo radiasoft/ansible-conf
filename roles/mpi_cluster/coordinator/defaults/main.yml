@@ -7,5 +7,7 @@ mpi_cluster:
       dirname: .ssh
     #user_name: null
     #user_password: null
+  worker:
+    sshd_port: 2200
   
 rs_role: mpi_cluster_coordinator
