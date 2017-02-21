@@ -21,6 +21,7 @@ mpi_cluster_worker_containers:
       name: mpi_worker
       on_boot: yes
       service_state: started
+      use_host_net: yes
       user: vagrant
       ports:
         - "{{ mpi_cluster.worker.sshd_port }}:{{ mpi_cluster.worker.sshd_port }}"

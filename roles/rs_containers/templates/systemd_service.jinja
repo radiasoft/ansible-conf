@@ -7,6 +7,9 @@
 {% do docker_cmd_line.extend([ '--add-host', host ]) %}
 {% endfor %}
 {% endif %}
+{% if _use_host_net %}
+{% do docker_cmd_line.extend(['--network=host']) %}
+{% endif %}
 {# docker args end #}
 {% do docker_cmd_line.extend([c.image_name]) %}
 {% if c.command is defined %}

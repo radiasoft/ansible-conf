@@ -4,6 +4,7 @@
 
 - set_fact:
     _volumes: "{{ container.volumes | default([]) }}"
+    _use_host_net: "{{ container.use_host_net | default(false) }}"
 
 - set_fact:
     _volumes: "{{ _volumes + ['{{docker_sock_path}}:{{docker_sock_path}}'] }}"
