@@ -1,0 +1,3 @@
+mpi_cluster:
+  worker_addresses:
+    - cluster-worker.local

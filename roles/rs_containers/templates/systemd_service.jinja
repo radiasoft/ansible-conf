@@ -1,6 +1,13 @@
 {% set c = container %}
+{# docker args start #}
 {% set docker_cmd_line = ['/usr/bin/docker', 'run', '--tty', '--log-driver=journald', '--name', c.name ] %}
 {% set docker_cmd_line = docker_cmd_line | cmd_arg('-p', c.ports) | cmd_arg('--link', c.links) | cmd_arg('-v', _volumes) | cmd_arg('-u', c.user) %}
+{% if c.add_hosts is defined %}
+{% for host in c.add_hosts|docker_add_hosts %}
+{% do docker_cmd_line.extend([ '--add-host', host ]) %}
+{% endfor %}
+{% endif %}
+{# docker args end #}
 {% do docker_cmd_line.extend([c.image_name]) %}
 {% if c.command is defined %}
 {% do docker_cmd_line.extend([c.command]) %}

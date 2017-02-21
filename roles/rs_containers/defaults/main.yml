@@ -2,3 +2,15 @@
 docker_sock_path: /run/docker.sock
 rs_containers:
   containers: []
+    # - command: null
+    #   image_name: null
+    #   name: null
+    #   on_boot: null
+    #   service_state: null
+    #   user: null
+    #   want_docker_sock: null
+    #   add_hosts: []
+    #   after: []
+    #   links: []
+    #   ports: []
+    #   volumes: []

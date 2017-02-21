@@ -21,6 +21,7 @@ jupyterhub:
       open:
         - 8000/tcp
   guest:
+    add_hosts: []
     conf_d: /srv/jupyterhub/conf
     notebook_d: "{{ nfs_import_prefix }}/jupyterhub/notebook"
     port: 8000
@@ -85,7 +86,8 @@ jupyterhub_rs_containers:
         - "{{ jupyterhub.postgresql.host.data_d }}:{{ jupyterhub.postgresql.guest.data_d }}"
         - "{{ jupyterhub.postgresql.host.run_d }}:{{ jupyterhub.postgresql.guest.run_d }}"
     
-    - command: "jupyterhub -f {{ jupyterhub.guest.conf_d }}/jupyterhub_config.py"
+    - add_hosts: "{{ jupyterhub.guest.add_hosts }}"
+      command: "jupyterhub -f {{ jupyterhub.guest.conf_d }}/jupyterhub_config.py"
       image_name: "{{ jupyterhub.image_name }}"
       name: "{{ jupyterhub.name }}" 
       on_boot: yes

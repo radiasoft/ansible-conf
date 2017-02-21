@@ -1,5 +1,6 @@
 ---
 mpi_cluster:
+  #worker_addresses: []
   coordinator:
     ssh:
       host_d: /srv/jupyterhub/ssh
