@@ -13,6 +13,12 @@ mpi_cluster:
     host:
       ssh_conf_d: /var/lib/mpi_worker/ssh
       sshd_conf_d: /var/lib/mpi_worker/sshd
+    nfs_imports:
+      mpi_cluster:
+        #host: null
+        names:
+          - notebook
+          - scratch  
 
 mpi_cluster_worker_containers:
   containers:

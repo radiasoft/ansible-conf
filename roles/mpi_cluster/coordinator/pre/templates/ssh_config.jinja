@@ -9,7 +9,7 @@ Host {{ worker }}
 {% endif %}
 Host *
     Port {{ mpi_cluster.worker.sshd_port }}
-    IdentityFile ~/{{ mpi_cluster.coordinator.mpi_bin.dirname }}/id_rsa
+    IdentityFile ~/mpi_bin/id_rsa
     StrictHostKeyChecking no
     User vagrant
     UserKnownHostsFile=/dev/null

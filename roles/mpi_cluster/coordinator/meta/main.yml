@@ -1,5 +1,9 @@
 ---
 dependencies:
   - rs_vars
-  - jupyterhub_nfs
-  - jupyterhub
+  - rs_base
+  - role: nfs_server
+    nfs_exports: "{{ mpi_cluster.coordinator.nfs_exports }}"
+  - mpi_cluster/coordinator/pre
+  - role: rs_containers
+    rs_containers: "{{ mpi_cluster_coordinator_containers }}"

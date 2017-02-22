@@ -42,7 +42,7 @@ jupyterhub:
       user: vagrant 
   nfs_imports:
     jupyterhub:
-      host: null
+      #host: null
       names:
         - notebook  
         - postgresql  

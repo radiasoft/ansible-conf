@@ -2,7 +2,7 @@
 #
 set -e
 
-SSH_CMD="/usr/bin/ssh -F $HOME/{{ mpi_cluster.coordinator.mpi_bin.dirname }}/ssh_config"
+SSH_CMD="/usr/bin/ssh -F $HOME/mpi_bin/ssh_config"
 
 if [[ -z $RADIA_DEBUG ]]; then
     exec $SSH_CMD "$@"
@@ -15,7 +15,7 @@ else
     shift
     # Set to strace if necessary
     strace=
-    logdir="$HOME/{{ mpi_cluster.coordinator.mpi_bin.dirname }}/log/$host"
+    logdir="$HOME/mpi_bin/log/$host"
     test -d $logdir || mkdir -p "$logdir"
     log="$logdir/ssh.log"
     echo "Executing: $SSH_CMD ${cmd[*]} $*" >> "$log"

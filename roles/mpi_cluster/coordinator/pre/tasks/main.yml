@@ -1,0 +1,39 @@
+---
+- name: create jupyter mpi_bin dir
+  file:
+    group: vagrant
+    mode: 0750
+    owner: vagrant
+    path: "{{ mpi_cluster.coordinator.host.mpi_bin_d }}"
+    state: directory
+
+- name: create coordinator user ssh key
+  command: "/usr/bin/ssh-keygen -f id_rsa -N ''"
+  args:
+    chdir: "{{ mpi_cluster.coordinator.host.mpi_bin_d }}"
+    creates: id_rsa
+  become: yes
+  become_user: vagrant
+
+- name: read coordinator user pub key
+  slurp:
+    src: "{{ mpi_cluster.coordinator.host.mpi_bin_d }}/id_rsa.pub"
+  register: _pk 
+
+- set_fact:
+    coordinator_pub_key: "{{ _pk.content | b64decode }}"
+
+- name: create files for mpi cluster
+  template:
+    dest: "{{ mpi_cluster.coordinator.host.mpi_bin_d }}/{{ item.f }}"
+    group: vagrant
+    mode: "{{ item.m }}"
+    owner: vagrant
+    src: "{{ item.f }}.jinja"
+  with_items:
+    - { f: mpi_hosts, m: '0640' }
+    - { f: mpi_run.sh, m: '0750' }
+    - { f: ssh, m: '0750' }
+    - { f: ssh_config, m: '0640' }
+  loop_control:
+    label: "{{ item.f }}"

@@ -1,3 +1,0 @@
----
-mpi_cluster:
-  coordinator_address: cluster-coordinator.local

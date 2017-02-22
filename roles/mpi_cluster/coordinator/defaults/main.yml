@@ -2,12 +2,45 @@
 mpi_cluster:
   #worker_addresses: []
   coordinator:
-    mpi_bin:
-      host_d: /srv/jupyterhub/mpi_bin
-      dirname: mpi_bin
+    image_name: radiasoft/beamsim-jupyter
     #user_name: null
     #user_password: null
+    host:
+      mpi_bin_d: /var/lib/jupyter/mpi_bin
+      notebook_d: "{{ nfs_export_prefix }}/mpi_cluster/notebook"
+      scratch_d: "{{ nfs_export_prefix }}/mpi_cluster/scratch"
+    guest:
+      mpi_bin_d: /home/vagrant/mpi_bin
+      notebook_d: /home/vagrant/jupyter
+      scratch_d: /home/vagrant/scratch
+    nfs_exports:
+      mpi_cluster:
+        - group: vagrant
+          name: notebook
+          nfs_config: '*(rw,insecure,no_root_squash,no_subtree_check,sync,fsid=5000)'
+          owner: vagrant
+        - group: vagrant
+          name: scratch
+          nfs_config: '*(rw,insecure,no_root_squash,no_subtree_check,sync,fsid=5001)'
+          owner: vagrant
   worker:
     sshd_port: 2200
+
+mpi_cluster_coordinator_containers:
+  containers:
+    - command: "/bin/bash -l -c 'exec jupyter notebook --ip=0.0.0.0'" 
+      image_name: "{{ mpi_cluster.coordinator.image_name }}"
+      name: mpi_coordinator 
+      on_boot: yes
+      service_state: started
+      use_host_net: yes
+      user: vagrant
+      ports:
+        - 8888:8888
+      volumes:
+        - "{{ mpi_cluster.coordinator.host.mpi_bin_d }}:{{ mpi_cluster.coordinator.guest.mpi_bin_d }}"
+        - "{{ mpi_cluster.coordinator.host.notebook_d }}:{{ mpi_cluster.coordinator.guest.notebook_d }}"
+        - "{{ mpi_cluster.coordinator.host.scratch_d }}:{{ mpi_cluster.coordinator.guest.scratch_d }}"
+
   
 rs_role: mpi_cluster_coordinator

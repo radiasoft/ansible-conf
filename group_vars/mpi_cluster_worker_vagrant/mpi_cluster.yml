@@ -1,0 +1,7 @@
+---
+mpi_cluster:
+  coordinator_address: cluster-coordinator.local
+  worker:
+    nfs_imports:
+      mpi_cluster:
+        host: cluster-coordinator.local
