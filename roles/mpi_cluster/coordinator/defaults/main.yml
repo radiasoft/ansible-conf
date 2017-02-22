@@ -6,10 +6,12 @@ mpi_cluster:
     #user_name: null
     #user_password: null
     guest:
+      jupyter_conf_d: /home/vagrant/.jupyter
       mpi_bin_d: /home/vagrant/mpi_bin
       notebook_d: /home/vagrant/jupyter
       scratch_d: /home/vagrant/scratch
     host:
+      jupyter_conf_d: /var/lib/jupyter/conf
       mpi_bin_d: /var/lib/jupyter/mpi_bin
       notebook_d: "{{ nfs_export_prefix }}/mpi_cluster/notebook"
       scratch_d: "{{ nfs_export_prefix }}/mpi_cluster/scratch"
@@ -38,6 +40,7 @@ mpi_cluster_coordinator_containers:
       ports:
         - 8888:8888
       volumes:
+        - "{{ mpi_cluster.coordinator.host.jupyter_conf_d }}:{{ mpi_cluster.coordinator.guest.jupyter_conf_d }}"
         - "{{ mpi_cluster.coordinator.host.mpi_bin_d }}:{{ mpi_cluster.coordinator.guest.mpi_bin_d }}"
         - "{{ mpi_cluster.coordinator.host.notebook_d }}:{{ mpi_cluster.coordinator.guest.notebook_d }}"
         - "{{ mpi_cluster.coordinator.host.scratch_d }}:{{ mpi_cluster.coordinator.guest.scratch_d }}"

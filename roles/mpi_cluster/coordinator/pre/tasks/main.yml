@@ -1,11 +1,14 @@
 ---
-- name: create jupyter mpi_bin dir
+- name: create jupyter dirs
   file:
     group: vagrant
     mode: 0750
     owner: vagrant
-    path: "{{ mpi_cluster.coordinator.host.mpi_bin_d }}"
+    path: "{{ item }}"
     state: directory
+  with_items:
+    - "{{ mpi_cluster.coordinator.host.jupyter_conf_d }}"  
+    - "{{ mpi_cluster.coordinator.host.mpi_bin_d }}"
 
 - name: create coordinator user ssh key
   command: "/usr/bin/ssh-keygen -f id_rsa -N ''"
@@ -37,3 +40,11 @@
     - { f: ssh_config, m: '0640' }
   loop_control:
     label: "{{ item.f }}"
+
+- name: create jupyter notebook configuration
+  template:
+    dest: "{{ mpi_cluster.coordinator.host.jupyter_conf_d }}/jupyter_notebook_config.py"
+    group: vagrant
+    mode: 0640
+    owner: vagrant
+    src: jupyter_notebook_config.py.jinja
