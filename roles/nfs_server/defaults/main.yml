@@ -1,2 +1,8 @@
 ---
 nfs_exports: {}
+
+nfs_server_firewall:
+  services:
+    enabled:
+      - nfs
+      - rpc-bind

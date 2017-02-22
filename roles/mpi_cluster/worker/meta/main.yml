@@ -1,5 +1,6 @@
 ---
 dependencies:
+  - rs_global_defaults
   - rs_base
   - mpi_cluster/worker/pre
   - role: nfs_client

@@ -8,9 +8,13 @@ mpi_cluster:
     image_name: 'radiasoft/beamsim-jupyter:{{ rs_channel }}'
     sshd_port: 2200
     guest:
+      notebook_d: /home/vagrant/jupyter
+      scratch_d: /home/vagrant/scratch
       ssh_conf_d: /home/vagrant/.ssh
       sshd_conf_d: /etc/ssh
     host:
+      notebook_d: "{{ nfs_import_prefix }}/mpi_cluster/notebook"
+      scratch_d: "{{ nfs_import_prefix }}/mpi_cluster/scratch"
       ssh_conf_d: /var/lib/mpi_worker/ssh
       sshd_conf_d: /var/lib/mpi_worker/sshd
     nfs_imports:
@@ -32,6 +36,8 @@ mpi_cluster_worker_containers:
       ports:
         - "{{ mpi_cluster.worker.sshd_port }}:{{ mpi_cluster.worker.sshd_port }}"
       volumes:
+        - "{{ mpi_cluster.worker.host.notebook_d }}:{{ mpi_cluster.worker.guest.notebook_d }}"
+        - "{{ mpi_cluster.worker.host.scratch_d }}:{{ mpi_cluster.worker.guest.scratch_d }}"
         - "{{ mpi_cluster.worker.host.ssh_conf_d }}:{{ mpi_cluster.worker.guest.ssh_conf_d }}"
         - "{{ mpi_cluster.worker.host.sshd_conf_d }}:{{ mpi_cluster.worker.guest.sshd_conf_d }}"
 

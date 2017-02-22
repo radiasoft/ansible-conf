@@ -1,5 +1,6 @@
 ---
 dependencies:
+  - rs_global_defaults
   - rs_vars
   - rs_base
   - role: nfs_server
@@ -7,3 +8,5 @@ dependencies:
   - mpi_cluster/coordinator/pre
   - role: rs_containers
     rs_containers: "{{ mpi_cluster_coordinator_containers }}"
+  - role: rs_firewall
+    rs_firewall: "{{ mpi_cluster_coordinator_firewall }}"
