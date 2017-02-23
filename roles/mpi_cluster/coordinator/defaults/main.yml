@@ -54,7 +54,7 @@ mpi_cluster_coordinator_firewall:
 mpi_cluster_coordinator_proxy:
   - name: jupyter
     server_name: "{{ mpi_cluster.coordinator.server_name }}"
-    proxy_pass: "http://127.0.0.1:{{ mpi_cluster.coordinator.guest.port }}"
+    proxy_pass: "http://{{ ansible_eth0.ipv4.address }}:{{ mpi_cluster.coordinator.guest.port }}"
     auth:
       "{{ mpi_cluster.coordinator.user_name }}": "{{ mpi_cluster.coordinator.user_password }}"
     request_headers:
