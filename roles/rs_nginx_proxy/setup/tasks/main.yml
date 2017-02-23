@@ -2,7 +2,10 @@
 - name: create nginx directories
   file: state=directory path={{ item.p }} owner=root group=root mode={{ item.m }}
   with_items:
-    - { p: "{{ nginx.auth_d }}", m: "0750" }
+    # TODO: auth_d should have a more stringent mode
+    # but because of limitations with the nginx container, it
+    # requires full access
+    - { p: "{{ nginx.auth_d }}", m: "0755" }
     - { p: "{{ nginx.conf_d }}", m: "0755" }
     - { p: /var/log/nginx, m: "0755" }
   loop_control:

@@ -1,8 +1,11 @@
 ---
+# TODO: htpasswd should have a more stringent mode
+# but because of limitations with the nginx container, it
+# requires full access
 - name: nginx auth info for {{ proxy.name }}
   htpasswd:
     group: root
-    mode: 0640
+    mode: 0644
     name: "{{ item.key }}"
     owner: root
     password: "{{ item.value }}"
