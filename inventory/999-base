@@ -1,8 +1,10 @@
 [mpi_cluster_coordinator:children]
 mpi_cluster_coordinator_vagrant
+mpi_cluster_coordinator_alpha
 
 [mpi_cluster_worker:children]
 mpi_cluster_worker_vagrant
+mpi_cluster_worker_alpha
 
 [nfs:children]
 nfs_alpha
@@ -14,6 +16,8 @@ jupyterhub_vagrant
 
 [alpha:children]
 jupyterhub_alpha
+mpi_cluster_coordinator_alpha
+mpi_cluster_worker_alpha
 nfs_alpha
 
 [vagrant:children]
