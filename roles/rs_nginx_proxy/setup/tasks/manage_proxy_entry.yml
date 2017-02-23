@@ -9,6 +9,7 @@
     path: "{{ nginx.auth_d }}/{{ proxy.name }}"
   with_dict: "{{ proxy.auth }}"
   when: proxy.auth is defined
+  no_log: yes
 
 - name: nginx config for {{ proxy.name }}
   template:
