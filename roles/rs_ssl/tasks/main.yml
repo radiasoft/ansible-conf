@@ -1,7 +1,4 @@
 ---
-- name: ssl private permissions
-  file: path={{ ssl_storage.private }} state=file owner=root group=root mode=0750
-
 - name: copy radia start ssl certs
   copy: 
     dest: "{{ item.path }}" 
