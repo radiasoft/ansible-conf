@@ -8,8 +8,8 @@ fi
 conf_dir="$HOME/mpi_bin"
 export PATH="$conf_dir:$PATH"
 exec mpiexec  \
-     --mca btl_tcp_if_include '{{ mpi_cluster.subnet }}' \
-     --mca oob_tcp_if_include '{{ mpi_cluster.subnet }}' \
+     --mca btl_tcp_if_include '{{ mpi_cluster.interface }}' \
+     --mca oob_tcp_if_include '{{ mpi_cluster.interface }}' \
      -hostfile "$conf_dir/mpi_hosts" \
      bash $dash_x $1 
 echo mpiexec failed 1>&2
