@@ -56,7 +56,8 @@ mpi_cluster_coordinator_proxy:
     server_name: "{{ mpi_cluster.coordinator.server_name }}"
     proxy_pass: "http://{{ ansible_eth0.ipv4.address }}:{{ mpi_cluster.coordinator.guest.port }}"
     auth:
-      "{{ mpi_cluster.coordinator.user_name }}": "{{ mpi_cluster.coordinator.user_password }}"
+      - user: "{{ mpi_cluster.coordinator.user_name }}" 
+        pass: "{{ mpi_cluster.coordinator.user_password }}"
     request_headers:
       Authorization: "token {{ mpi_cluster.coordinator.user_password | hash('sha256') }}"
 

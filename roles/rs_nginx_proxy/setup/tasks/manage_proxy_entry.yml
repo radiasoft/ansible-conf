@@ -6,11 +6,11 @@
   htpasswd:
     group: root
     mode: 0644
-    name: "{{ item.key }}"
+    name: "{{ item.user }}"
     owner: root
-    password: "{{ item.value }}"
+    password: "{{ item.pass }}"
     path: "{{ nginx.auth_d }}/{{ proxy.name }}"
-  with_dict: "{{ proxy.auth }}"
+  with_items: "{{ proxy.auth }}"
   when: proxy.auth is defined
   no_log: yes
 
