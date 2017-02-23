@@ -1,16 +1,21 @@
 server {
     listen 80;
-    server_name {{ item.key }};
+    server_name {{ proxy.server_name }};
     return 301 https://$server_name$request_uri;
 }
 
 server {
     listen 443 ssl http2;
-    server_name {{ item.key }};
+    server_name {{ proxy.server_name }};
 
     ssl_certificate {{ ssl_storage.certs }};
     ssl_certificate_key {{ ssl_storage.private }};
 
+{% if proxy.auth is defined %}
+    auth_basic "!";
+    auth_basic_user_file "{{ nginx.auth_d }}/{{ proxy.name }}";
+
+{% endif %}
     # From https://cipherli.st
     add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload";
     add_header X-Content-Type-Options nosniff;
@@ -30,7 +35,7 @@ server {
         proxy_cache_bypass $http_upgrade;
         proxy_http_version 1.1;
         proxy_next_upstream error timeout invalid_header http_500 http_502 http_503 http_504;
-        proxy_pass {{ item.value }};
+        proxy_pass {{ proxy.proxy_pass }};
         proxy_set_header Connection $http_connection;
         proxy_set_header Host $http_host;
         proxy_set_header Proxy "";
@@ -39,5 +44,10 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Real-IP $remote_addr;
+{% if proxy.request_headers is defined %}
+{% for k, v in proxy.request_headers.iteritems() %}
+        proxy_set_header {{ k }} "{{ v }}";        
+{% endfor %}
+{% endif %}
     }
 }

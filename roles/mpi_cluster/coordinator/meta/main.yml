@@ -8,5 +8,7 @@ dependencies:
   - mpi_cluster/coordinator/pre
   - role: rs_containers
     rs_containers: "{{ mpi_cluster_coordinator_containers }}"
+  - role: rs_nginx_proxy
+    rs_nginx_proxy: "{{ mpi_cluster_coordinator_proxy }}"
   - role: rs_firewall
     rs_firewall: "{{ mpi_cluster_coordinator_firewall }}"

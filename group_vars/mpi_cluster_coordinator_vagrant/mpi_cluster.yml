@@ -1,4 +1,6 @@
 mpi_cluster:
   subnet: 10.0.10.0/24
+  coordinator:
+    server_name: cluster-coordinator.local
   worker_addresses:
     - cluster-worker.local

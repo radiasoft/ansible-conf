@@ -1,5 +1,8 @@
 ---
-nginx_conf_d: /etc/nginx/conf.d
+nginx:
+  auth_d: /etc/nginx/auth.d
+  conf_d: /etc/nginx/conf.d
+
 nginx_proxy_container:
   containers:
     - image_name: nginx
@@ -11,6 +14,7 @@ nginx_proxy_container:
         - 443:443
       volumes:
         - "/var/log/nginx:/var/log/nginx"  
-        - "{{ nginx_conf_d }}:{{ nginx_conf_d }}"  
+        - "{{ nginx.auth_d }}:{{ nginx.auth_d }}"  
+        - "{{ nginx.conf_d }}:{{ nginx.conf_d }}"  
         - "{{ ssl_storage.certs }}:{{ ssl_storage.certs }}" 
         - "{{ ssl_storage.private }}:{{ ssl_storage.private }}"

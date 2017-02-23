@@ -1,8 +1,20 @@
 ---
-- name: nginx config for {{ item.key }}
+- name: nginx auth info for {{ proxy.name }}
+  htpasswd:
+    group: root
+    mode: 0640
+    name: "{{ item.key }}"
+    owner: root
+    password: "{{ item.value }}"
+    path: "{{ nginx.auth_d }}/{{ proxy.name }}"
+  with_dict: "{{ proxy.auth }}"
+  when: proxy.auth is defined
+
+- name: nginx config for {{ proxy.name }}
   template:
-    dest: "{{ nginx_conf_d }}/{{ item.key }}.conf"
+    dest: "{{ nginx.conf_d }}/{{ proxy.name }}.conf"
     group: root
     mode: 0640
     owner: root
     src: nginx_conf.jinja
+

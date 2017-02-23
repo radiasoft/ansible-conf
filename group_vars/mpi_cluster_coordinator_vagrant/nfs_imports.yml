@@ -1,5 +1,0 @@
----
-jupyterhub:
-  nfs_imports:
-    jupyterhub:
-      host: localhost

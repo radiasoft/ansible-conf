@@ -1,4 +1,0 @@
-jupyterhub:
-  host_name: 'cluster-coordinator.local:8000'
-  guest:
-    add_hosts: "{{ mpi_cluster.worker_addresses }}"

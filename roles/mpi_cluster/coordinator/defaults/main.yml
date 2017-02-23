@@ -5,10 +5,12 @@ mpi_cluster:
     image_name: radiasoft/beamsim-jupyter
     #user_name: null
     #user_password: null
+    #server_name: null
     guest:
       jupyter_conf_d: /home/vagrant/.jupyter
       mpi_bin_d: /home/vagrant/mpi_bin
       notebook_d: /home/vagrant/jupyter
+      port: 8888
       scratch_d: /home/vagrant/scratch
     host:
       jupyter_conf_d: /var/lib/jupyter/conf
@@ -37,8 +39,6 @@ mpi_cluster_coordinator_containers:
       service_state: started
       use_host_net: yes
       user: vagrant
-      ports:
-        - 8888:8888
       volumes:
         - "{{ mpi_cluster.coordinator.host.jupyter_conf_d }}:{{ mpi_cluster.coordinator.guest.jupyter_conf_d }}"
         - "{{ mpi_cluster.coordinator.host.mpi_bin_d }}:{{ mpi_cluster.coordinator.guest.mpi_bin_d }}"
@@ -46,8 +46,18 @@ mpi_cluster_coordinator_containers:
         - "{{ mpi_cluster.coordinator.host.scratch_d }}:{{ mpi_cluster.coordinator.guest.scratch_d }}"
 
 mpi_cluster_coordinator_firewall:
-  ports:
+  services:
     open:
-      - 8888/tcp
+      - http
+      - https  
+
+mpi_cluster_coordinator_proxy:
+  - name: jupyter
+    server_name: "{{ mpi_cluster.coordinator.server_name }}"
+    proxy_pass: "http://127.0.0.1:{{ mpi_cluster.coordinator.guest.port }}"
+    auth:
+      "{{ mpi_cluster.coordinator.user_name }}": "{{ mpi_cluster.coordinator.user_password }}"
+    request_headers:
+      Authorization: "token {{ mpi_cluster.coordinator.user_password | hash('sha256') }}"
 
 rs_role: mpi_cluster_coordinator

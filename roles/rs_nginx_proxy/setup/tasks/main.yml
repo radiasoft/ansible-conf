@@ -1,9 +1,14 @@
 ---
-- name: nginx log directory
-  file: state=directory path=/var/log/nginx owner=root group=root mode=755
-  
-- name: nginx config directory
-  file: state=directory path=/etc/nginx/conf.d owner=root group=root mode=755
+- name: create nginx directories
+  file: state=directory path={{ item.p }} owner=root group=root mode={{ item.m }}
+  with_items:
+    - { p: "{{ nginx.auth_d }}", m: "0750" }
+    - { p: "{{ nginx.conf_d }}", m: "0755" }
+    - { p: /var/log/nginx, m: "0755" }
+  loop_control:
+    label: "{{ item.p }}"
 
 - include: manage_proxy_entry.yml
-  with_dict: "{{ rs_nginx_proxy }}"
+  with_items: "{{ rs_nginx_proxy }}"
+  loop_control:
+    loop_var: proxy

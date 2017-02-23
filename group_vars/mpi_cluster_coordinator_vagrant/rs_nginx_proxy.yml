@@ -1,3 +1,0 @@
----
-rs_nginx_proxy:
-  cluster-coordinator.local: "http://{{ ansible_eth1.ipv4.address }}:8000"
