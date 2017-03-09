@@ -7,3 +7,6 @@
 
 - name: vagrant user exists
   user: name=vagrant uid=1000 group=vagrant state=present system=no
+
+- name: turn off sudoers requiretty
+  shell: perl -pi.bak -e 's/^(?=Defaults\s+requiretty)/#/' /etc/sudoers
