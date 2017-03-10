@@ -1,6 +1,7 @@
 ---
-deploy_env: "{{ ansible_local.deploy_env | default('') }}"
-is_ec2_env:  "{{ deploy_env == 'ec2' }}"
-is_vagrant_env: "{{ deploy_env == 'vagrant' }}"
+_ansible_local: "{{ ansible_local | default('{}') }}"
+_deploy_env: "{{ _ansible_local.deploy_env | default('') }}"
+is_ec2_env:  "{{ _deploy_env == 'ec2' }}"
+is_vagrant_env: "{{ _deploy_env == 'vagrant' }}"
 nfs_export_prefix: /srv/nfs
 nfs_import_prefix: /run/nfs
