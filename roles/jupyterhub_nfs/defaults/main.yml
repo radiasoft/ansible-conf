@@ -2,7 +2,7 @@
 jupyterhub_nfs_firewall:
   services:
     enabled:
-      - http  
+      - http
       - https
       - nfs
       - rpc-bind
@@ -15,7 +15,7 @@ jupyterhub_nfs_exports:
       owner: vagrant
 
     - group: vagrant
-      name: postgresql 
+      name: postgresql
       nfs_config: '*(rw,insecure,no_root_squash,no_subtree_check,sync,fsid=5000)'
       owner: vagrant
 
