@@ -8,4 +8,5 @@ dependencies:
   - role: rs_containers
     rs_containers: "{{ mpi_cluster_worker_containers }}"
   - role: rs_firewall
-    rs_firewall: "{{ mpi_cluster_worker_firewall }}"
+    rs_firewall: "{{ mpi_cluster_worker_firewall }}"
+  - firewall

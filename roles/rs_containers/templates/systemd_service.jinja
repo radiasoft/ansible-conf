@@ -1,14 +1,11 @@
 {% set c = container %}
 {# docker args start #}
-{% set docker_cmd_line = ['/usr/bin/docker', 'run', '--tty', '--log-driver=journald', '--name', c.name ] %}
-{% set docker_cmd_line = docker_cmd_line | cmd_arg('-p', c.ports) | cmd_arg('--link', c.links) | cmd_arg('-v', _volumes) | cmd_arg('-u', c.user) %}
+{% set docker_cmd_line = ['/usr/bin/docker', 'run', '--tty', '--log-driver=journald', '--net=host', '--name', c.name ] %}
+{% set docker_cmd_line = docker_cmd_line | cmd_arg('-v', _volumes) | cmd_arg('-u', c.user) %}
 {% if c.add_hosts is defined %}
 {% for host in c.add_hosts|docker_add_hosts %}
 {% do docker_cmd_line.extend([ '--add-host', host ]) %}
 {% endfor %}
-{% endif %}
-{% if _use_host_net %}
-{% do docker_cmd_line.extend(['--network=host']) %}
 {% endif %}
 {# docker args end #}
 {% do docker_cmd_line.extend([c.image_name]) %}
@@ -20,11 +17,11 @@
 [Unit]
 After={{ after_services | join(" ") }}
 Before={{ before_services | join(" ") }}
-Description={{ c.name }} docker container
+Description={{ c.name }} docker container
 Requires={{ (after_services + before_services) | join(" ") }}
 
 [Service]
-ExecStart={{ docker_cmd_line | join(' ') }} 
+ExecStart={{ docker_cmd_line | join(' ') }}
 ExecStartPre=-/usr/bin/docker rm --force {{ c.name }}
 ExecStop=-/usr/bin/docker stop {{ c.name }}
 Restart=on-failure

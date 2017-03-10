@@ -1,13 +1,21 @@
 ---
+
+# Need this because nginx container runs 104:107 so ps looks right
+- name: nginx group exists
+  group: name=nginx gid=107 state=present system=yes
+
+- name: nginx user exists
+  user: name=nginx uid=104 group=nginx state=present system=yes createhome=no home=/nonexistent
+
 - name: create nginx directories
-  file: state=directory path={{ item.p }} owner=root group=root mode={{ item.m }}
+  file: state=directory path={{ item.p }} owner=root group=nginx mode={{ item.m }}
   with_items:
     # TODO: auth_d should have a more stringent mode
     # but because of limitations with the nginx container, it
     # requires full access
-    - { p: "{{ nginx.auth_d }}", m: "0755" }
-    - { p: "{{ nginx.conf_d }}", m: "0755" }
-    - { p: /var/log/nginx, m: "0755" }
+    - { p: "{{ nginx.auth_d }}", m: "0750" }
+    - { p: "{{ nginx.conf_d }}", m: "0750" }
+    - { p: /var/log/nginx, m: "0775" }
   loop_control:
     label: "{{ item.p }}"
 

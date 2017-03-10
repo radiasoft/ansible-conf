@@ -55,18 +55,23 @@ fail fast
 
 ### TODO
 
-debug mpi
-need to restart firewalld
---net=host needed for docker nginx
-firewalld needs to be in trusted
-clean up *~
-yum update needs to be done
-public.xml has to remove ssh and add http and https
-can ssh to the host, but mpi can't get to that host
-need to map  extra devices
-sshd config needs to be modified
-/etc/systemd/system/nginx_proxy.service was modified
-docker needs to be on separate partition
-nfs needs to be on separate partition
-reverse dns document how to scaleway
-docker volume for cdg1
+* reload server with proper firewall
+* need to figure out how to open port range (just ports?)
+
+* debug mpi
+* nfs export/import prefixes should be the same and not with "nfs" in name, e.g.
+  /var/db/jupyterhub
+* need to restart firewalld
+* --net=host needed for docker nginx
+* firewalld needs to be in trusted
+* clean up *~
+* yum update needs to be done
+* public.xml has to remove ssh and add http and https
+* can ssh to the host, but mpi can't get to that host
+* need to map  extra devices
+* sshd config needs to be modified
+* /etc/systemd/system/nginx_proxy.service was modified
+* docker needs to be on separate partition
+* nfs needs to be on separate partition
+* reverse dns document how to scaleway
+* docker volume for cdg1

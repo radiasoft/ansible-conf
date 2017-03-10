@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<zone>
+  <short>Trusted</short>
+  <description>trusted</description>
+  {% if mpi_cluster_host_class == "coordinator" %}
+  <service name="http"/>
+  <service name="https"/>
+  {% endif %}
+  <service name="dhcpv6-client"/>
+</zone>

@@ -1,5 +1,6 @@
 ---
+mpi_cluster_host_class: coordinator
 jupyterhub:
   extra_user_dirs:
-    - host_d: "{{ mpi_cluster.coordinator.mpi_bin.host_d }}" 
+    - host_d: "{{ mpi_cluster.coordinator.mpi_bin.host_d }}"
       dirname: "{{ mpi_cluster.coordinator.mpi_bin.dirname }}"

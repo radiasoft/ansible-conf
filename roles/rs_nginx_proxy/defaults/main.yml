@@ -9,12 +9,9 @@ nginx_proxy_container:
       name: nginx_proxy
       on_boot: yes
       service_state: started
-      ports:
-        - 80:80
-        - 443:443
       volumes:
-        - "/var/log/nginx:/var/log/nginx"  
-        - "{{ nginx.auth_d }}:{{ nginx.auth_d }}"  
-        - "{{ nginx.conf_d }}:{{ nginx.conf_d }}"  
-        - "{{ ssl_storage.certs }}:{{ ssl_storage.certs }}" 
+        - "/var/log/nginx:/var/log/nginx"
+        - "{{ nginx.auth_d }}:{{ nginx.auth_d }}"
+        - "{{ nginx.conf_d }}:{{ nginx.conf_d }}"
+        - "{{ ssl_storage.certs }}:{{ ssl_storage.certs }}"
         - "{{ ssl_storage.private }}:{{ ssl_storage.private }}"

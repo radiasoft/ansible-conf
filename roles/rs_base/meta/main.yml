@@ -2,8 +2,9 @@
 dependencies:
   - rs_global_defaults
   - role: vm_swap
-    when: is_ec2_env 
+    when: is_ec2_env
   - geerlingguy.repo-epel
   - timesync
-  - rs_firewall  
-  - utilities  
+  - rs_firewall
+  - utilities
+  - firewall
