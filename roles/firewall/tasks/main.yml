@@ -5,6 +5,8 @@
     mode: 0440
     owner: root
     src: "{{ item }}.xml.jinja"
+  notify:
+    - restart firewalld
   with_items:
     - dmz
     - public
