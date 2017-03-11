@@ -4,7 +4,7 @@
 
 - name: root password
   user: name=root password="{{ root_md5 }}"
-  when: root_md5
+  when: root_md5 is defined
 
 - name: vagrant group exists
   group: name=vagrant gid=1000 state=present system=no
