@@ -1,10 +1,30 @@
 ---
+- file:
+    path: "{{ docker_service_d }}"
+    state: directory
+    owner: root
+    group: root
+    # TODO(robnagler) Does this need to be world readable?
+    mode: 0755
+
+- name: docker.service systemd config
+  template:
+    src: "{{ os_ver_d }}/rs_containers.conf.jinja"
+    owner: root
+    group: root
+    # TODO(robnagler) Does this need to be world readable?
+    mode: 0644
+    dest: "{{ docker_service_d }}/rs_containers.conf"
+  notify:
+    - restart docker service
+
 - name: add docker repo
   copy:
     src: "{{ os_ver_d }}/docker.repo"
     dest: /etc/yum.repos.d/docker.repo
     owner: root
     group: root
+    # TODO(robnagler) Does this need to be world readable?
     mode: 0644
 
 - name: install docker requirements
@@ -14,31 +34,6 @@
     - python-docker-py
 
 - name: enable docker service
-  systemd: name={{ docker_service_name }} daemon_reload=yes enabled=yes state=started
-
-- file:
-    path: "{{ docker_service_d }}"
-    state: directory
-    owner: root
-    group: root
-    mode: 0755
-
-- name: "{{ docker_service_name }} systemd overrides for sysconfig"
-  copy:
-    src: "{{ os_ver_d }}/docker-service.conf"
-    dest: "{{ docker_service_d }}/docker-sysconfig.conf"
-    owner: root
-    group: root
-    mode: 0644
-  notify:
-    - restart docker service
-
-- name: "{{ docker_service_name }} sysconfig settings"
-  template:
-    src: "{{ os_ver_d }}/sysconfig-docker.j2"
-    dest: "{{ sysconfig_d }}/docker"
-    owner: root
-    group: root
-    mode: 0644
+  systemd: name={{ docker_service_name }} daemon_reload=yes enabled=yes
   notify:
     - restart docker service
