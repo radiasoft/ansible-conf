@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<zone target="ACCEPT">
-  <short>Internal</short>
-  <description>Internal</description>
-  {% for  in firewall.internal_hosts %}
-  <source address="{{ lookup('dig', x + '.') }}"/>
-  {% endfor %}
-</zone>

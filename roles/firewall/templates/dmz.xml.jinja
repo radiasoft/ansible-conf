@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<zone>
+  <short>DMZ</short>
+  <description>DMZ</description>
+  {% for x in firewall.dmz_hosts %}
+  <source address="{{ lookup('dig', x + '.') }}"/>
+  {% endfor %}
+  <service name="ssh"/>
+</zone>

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<zone>
+<zone target="ACCEPT">
   <short>Trusted</short>
-  <description>trusted</description>
-  {% for x in firewall.trusted_hosts %}
+  <description>Trusted</description>
+  {% for x in firewall.internal_hosts %}
   <source address="{{ lookup('dig', x + '.') }}"/>
   {% endfor %}
-  <service name="ssh"/>
 </zone>
