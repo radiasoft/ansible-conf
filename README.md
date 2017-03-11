@@ -74,4 +74,8 @@ fail fast
 * docker needs to be on separate partition
 * nfs needs to be on separate partition
 * reverse dns document how to scaleway
+ - set the root password, only way to get in via the console
+ - created a C2L instance so that have Direct SSD (DSSD) which
+ is a "real" local disk. The rest are on a network
+ - reserved ips can be reused, but you have to edit the option in create server
 * docker volume for cdg1
