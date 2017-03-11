@@ -79,3 +79,6 @@ fail fast
  is a "real" local disk. The rest are on a network
  - reserved ips can be reused, but you have to edit the option in create server
 * docker volume for cdg1
+* ansible roles can be a single file. Can templates still be separate?
+* modularize by functions to get rid of jinja
+* add functions to jinja so can execute

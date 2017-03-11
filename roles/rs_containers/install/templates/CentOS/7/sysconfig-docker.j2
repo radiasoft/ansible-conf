@@ -1,1 +1,1 @@
-OPTIONS='{% if docker_user_namespaces %} --userns-remap=default {% endif %} --log-driver=journald --iptables={{ 'true' if docker_manage_iptables else false }} {{ docker_tls_options }}'
+OPTIONS='--log-driver=journald --iptables=false {{ docker_tls_options }}'
