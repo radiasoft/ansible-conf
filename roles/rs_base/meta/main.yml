@@ -7,4 +7,3 @@ dependencies:
   - timesync
   - rs_firewall
   - utilities
-  - firewall

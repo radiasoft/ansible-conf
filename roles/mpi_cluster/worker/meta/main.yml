@@ -2,6 +2,7 @@
 dependencies:
   - rs_global_defaults
   - rs_base
+  - firewall
   - mpi_cluster/worker/pre
   - role: nfs_client
     nfs_imports: "{{ mpi_cluster.worker.nfs_imports }}"
@@ -9,4 +10,3 @@ dependencies:
     rs_containers: "{{ mpi_cluster_worker_containers }}"
   - role: rs_firewall
     rs_firewall: "{{ mpi_cluster_worker_firewall }}"
-  - firewall
