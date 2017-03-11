@@ -18,12 +18,12 @@
     dest: '/etc/{{ item }}'
   with_items:
     - subuid
-    - subgid  
+    - subgid
   when: docker_user_namespaces
-    
+
 - name: add docker repo
-  copy: 
-    src: "{{ os_ver_d }}/docker.repo" 
+  copy:
+    src: "{{ os_ver_d }}/docker.repo"
     dest: /etc/yum.repos.d/docker.repo
     owner: root
     group: root
@@ -36,7 +36,7 @@
     - python-docker-py
 
 - name: enable docker service
-  systemd: name={{ docker_service_name }} daemon_reload=yes enabled=yes state=started
+  systemd: name={{ docker_service_name }} daemon_reload=yes enabled=yes state=started
 
 - file:
     path: "{{ docker_service_d }}"
@@ -45,23 +45,22 @@
     group: root
     mode: 0755
 
-- name: "{{ docker_service_name }} systemd overrides for sysconfig"
+- name: "{{ docker_service_name }} systemd overrides for sysconfig"
   copy:
     src: "{{ os_ver_d }}/docker-service.conf"
     dest: "{{ docker_service_d }}/docker-sysconfig.conf"
     owner: root
     group: root
     mode: 0644
-  notify: 
+  notify:
     - restart docker service
 
 - name: "{{ docker_service_name }} sysconfig settings"
   template:
     src: "{{ os_ver_d }}/sysconfig-docker.j2"
-    dest: "{{ sysconfig_d }}/docker" 
+    dest: "{{ sysconfig_d }}/docker"
     owner: root
     group: root
     mode: 0644
-  notify: 
+  notify:
     - restart docker service
-
