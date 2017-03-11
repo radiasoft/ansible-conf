@@ -16,10 +16,10 @@
 # * Rename atomically
 # * Validate temp file on target with a syntax checker if available
 - name: turn off sudoers requiretty
-  shell: "perl -pi.bak -e 's/^(?=Defaults\s+requiretty)/#/' /etc/sudoers"
+  shell: "perl -pi.bak -e 's/^(?=Defaults\\s+requiretty)/#/' /etc/sudoers"
 
 - name: set hostname statically
   shell: hostnamectl set-hostname {{ inventory_hostname }} --static
 
 - name: secure sshd_config
-  shell: "perl -pi.bak -e 's/^#(PermitRootLogin)\s+yes/$1 without-password/;s/^(PasswordAuthentication)\s+yes/$1 no/' /etc/ssh/sshd_config"
+  shell: "perl -pi.bak -e 's/^#(PermitRootLogin)\\s+yes/$1 without-password/;s/^(PasswordAuthentication)\\s+yes/$1 no/' /etc/ssh/sshd_config"
