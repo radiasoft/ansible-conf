@@ -1,11 +1,1 @@
-OPTIONS=(echo --
-    --log-driver=journald
-    --iptables=false
-    --storage-opt=dm.use_deferred_deletion=true
-    --storage-opt=dm.use_deferred_removal=true
-    --storage-opt=dm.datadev=/dev/nbd1p2
-    --storage-opt=dm.metadatadev=/dev/nbd1p1
-    --storage-driver=devicemapper
-    {{ docker_tls_options }}
-)
-OPTIONS=${OPTIONS[*]}
+OPTIONS='--log-driver=journald --iptables=false --storage-opt=dm.use_deferred_deletion=true --storage-opt=dm.use_deferred_removal=true --storage-opt=dm.datadev=/dev/nbd1p2 --storage-opt=dm.metadatadev=/dev/nbd1p1 --storage-driver=devicemapper {{ docker_tls_options }}'
