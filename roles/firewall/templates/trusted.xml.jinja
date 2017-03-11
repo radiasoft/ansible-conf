@@ -2,7 +2,7 @@
 <zone target="ACCEPT">
   <short>Trusted</short>
   <description>Trusted</description>
-  {% for x in firewall.internal_hosts %}
+  {% for x in firewall.trusted_hosts %}
   <source address="{{ lookup('dig', x + '.') }}"/>
   {% endfor %}
 </zone>
