@@ -55,10 +55,12 @@ fail fast
 
 ### TODO
 
-* reload server with proper firewall
-* need to figure out how to open port range (just ports?)
+* docker partitinos not showing up
 
 * debug mpi
+
+* need to reboot in the middle after firewall and docker are setup
+* reload server with proper firewall
 * nfs export/import prefixes should be the same and not with "nfs" in name, e.g.
   /var/db/jupyterhub
 * need to restart firewalld
@@ -82,3 +84,4 @@ fail fast
 * ansible roles can be a single file. Can templates still be separate?
 * modularize by functions to get rid of jinja
 * add functions to jinja so can execute
+* lookup(dig) does not fail when a name is not found so the file is written incorrectly
