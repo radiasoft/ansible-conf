@@ -1,17 +1,10 @@
 ---
-- name: create mpi_ssh service
-  template:
-    dest: /etc/firewalld/services/mpi_ssh.xml
-    mode: 0440
-    owner: root
-    src: mpi_ssh_.xml.jinja
-
 - name: create firewall zones
   template:
-    dest: /etc/firewalld/zones/{{ item }}.xml
+    dest: "/etc/firewalld/zones/{{ item }}.xml"
     mode: 0440
     owner: root
-    dest: {{ item }}.xml.jinja
+    dest: "{{ item }}.xml.jinja"
   with_items:
     - internal
     - public
