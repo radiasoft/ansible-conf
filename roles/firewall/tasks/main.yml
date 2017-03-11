@@ -6,6 +6,6 @@
     owner: root
     src: "{{ item }}.xml.jinja"
   with_items:
-    - internal
+    - dmz
     - public
     - trusted
