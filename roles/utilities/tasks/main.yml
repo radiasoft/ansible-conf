@@ -5,22 +5,23 @@
     - bind-utils
     - emacs-nox
     - htop
-    - iftop  
-    - iotop  
+    - iftop
+    - iotop
     - lsof
     - openssl
-    - python-passlib  
+    - python-passlib
     - screen
-    - strace  
+    - strace
     - tar
     - tcpdump
     - telnet
-    - the_silver_searcher 
+    - the_silver_searcher
     - tmux
     - vim-enhanced
+    - xfsprogs
 
 - name: screenrc configuration
-  blockinfile: 
+  blockinfile:
     dest: /etc/screenrc
     insertafter: EOF
     block: "escape ^^^^"
