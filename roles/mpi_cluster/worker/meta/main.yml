@@ -1,6 +1,7 @@
 ---
 dependencies:
   - rs_global_defaults
+  - rs_vars
   - rs_base
   - firewall
   - mpi_cluster/worker/pre
