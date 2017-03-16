@@ -19,14 +19,14 @@ mpi_cluster:
       mpi_cluster:
         - group: vagrant
           name: notebook
-          nfs_config: '*(rw,insecure,no_root_squash,no_subtree_check,sync,fsid=5000)'
+          nfs_config: '(rw,insecure,no_root_squash,no_subtree_check,sync,fsid=5000)'
           owner: vagrant
   worker:
     sshd_port: 2200
 
 mpi_cluster_coordinator_containers:
   containers:
-    - command: "/bin/bash -l -c 'exec jupyter notebook --ip=0.0.0.0'"
+    - command: "/bin/bash -l -c '. ~/.bashrc; cd ~/jupyter; exec jupyter notebook --ip=0.0.0.0'"
       image_name: "{{ mpi_cluster.coordinator.image_name }}"
       name: mpi_coordinator
       on_boot: yes
