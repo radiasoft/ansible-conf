@@ -7,7 +7,7 @@
 
 - name: add file systems
   args:
-    creates: {{ nfs_export_prefix }}
+    creates: "{{ nfs_export_prefix }}"
     executable: /bin/bash
   script: |
     set -e
