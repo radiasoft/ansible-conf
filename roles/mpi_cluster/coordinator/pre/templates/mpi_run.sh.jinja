@@ -4,7 +4,7 @@ dash_x=
 conf_dir="$HOME/mpi_bin"
 export PATH="$conf_dir:$PATH"
 exec mpiexec  \
-     -np '{{ mpi_cluster.num_slots }}'
+     -np '{{ mpi_cluster.num_slots }}' \
      --mca btl_tcp_if_include '{{ mpi_cluster.interface }}' \
      --mca oob_tcp_if_include '{{ mpi_cluster.interface }}' \
      -hostfile "$conf_dir/mpi_hosts" \
