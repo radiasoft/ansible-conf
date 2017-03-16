@@ -1,9 +1,6 @@
 #!/bin/bash
-#
 set -e
-
-SSH_CMD="/usr/bin/ssh -F $HOME/mpi_bin/ssh_config"
-
+SSH_CMD="/usr/bin/ssh -F $RS_MPI_BIN/ssh_config"
 if [[ -z $RADIA_DEBUG ]]; then
     exec $SSH_CMD "$@"
 else
