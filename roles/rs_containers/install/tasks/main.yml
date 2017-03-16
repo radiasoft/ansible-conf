@@ -45,11 +45,12 @@
     rm -rf container-storage-setup
     git clone https://github.com/projectatomic/container-storage-setup
     cd container-storage-setup
-    cat > rs-conf <<'EOF'
-    CONTAINER_THINPOOL='{{ docker.dm.thinpool }}'
-    VG='{{ docker.dm.volume_group }}'
-    DEVS='{{ docker.dm.block_device }}'
-    EOF
+    # Ansible inserts a leading space on every line so you can't use "here" docs
+    {
+        echo 'CONTAINER_THINPOOL="{{ docker.dm.thinpool }}"'
+        echo 'VG="{{ docker.dm.volume_group }}"'
+        echo 'DEVS="{{ docker.dm.block_device }}"'
+    } > rs-conf
     bash container-storage-setup.sh rs-conf ignore-output
     cd ..
     rm -rf container-storage-setup
