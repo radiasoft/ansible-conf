@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 export RS_MPI_BIN="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-export PATH="$RS_MPI_HOME:$PATH"
+export PATH="$RS_MPI_BIN:$PATH"
 # https://www.cfd-online.com/Forums/openfoam-installation/164956-host-key-verification-failed-upgrades-openmpi-openfoam-2-3-1-a.html
 # http://staff.washington.edu/rxandrew/computations/bluewaterHOWTO.html
 export OMPI_MCA_plm_rsh_no_tree_spawn=1
@@ -9,6 +9,6 @@ exec mpiexec  \
     -np '{{ mpi_cluster.num_slots }}' \
     --mca btl_tcp_if_include '{{ mpi_cluster.interface }}' \
     --mca oob_tcp_if_include '{{ mpi_cluster.interface }}' \
-    -hostfile "$RS_MPI_HOME/mpi_hosts" \
+    -hostfile "$RS_MPI_BIN/mpi_hosts" \
     "$@"
 echo mpiexec failed 1>&2
