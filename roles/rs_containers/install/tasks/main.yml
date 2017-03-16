@@ -37,7 +37,7 @@
 
 - name: add container-storage-setup
   args:
-    creates: {{ docker.dm.thinpooldev }}
+    creates: "{{ docker.dm.thinpooldev }}"
     executable: /bin/bash
   script: |
     set -e
@@ -46,9 +46,9 @@
     git clone https://github.com/projectatomic/container-storage-setup
     cd container-storage-setup
     cat > rs-conf <<'EOF'
-    CONTAINER_THINPOOL={{ docker.dm.thinpool }}
-    VG={{ docker.dm.volume_group }}
-    DEVS={{ docker.dm.block_device }}
+    CONTAINER_THINPOOL='{{ docker.dm.thinpool }}'
+    VG='{{ docker.dm.volume_group }}'
+    DEVS='{{ docker.dm.block_device }}'
     EOF
     bash container-storage-setup.sh rs-conf ignore-output
     cd ..
