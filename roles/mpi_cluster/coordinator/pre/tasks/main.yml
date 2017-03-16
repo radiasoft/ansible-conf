@@ -7,7 +7,7 @@
     path: "{{ item }}"
     state: directory
   with_items:
-    - "{{ mpi_cluster.coordinator.host.jupyter_conf_d }}"  
+    - "{{ mpi_cluster.coordinator.host.jupyter_conf_d }}"
     - "{{ mpi_cluster.coordinator.host.mpi_bin_d }}"
 
 - name: create coordinator user ssh key
@@ -21,7 +21,7 @@
 - name: read coordinator user pub key
   slurp:
     src: "{{ mpi_cluster.coordinator.host.mpi_bin_d }}/id_rsa.pub"
-  register: _pk 
+  register: _pk
 
 - set_fact:
     coordinator_pub_key: "{{ _pk.content | b64decode }}"

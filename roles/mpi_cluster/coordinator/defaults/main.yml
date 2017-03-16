@@ -19,7 +19,8 @@ mpi_cluster:
       mpi_cluster:
         - group: vagrant
           name: notebook
-          nfs_config: '(rw,insecure,no_root_squash,no_subtree_check,sync,fsid=5000)'
+          #TODO(robnagler) need to secure this
+          nfs_config: '*(rw,insecure,no_root_squash,no_subtree_check,sync,fsid=5000)'
           owner: vagrant
   worker:
     sshd_port: 2200

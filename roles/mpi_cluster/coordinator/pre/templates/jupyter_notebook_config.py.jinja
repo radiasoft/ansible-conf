@@ -1,7 +1,5 @@
 c.KernelSpecManager.whitelist = {'synergia-pre3', 'py2'}
-
 c.NotebookApp.terminado_settings = {
-    'shell_command': ['/bin/bash', '-l', '-i'],
+    'shell_command': ['env', 'PYENV_VERSION=', 'PYENV_VIRTUAL_ENV=', '/bin/bash', '-l', '-i'],
 }
-
 c.NotebookApp.token = '{{ mpi_cluster.coordinator.user_password | hash("sha256") }}'
