@@ -9,7 +9,7 @@
   args:
     creates: "{{ nfs_export_prefix }}"
     executable: /bin/bash
-  script: |
+  shell: |
     set -e
     mkdir -p '{{ nfs_export_prefix }}'
     chmod 755 '{{ nfs_export_prefix }}'

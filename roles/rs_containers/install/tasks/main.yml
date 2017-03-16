@@ -39,7 +39,7 @@
   args:
     creates: "{{ docker.dm.thinpooldev }}"
     executable: /bin/bash
-  script: |
+  shell: |
     set -e
     cd /tmp
     rm -rf container-storage-setup
