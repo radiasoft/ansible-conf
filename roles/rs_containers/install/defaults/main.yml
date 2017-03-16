@@ -7,4 +7,4 @@ docker:
   dm:
     thinpool: thinpool
     volume_group: docker
-    thinpooldev: /dev/mapper/{{ docker.dm.volume_group }}-{{ docker.dm.thinpool }}
+    thinpooldev: /dev/mapper/docker-thinpool
