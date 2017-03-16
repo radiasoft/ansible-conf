@@ -27,7 +27,7 @@ mpi_cluster:
 
 mpi_cluster_coordinator_containers:
   containers:
-    - command: "/bin/bash -l -c '. ~/.bashrc; cd ~/jupyter; exec jupyter notebook --ip=0.0.0.0'"
+    - command: "/bin/bash -l -c '. ~/.bashrc; cd ~/jupyter; pyenv activate jupyter; exec jupyter notebook --ip=0.0.0.0'"
       image_name: "{{ mpi_cluster.coordinator.image_name }}"
       name: mpi_coordinator
       on_boot: yes
