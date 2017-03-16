@@ -53,10 +53,23 @@ loops in ansible don't
 fail fast
 
 
+### Scaleway
+
+1. Create C2L instance
+1. Set root password
+1. Partition /dev/sda (+50G, +5G, <rest>)
+1. On cdg1 (coordinator):
+    a. mkfs -t xfs /dev/sda3
+    b. x=( $(xfs_admin -u /dev/sda3 ) )
+    c. mkdir -p /srv/nfs/mpi_cluster
+    c. echo "UUID=${x[-1]} /srv/nfs/mpi_cluster defaults xfs defaults 0 0' >> /etc/fstab
+    d. mount /srv/nfs/mpi_cluster
+
+Then you can run ansible on server
+
 ### TODO
 
-* docker partitinos not showing up
-
+* docker partitions not showing up
 * debug mpi
 
 * need to reboot in the middle after firewall and docker are setup
@@ -85,3 +98,7 @@ fail fast
 * modularize by functions to get rid of jinja
 * add functions to jinja so can execute
 * lookup(dig) does not fail when a name is not found so the file is written incorrectly
+* reboot required to get partitions to show up properly after partitioning disks
+* DSSD volumes destroyed on poweroff. You can't poweroff an instance and expect the state to be the same.
+
+* firewall-cmd --permament adds to the file, but doesn't modify running firewall. you have to update separately, or restart firewalld

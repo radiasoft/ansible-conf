@@ -18,8 +18,3 @@ jupyterhub_nfs_exports:
       name: postgresql
       nfs_config: '*(rw,insecure,no_root_squash,no_subtree_check,sync,fsid=5000)'
       owner: vagrant
-
-    - group: vagrant
-      name: scratch
-      nfs_config: '*(rw,insecure,no_root_squash,no_subtree_check,sync,fsid=5001)'
-      owner: vagrant

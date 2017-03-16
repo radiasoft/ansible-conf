@@ -1,3 +1,63 @@
 ---
-- include: "{{ os_ver_d }}/docker.yml"
-- meta: flush_handlers  
+- file:
+    path: "{{ docker_service_d }}"
+    state: directory
+    owner: root
+    group: root
+    # TODO(robnagler) Does this need to be world readable?
+    mode: 0755
+
+- name: docker.service systemd config
+  template:
+    src: rs_containers.conf.jinja
+    owner: root
+    group: root
+    # TODO(robnagler) Does this need to be world readable?
+    mode: 0644
+    dest: "{{ docker_service_d }}/rs_containers.conf"
+  notify:
+    - restart docker service
+
+- name: add docker repo
+  copy:
+    src: docker.repo
+    dest: /etc/yum.repos.d/docker.repo
+    owner: root
+    group: root
+    # TODO(robnagler) Does this need to be world readable?
+    mode: 0644
+
+- name: install docker requirements
+  package: name={{ item }} state=present
+  with_items:
+    - docker-engine
+    - python-docker-py
+    - git
+    - lvm2
+
+- name: add container-storage-setup
+  args:
+    creates: {{ docker.dm.thinpooldev }}
+    executable: /bin/bash
+  script: |
+    set -e
+    cd /tmp
+    rm -rf container-storage-setup
+    git clone https://github.com/projectatomic/container-storage-setup
+    cd container-storage-setup
+    cat > rs-conf <<'EOF'
+    CONTAINER_THINPOOL={{ docker.dm.thinpool }}
+    VG={{ docker.dm.volume_group }}
+    DEVS={{ docker.dm.block_device }}
+    EOF
+    bash container-storage-setup.sh rs-conf ignore-output
+    cd ..
+    rm -rf container-storage-setup
+
+
+- name: enable docker service
+  systemd: name={{ docker_service_name }} daemon_reload=yes enabled=yes
+  notify:
+    - restart docker service
+
+- meta: flush_handlers

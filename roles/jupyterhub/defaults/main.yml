@@ -25,28 +25,24 @@ jupyterhub:
     conf_d: /srv/jupyterhub/conf
     notebook_d: "{{ nfs_import_prefix }}/jupyterhub/notebook"
     port: 8000
-    scratch_d: "{{ nfs_import_prefix }}/jupyterhub/scratch"
     user: root
   host:
     conf_d: /var/lib/jupyterhub/conf
     notebook_d: "{{ nfs_import_prefix }}/jupyterhub/notebook"
     port: 8000
-    scratch_d: "{{ nfs_import_prefix }}/jupyterhub/scratch"
     user: root
   jupyter:
     image_name: "radiasoft/beamsim-jupyter:{{ rs_channel }}"
     guest:
       home_d: /home/vagrant
       notebook_d: /home/vagrant/jupyter
-      scratch_d: /home/vagrant/scratch
-      user: vagrant 
+      user: vagrant
   nfs_imports:
     jupyterhub:
       #host: null
       names:
-        - notebook  
-        - postgresql  
-        - scratch
+        - notebook
+        - postgresql
   postgresql:
     admin_pass: null
     db_pass: null
@@ -66,7 +62,6 @@ jupyterhub:
 jupyterhub_default_volumes:
   - "{{ jupyterhub.host.conf_d }}:{{ jupyterhub.guest.conf_d }}"
   - "{{ jupyterhub.host.notebook_d }}:{{ jupyterhub.guest.notebook_d }}"
-  - "{{ jupyterhub.host.scratch_d }}:{{ jupyterhub.guest.scratch_d }}"
 
 jupyterhub_rs_containers:
   containers:
@@ -75,8 +70,8 @@ jupyterhub_rs_containers:
       state: absent
 
     - command: postgres
-      image_name: "{{ jupyterhub.postgresql.image_name }}" 
-      name: "{{ jupyterhub.postgresql.name }}" 
+      image_name: "{{ jupyterhub.postgresql.image_name }}"
+      name: "{{ jupyterhub.postgresql.name }}"
       on_boot: yes
       service_state: stopped
       user: "{{ jupyterhub.postgresql.guest.user }}"
@@ -85,11 +80,11 @@ jupyterhub_rs_containers:
       volumes:
         - "{{ jupyterhub.postgresql.host.data_d }}:{{ jupyterhub.postgresql.guest.data_d }}"
         - "{{ jupyterhub.postgresql.host.run_d }}:{{ jupyterhub.postgresql.guest.run_d }}"
-    
+
     - add_hosts: "{{ jupyterhub.guest.add_hosts }}"
       command: "jupyterhub -f {{ jupyterhub.guest.conf_d }}/jupyterhub_config.py"
       image_name: "{{ jupyterhub.image_name }}"
-      name: "{{ jupyterhub.name }}" 
+      name: "{{ jupyterhub.name }}"
       on_boot: yes
       service_state: stopped
       user: "{{ jupyterhub.host.user }}"

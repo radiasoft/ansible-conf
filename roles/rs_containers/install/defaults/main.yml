@@ -1,6 +1,10 @@
 ---
-docker_service_d: "/etc/systemd/system/{{ docker_service_name }}.d"
 docker_service_name: docker.service
+docker_service_d: "/etc/systemd/system/{{ docker_service_name }}.d"
 docker_tls_options: ''
-os_ver_d: "{{ ansible_distribution }}/{{ ansible_distribution_major_version }}"
 sysconfig_d: /etc/sysconfig
+docker:
+  dm:
+    thinpool: thinpool
+    volume_group: docker
+    thinpooldev: /dev/mapper/{{ docker.dm.volume_group }}-{{ docker.dm.thinpool }}
