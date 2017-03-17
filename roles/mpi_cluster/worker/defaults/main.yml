@@ -1,2 +1,3 @@
 ---
 rs_role: mpi_cluster_worker
+nfs_hack_prefix: "{{ nfs_import_prefix }}"
