@@ -10,5 +10,3 @@ dependencies:
   - role: jupyterhub/postgresql
     rs_containers: "{{ jupyterhub_rs_containers }}"
   - jupyterhub/services
-  - role: rs_firewall
-    rs_firewall: "{{ jupyterhub.firewall }}"

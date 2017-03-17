@@ -1,3 +1,0 @@
----
-- set_fact:
-    rs_firewall_ignore: ''

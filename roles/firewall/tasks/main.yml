@@ -1,4 +1,10 @@
 ---
+- name: firewalld is installed
+  package: name=firewalld state=present
+
+- name: enable firewalld service
+  systemd: name=firewalld.service daemon_reload=no enabled=yes state=started
+
 - name: create firewall zones
   template:
     dest: "/etc/firewalld/zones/{{ item }}.xml"

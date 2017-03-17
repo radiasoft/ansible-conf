@@ -5,5 +5,4 @@ dependencies:
     when: is_ec2_env
   - geerlingguy.repo-epel
   - timesync
-  - rs_firewall
   - utilities

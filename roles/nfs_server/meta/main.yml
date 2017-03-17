@@ -1,5 +1,3 @@
 ---
 dependencies:
   - rs_global_defaults
-  - role: rs_firewall
-    rs_firewall: "{{ nfs_server_firewall }}"

@@ -1,0 +1,80 @@
+---
+mpi_cluster:
+  ssh2_algos:
+    - ecdsa
+    - ed25519
+    - rsa
+  worker:
+    image_name: 'radiasoft/beamsim-jupyter:{{ rs_channel }}'
+    sshd_port: 2200
+    guest:
+      notebook_d: /home/vagrant/jupyter
+      ssh_conf_d: /home/vagrant/.ssh
+      sshd_conf_d: /etc/ssh
+    host:
+      notebook_d: "{{ nfs_import_prefix }}/mpi_cluster/notebook"
+      ssh_conf_d: /var/lib/mpi_worker/ssh
+      sshd_conf_d: /var/lib/mpi_worker/sshd
+    nfs_imports:
+      mpi_cluster:
+        #host: null
+        names:
+          - notebook
+  #worker_addresses: []
+  coordinator:
+    image_name: radiasoft/beamsim-jupyter
+    #user_name: null
+    #user_password: null
+    #server_name: null
+    guest:
+      jupyter_conf_d: /home/vagrant/.jupyter
+      mpi_bin_d: /home/vagrant/mpi_bin
+      notebook_d: /home/vagrant/jupyter
+      port: 8888
+    host:
+      jupyter_conf_d: /var/lib/jupyter/conf
+      mpi_bin_d: /var/lib/jupyter/mpi_bin
+      notebook_d: "{{ nfs_export_prefix }}/mpi_cluster/notebook"
+    nfs_exports:
+      mpi_cluster:
+        - group: vagrant
+          name: notebook
+          #TODO(robnagler) need to secure this
+          nfs_config: '*(rw,insecure,no_root_squash,no_subtree_check,sync,fsid=5000)'
+          owner: vagrant
+
+mpi_cluster_coordinator_containers:
+  containers:
+    - command: "/bin/bash -l -c '. ~/.bashrc; cd ~/jupyter; pyenv activate jupyter; exec jupyter notebook --ip=0.0.0.0'"
+      image_name: "{{ mpi_cluster.coordinator.image_name }}"
+      name: mpi_coordinator
+      on_boot: yes
+      service_state: started
+      use_host_net: yes
+      user: vagrant
+      volumes:
+        - "{{ mpi_cluster.coordinator.host.jupyter_conf_d }}:{{ mpi_cluster.coordinator.guest.jupyter_conf_d }}"
+        - "{{ mpi_cluster.coordinator.host.notebook_d }}:{{ mpi_cluster.coordinator.guest.notebook_d }}"
+
+mpi_cluster_worker_containers:
+  containers:
+    - command: "/bin/bash -l -c '. ~/.bashrc; cd ~/jupyter; pyenv activate jupyter; exec jupyter notebook --ip=0.0.0.0'"
+      image_name: "{{ mpi_cluster.coordinator.image_name }}"
+      name: mpi_coordinator
+      on_boot: yes
+      service_state: started
+      use_host_net: yes
+      user: vagrant
+      volumes:
+        - "{{ mpi_cluster.coordinator.host.jupyter_conf_d }}:{{ mpi_cluster.coordinator.guest.jupyter_conf_d }}"
+        - "{{ mpi_cluster.coordinator.host.notebook_d }}:{{ mpi_cluster.coordinator.guest.notebook_d }}"
+
+mpi_cluster_coordinator_proxy:
+  - name: jupyter
+    server_name: "{{ mpi_cluster.coordinator.server_name }}"
+    proxy_pass: "http://{{ ansible_eth0.ipv4.address }}:{{ mpi_cluster.coordinator.guest.port }}"
+    auth:
+      - user: "{{ mpi_cluster.coordinator.user_name }}"
+        pass: "{{ mpi_cluster.coordinator.user_password }}"
+    request_headers:
+      Authorization: "token {{ mpi_cluster.coordinator.user_password | hash('sha256') }}"
