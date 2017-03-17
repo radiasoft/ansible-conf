@@ -34,7 +34,11 @@ mpi_cluster:
     host:
       jupyter_conf_d: /var/lib/jupyter/conf
       mpi_bin_d: /var/lib/jupyter/mpi_bin
+      {% if rs_role == "mpi_cluster_coordinator" %}
       notebook_d: "{{ nfs_export_prefix }}/mpi_cluster/notebook"
+      {% else %}
+      notebook_d: "{{ nfs_import_prefix }}/mpi_cluster/notebook"
+      {% endif %}
     nfs_exports:
       mpi_cluster:
         - group: vagrant
