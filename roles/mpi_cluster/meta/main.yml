@@ -4,11 +4,11 @@ dependencies:
   - rs_vars
   - rs_base
   - firewall
-{% if rs_role == mpi_cluster_coordinator }
+{% if rs_role == mpi_cluster_coordinator %}
   - role: nfs_server
     nfs_exports: "{{ mpi_cluster.coordinator.nfs_exports }}"
 {% endif %}
-{% if rs_role == mpi_cluster_worker }
+{% if rs_role == mpi_cluster_worker %}
   - role: nfs_client
     nfs_imports: "{{ mpi_cluster.worker.nfs_imports }}"
 {% endif %}
