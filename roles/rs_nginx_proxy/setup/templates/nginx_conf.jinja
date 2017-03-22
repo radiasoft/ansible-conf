@@ -8,6 +8,8 @@ server {
     listen 443 ssl http2;
     server_name {{ proxy.server_name }};
 
+    client_max_body_size 500m;
+
     ssl_certificate {{ ssl_storage.certs }};
     ssl_certificate_key {{ ssl_storage.private }};
 
